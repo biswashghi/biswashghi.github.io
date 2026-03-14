@@ -2,17 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { posts } from '../blog/posts';
+import { formatIsoDate } from '../blog/date';
 
 const formatDate = (iso) => {
-  try {
-    return new Date(iso).toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: '2-digit',
-    });
-  } catch {
-    return iso;
-  }
+  return formatIsoDate(iso, { year: 'numeric', month: 'short', day: '2-digit' });
 };
 
 const BlogIndex = () => {

@@ -4,17 +4,10 @@ import { MDXProvider } from '@mdx-js/react';
 
 import { mdxComponents } from '../components/Blog/mdxComponents';
 import { getPostBySlug } from '../blog/posts';
+import { formatIsoDate } from '../blog/date';
 
 const formatDate = (iso) => {
-  try {
-    return new Date(iso).toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-    });
-  } catch {
-    return iso;
-  }
+  return formatIsoDate(iso, { year: 'numeric', month: 'long', day: '2-digit' });
 };
 
 const BlogPostPage = () => {
