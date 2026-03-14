@@ -4,19 +4,9 @@ import ProjectCard from '../components/Projects/ProjectCard';
 const Projects = () => {
     const projectList = [
         {
-            title: 'Project One',
-            description: 'Description of project one.',
-            link: 'https://link-to-project-one.com'
-        },
-        {
-            title: 'Project Two',
-            description: 'Description of project two.',
-            link: 'https://link-to-project-two.com'
-        },
-        {
-            title: 'Project Three',
-            description: 'Description of project three.',
-            link: 'https://link-to-project-three.com'
+            title: 'When I get up to something to post I\'ll put it here',
+            description: 'Empty for now.',
+            link: 'https://link-to-nowhere.com'
         }
     ];
 
