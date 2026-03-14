@@ -8,8 +8,7 @@ const Home = () => {
                 <p className="hero__eyebrow">Personal site</p>
                 <h1 className="hero__title">A small corner of the internet for my work and thoughts.</h1>
                 <p className="hero__lede">
-                    Keep this simple: a few projects, a short resume, and a way to reach me. Edit the text in
-                    <code> src/pages/Home.js</code>.
+                    I'm Biswash. I build things, write about what I learn, and share notes on craft and curiosity.
                 </p>
                 <div className="hero__actions">
                     <Link className="button" to="/projects">See projects</Link>

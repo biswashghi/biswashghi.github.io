@@ -26,7 +26,7 @@ const App = () => {
             </span>
             <span className="brand__text">
               <span className="brand__name">Biswash Ghimire</span>
-              <span className="brand__role">Lead Software Engineer</span>
+              <span className="brand__role">Reader, Drawer, Tinkerer</span>
             </span>
           </NavLink>
 
@@ -65,7 +65,7 @@ const App = () => {
       <footer className="footer">
         <div className="footer__inner">
           <p className="footer__text">
-            Built with React + webpack. Edit the name/tagline in <code>src/App.js</code>.
+            Built with Codex.
           </p>
         </div>
       </footer>
