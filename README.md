@@ -74,6 +74,20 @@ personal-website
 2. In GitHub: `Settings -> Pages -> Source -> GitHub Actions`.
 3. Push to `main`. The workflow in `.github/workflows/pages.yml` builds and deploys the site.
 
+## Editing Content (Admin UI)
+
+Open `/admin` (example: `https://biswashghi.github.io/admin/`).
+
+This admin UI uses a GitHub fine-grained Personal Access Token (PAT) to commit new posts directly to `main` (which triggers your GitHub Pages deploy). Required permissions: repository `Contents` = Read and write.
+
+Posts are saved as `.mdx` files in `src/blog/posts/` with YAML frontmatter. Uploads go to `src/assets/uploads/` and are referenced in posts as `/assets/uploads/...`.
+
+MDX tips:
+
+- Add a figure: `<Figure src="/assets/uploads/my-photo.jpg" alt="..." caption="..." />`
+- Add a callout: `<Callout title="Note" variant="teal">Text here</Callout>`
+- Add a video: `<video controls src="/assets/uploads/my-video.mp4" style={{ width: '100%', borderRadius: 16 }} />`
+
 ## License
 
 This project is licensed under the MIT License.

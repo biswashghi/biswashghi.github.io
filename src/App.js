@@ -7,6 +7,7 @@ import BlogIndex from './pages/BlogIndex';
 import BlogPostPage from './pages/BlogPostPage';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
+import Admin from './pages/Admin';
 import NotFound from './pages/NotFound';
 
 const App = () => {
@@ -43,6 +44,9 @@ const App = () => {
             <NavLink to="/blog" activeClassName="is-active" className="nav__link">
               Blog
             </NavLink>
+            <NavLink to="/admin" activeClassName="is-active" className="nav__link">
+              Admin
+            </NavLink>
             <NavLink to="/contact" activeClassName="is-active" className="nav__link nav__link--cta">
               Contact
             </NavLink>
@@ -58,6 +62,7 @@ const App = () => {
           <Route path="/blog/:slug" component={BlogPostPage} />
           <Route path="/projects" component={Projects} />
           <Route path="/contact" component={Contact} />
+          <Route path="/admin" component={Admin} />
           <Route component={NotFound} />
         </Switch>
       </main>

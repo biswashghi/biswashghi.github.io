@@ -1,10 +1,16 @@
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const publicPath = process.env.PUBLIC_PATH || '/';
 
-module.exports = {
+export default {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -14,8 +20,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html', // Use the index.html from the public directory
-      filename: 'index.html', // Output file name in the dist directory
+      template: './public/index.html',
+      filename: 'index.html',
       favicon: './public/favicon.ico',
     }),
     new CopyWebpackPlugin({
@@ -26,7 +32,7 @@ module.exports = {
           globOptions: {
             ignore: ['**/.DS_Store'],
           },
-        }, // Copy assets to the output directory
+        },
       ],
     }),
   ],
@@ -35,23 +41,23 @@ module.exports = {
       {
         test: /\.mdx$/,
         use: [
-          {
-            loader: 'babel-loader',
-          },
+          { loader: 'babel-loader' },
           {
             loader: '@mdx-js/loader',
             options: {
               providerImportSource: '@mdx-js/react',
+              remarkPlugins: [
+                remarkFrontmatter,
+                [remarkMdxFrontmatter, { name: 'meta' }],
+              ],
             },
           },
         ],
       },
       {
-        test: /\.(js|jsx)$/, // Match .js and .jsx files
-        exclude: /node_modules/, // Exclude node_modules
-        use: {
-          loader: 'babel-loader',
-        },
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: { loader: 'babel-loader' },
       },
       {
         test: /\.css$/,
@@ -67,21 +73,21 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.mdx'], // Add .jsx and .mdx to the list of resolved extensions
+    extensions: ['.js', '.jsx', '.mdx'],
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, 'dist'), // Serve files from the dist directory
+      directory: path.join(__dirname, 'dist'),
       publicPath,
     },
     historyApiFallback: {
       index: `${publicPath}index.html`,
       disableDotRule: true,
-    }, // React Router: serve index.html for deep links
+    },
     devMiddleware: {
       publicPath,
     },
     compress: true,
-    port: 8080, // Default port
+    port: 8080,
   },
 };

@@ -4,8 +4,8 @@
   "description": "A personal website project featuring a resume, blog, contact information, and project details.",
   "main": "src/index.js",
   "scripts": {
-    "start": "webpack serve --mode development",
-    "build": "webpack --mode production",
+    "start": "webpack serve --mode development --config webpack.config.mjs",
+    "build": "webpack --mode production --config webpack.config.mjs",
     "postbuild": "node scripts/postbuild.cjs",
     "test": "jest"
   },
@@ -29,6 +29,8 @@
     "@babel/preset-react": "^7.28.5",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/mdx": "^3.1.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-mdx-frontmatter": "^2.1.1",
     "babel-loader": "^8.4.1",
     "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.4",
