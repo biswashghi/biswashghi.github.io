@@ -558,6 +558,8 @@ code {
 
 .figure {
   margin: 14px 0;
+  content-visibility: auto;
+  contain-intrinsic-size: 720px;
 }
 
 .figure__img {

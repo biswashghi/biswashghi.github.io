@@ -67,6 +67,8 @@ personal-website
 - Customize your name/tagline/navigation in `src/App.js`.
 - If you deploy under a sub-path (example: GitHub Pages), set `PUBLIC_PATH=/your-sub-path/` when building so assets load from the right base URL.
 - GitHub Pages SPA support: the build script generates `dist/404.html` (a copy of `index.html`) so deep links like `/blog/teaching-web-systems` load correctly on GitHub Pages.
+- Images in `src/assets/images` and `src/assets/uploads` are automatically optimized before `npm start` and `npm run build` to improve page speed.
+- You can run image optimization manually with `node scripts/optimize-images.cjs`.
 
 ## Deploy To GitHub Pages
 

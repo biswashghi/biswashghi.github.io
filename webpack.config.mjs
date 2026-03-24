@@ -30,7 +30,7 @@ export default {
           from: 'src/assets',
           to: 'assets',
           globOptions: {
-            ignore: ['**/.DS_Store'],
+            ignore: ['**/.DS_Store', '**/*.heic'],
           },
         },
       ],

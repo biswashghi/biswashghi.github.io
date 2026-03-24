@@ -185,6 +185,10 @@ const PostComposer = ({ onPublished }) => {
         <p className="muted admin-help">
           Uploads to <code>src/assets/uploads/</code> and uses <code>/assets/uploads/...</code> in frontmatter.
         </p>
+        <p className="muted admin-help">
+          Tip: images are auto-optimized during <code>npm start</code>/<code>npm run build</code>, but uploading files
+          already near web size keeps repo history lighter.
+        </p>
       </div>
 
       <div className="field">

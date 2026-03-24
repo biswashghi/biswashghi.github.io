@@ -102,6 +102,7 @@ const BlogIndex = () => {
                     src={post.cover.src}
                     alt={post.cover.alt || ''}
                     loading="lazy"
+                    decoding="async"
                   />
                 ) : null}
               </div>

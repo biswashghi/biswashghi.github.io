@@ -16,7 +16,7 @@ const A = (props) => {
   );
 };
 
-const Img = (props) => <img loading="lazy" {...props} />;
+const Img = (props) => <img loading="lazy" decoding="async" {...props} />;
 
 export const mdxComponents = {
   a: A,
@@ -24,4 +24,3 @@ export const mdxComponents = {
   Callout,
   Figure,
 };
-
