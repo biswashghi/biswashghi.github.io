@@ -33,6 +33,10 @@ export default {
             ignore: ['**/.DS_Store', '**/*.heic'],
           },
         },
+        {
+          from: 'public/resume.pdf',
+          to: 'assets/resume.pdf',
+        },
       ],
     }),
   ],

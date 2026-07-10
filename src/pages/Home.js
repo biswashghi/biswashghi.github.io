@@ -12,7 +12,7 @@ const Home = () => {
                 </p>
                 <div className="hero__actions">
                     <Link className="button" to="/projects">See projects</Link>
-                    <a className="button button--ghost" href="/resume.pdf" target="_blank" rel="noopener noreferrer">Download resume</a>
+                    <a className="button button--ghost" href="/assets/resume.pdf" target="_blank" rel="noopener noreferrer">Download resume</a>
                 </div>
             </header>
 

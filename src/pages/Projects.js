@@ -24,22 +24,14 @@ const Projects = () => {
             ]
         },
         {
-            title: 'Badge Creator',
-            description: 'A static badge-generation site with its own production compose and Caddy configuration, useful as a simple app and as a deployment building block.',
-            deployment: 'Deployment: Hetzner static site behind shared Caddy',
-            deploymentStatus: 'Live URL responding: badges.bghimire.com',
-            tags: ['HTML', 'Static Site', 'Caddy', 'Hetzner'],
+            title: 'Hetzner Terraform Infra (hetzner_tf)',
+            description: 'A shared infrastructure repo for provisioning and operating Hetzner-hosted apps, covering Terraform, Bitwarden-backed secret retrieval, shared Caddy setup, DNS wiring, and reusable deployment flows.',
+            deployment: 'Deployment: Infrastructure and operations repo for Hetzner apps',
+            deploymentStatus: 'Public GitHub repo plus local runbook/workflow',
+            tags: ['Terraform', 'Hetzner Cloud', 'Caddy', 'DNS', 'Bitwarden'],
             links: [
-                { label: 'GitHub repo', href: 'https://github.com/biswashghi/badge_creator' },
-                { label: 'Live site', href: 'https://badges.bghimire.com', ghost: true }
+                { label: 'GitHub repo', href: 'https://github.com/biswashghi/hetzner_tf/tree/main' }
             ]
-        },
-        {
-            title: 'Hetzner Deployment Runbook',
-            description: 'A local infrastructure repo that wraps Terraform, Bitwarden-backed secret retrieval, shared Caddy setup, DNS wiring, and per-app deployment flows for the apps above.',
-            deployment: 'Deployment: Infrastructure and operations repo',
-            deploymentStatus: 'Local repo: /Users/biswash/Documents/repos/hetzner_tf',
-            tags: ['Terraform', 'Hetzner Cloud', 'Caddy', 'DNS', 'Bitwarden']
         },
         {
             title: 'Personal Site and Blog Publisher',
@@ -51,13 +43,6 @@ const Projects = () => {
                 { label: 'GitHub repo', href: 'https://github.com/biswashghi/biswashghi.github.io' },
                 { label: 'Live site', href: 'https://biswashghi.github.io', ghost: true }
             ]
-        },
-        {
-            title: 'NAPA Americas Website v2',
-            description: 'A larger local project replacing a legacy site with a custom Next.js, Payload CMS, Postgres, MinIO, Stripe, and OAuth-backed admin stack plus migration tooling.',
-            deployment: 'Deployment: Local/private repo',
-            deploymentStatus: 'Local repo: /Users/biswash/Documents/repos/napa-site',
-            tags: ['Next.js', 'Payload CMS', 'Postgres', 'Stripe', 'Migration']
         }
     ];
 

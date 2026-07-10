@@ -13,7 +13,7 @@ const Resume = () => {
             </p>
           </div>
           <div className="page__actions">
-            <a className="button" href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+            <a className="button" href="/assets/resume.pdf" target="_blank" rel="noopener noreferrer">
               Download latest resume
             </a>
           </div>
