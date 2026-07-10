@@ -6,7 +6,6 @@ const ContactForm = () => {
         email: '',
         message: ''
     });
-    const [status, setStatus] = useState('idle');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,20 +17,15 @@ const ContactForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Add form submission logic here (e.g., API call)
-        console.log('Form submitted:', formData);
-        setFormData({ name: '', email: '', message: '' }); // Reset form
-        setStatus('sent');
-        window.setTimeout(() => setStatus('idle'), 4000);
+        const subject = encodeURIComponent(`Website note from ${formData.name}`);
+        const body = encodeURIComponent(
+            `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`
+        );
+        window.location.href = `mailto:ghi.biswash@gmail.com?subject=${subject}&body=${body}`;
     };
 
     return (
         <form className="form" onSubmit={handleSubmit}>
-            {status === 'sent' && (
-                <p className="form__success" role="status">
-                    Message captured (check the console). Hook this up to an API when you are ready.
-                </p>
-            )}
             <div className="field">
                 <label className="field__label" htmlFor="name">Name</label>
                 <input
@@ -67,7 +61,10 @@ const ContactForm = () => {
                     required
                 />
             </div>
-            <button className="button" type="submit">Send</button>
+            <p className="muted form__hint">
+                Submitting opens your default email app with these details filled in.
+            </p>
+            <button className="button" type="submit">Compose email</button>
         </form>
     );
 };

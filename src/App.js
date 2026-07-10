@@ -44,9 +44,6 @@ const App = () => {
             <NavLink to="/blog" activeClassName="is-active" className="nav__link">
               Blog
             </NavLink>
-            <NavLink to="/admin" activeClassName="is-active" className="nav__link">
-              Admin
-            </NavLink>
             <NavLink to="/contact" activeClassName="is-active" className="nav__link nav__link--cta">
               Contact
             </NavLink>
@@ -69,9 +66,15 @@ const App = () => {
 
       <footer className="footer">
         <div className="footer__inner">
-          <p className="footer__text">
-            Built with Codex.
-          </p>
+          <p className="footer__text">Built with Codex.</p>
+          <div className="footer__links" aria-label="Secondary">
+            <a className="footer__link" href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+              Latest resume
+            </a>
+            <NavLink to="/admin" className="footer__link">
+              Admin
+            </NavLink>
+          </div>
         </div>
       </footer>
     </div>

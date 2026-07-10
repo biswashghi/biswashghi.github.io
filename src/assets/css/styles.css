@@ -366,6 +366,11 @@ code {
   margin-top: 10px;
 }
 
+.grid--spotlight {
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 16px;
+}
+
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -710,6 +715,18 @@ code {
   padding: 18px;
 }
 
+.card--feature {
+  background:
+    radial-gradient(540px 220px at 8% 8%, rgba(212, 109, 58, 0.10), transparent 60%),
+    rgba(255, 255, 255, 0.82);
+}
+
+.card__meta {
+  margin: 14px 0 0;
+  color: rgba(12, 47, 58, 0.8);
+  font-size: 0.95rem;
+}
+
 .stack {
   display: grid;
   gap: 14px;
@@ -721,8 +738,22 @@ code {
   letter-spacing: -0.01em;
 }
 
+.section-title--lg {
+  margin-bottom: 8px;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+}
+
 .muted {
   color: var(--muted);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(12, 47, 58, 0.72);
 }
 
 .button {
@@ -768,6 +799,10 @@ code {
   background: rgba(42, 168, 162, 0.12);
   border: 1px solid rgba(42, 168, 162, 0.22);
   color: rgba(12, 47, 58, 0.92);
+}
+
+.form__hint {
+  margin: -2px 0 2px;
 }
 
 .field {
@@ -830,8 +865,41 @@ code {
   color: var(--muted);
 }
 
+.project-deployment {
+  margin: 0 0 8px;
+  font-weight: 600;
+  color: rgba(12, 47, 58, 0.9);
+}
+
+.project-status {
+  margin: 0 0 12px;
+  color: rgba(17, 32, 39, 0.78);
+  font-size: 0.95rem;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.project-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(12, 47, 58, 0.08);
+  border: 1px solid rgba(12, 47, 58, 0.1);
+  color: rgba(12, 47, 58, 0.84);
+  font-size: 0.9rem;
+}
+
 .project-actions {
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .resume-section h2 {
@@ -1004,6 +1072,7 @@ code {
 
 .contact-item__v {
   color: rgba(17, 32, 39, 0.84);
+  overflow-wrap: anywhere;
 }
 
 .footer {
@@ -1014,12 +1083,31 @@ code {
   max-width: var(--max);
   margin: 0 auto;
   padding: 0 18px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .footer__text {
   margin: 0;
   color: var(--muted);
   font-size: 0.95rem;
+}
+
+.footer__links {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer__link {
+  color: rgba(12, 47, 58, 0.82);
+  text-decoration: underline;
+  text-decoration-color: rgba(12, 47, 58, 0.22);
+  text-underline-offset: 3px;
 }
 
 @media (max-width: 860px) {
@@ -1038,6 +1126,10 @@ code {
 
   .blog-card {
     grid-column: span 12;
+  }
+
+  .grid--spotlight {
+    grid-template-columns: 1fr;
   }
 
   .page__row {
@@ -1062,6 +1154,10 @@ code {
   }
 
   .resume-split {
+    grid-template-columns: 1fr;
+  }
+
+  .grid--contact {
     grid-template-columns: 1fr;
   }
 }

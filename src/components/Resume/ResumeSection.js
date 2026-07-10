@@ -19,8 +19,9 @@ const ResumeSection = () => {
             <section className="resume-block">
                 <h3 className="resume-h">Personal Summary</h3>
                 <p className="resume-p">
-                    Highly skilled engineer with work experience ranging from API design and development,
-                    microservice frameworks, batch and real-time data processing, and modern event processing frameworks.
+                    Lead Software Engineer with 5+ years designing distributed backend systems, event-driven platforms,
+                    and reusable cloud-native services for large-scale financial applications. Technical lead experienced
+                    in cross-team architecture, platform modernization, and partner integrations.
                 </p>
             </section>
 
@@ -31,15 +32,67 @@ const ResumeSection = () => {
                         <h4 className="resume-item__title">Capital One / Lead Software Engineer</h4>
                         <p className="resume-item__meta">Aug 2020 - Present, Remote</p>
                     </div>
+                    <p className="resume-k">Loyalty Earn Platform &amp; Distributed Systems</p>
                     <ul className="resume-list">
                         <li>
-                            Worked in a core team to design a fault-tolerant, microservices-based event processing framework utilizing
-                            Kafka clusters, SQS, Lambdas, and DynamoDB to modernize the Capital One Loyalty EarnEngine. The process handles
-                            60 million+ events each day and reduces award latency by 8 hours and total runtime by 3 hours.
+                            Technical lead within a 30-40 engineer, six-team modernization effort building Capital One&apos;s
+                            next-generation Loyalty Earn Platform.
                         </li>
                         <li>
-                            Led a tech team of 5 engineers in implementing aspects of this design and supported a year-long migration of all
-                            Capital One credit card customers to this modernized engine.
+                            Architected event-driven processing supporting 60M+ daily events, reducing rewards latency by
+                            8 hours and processing runtime by 3 hours.
+                        </li>
+                        <li>
+                            Designed multi-region event-processing architectures incorporating layered idempotency,
+                            event ordering, and consistency strategies to ensure reliable reward processing across
+                            distributed streaming systems.
+                        </li>
+                        <li>
+                            Redesigned reward processing architecture to support ordered benefit evaluation and
+                            threshold-based state transitions within an event-driven platform to support Discover
+                            integration, overcoming assumptions of benefit independence.
+                        </li>
+                    </ul>
+
+                    <p className="resume-k">Partner Integrations &amp; Platform Engineering</p>
+                    <ul className="resume-list">
+                        <li>
+                            Designed the convergence strategy from legacy orchestration APIs to a unified Loyalty
+                            Platform service supporting Amazon, PayPal, REI, T-Mobile, and future partners.
+                        </li>
+                        <li>
+                            Consolidated 10 partner API endpoints into a common integration platform processing 30M+
+                            daily API requests, using reusable abstractions to simplify onboarding of new partners.
+                        </li>
+                        <li>
+                            Balanced repository architecture and deployment tradeoffs by converging partner
+                            implementations into a shared codebase with strict automated regression guarantees,
+                            enabling independent feature development while maintaining partner-specific behavior.
+                        </li>
+                        <li>
+                            Modernized AutoRedemption through reusable event-driven integration patterns that became
+                            the architectural foundation for Discover AutoRedemption.
+                        </li>
+                        <li>
+                            Generalized bureau data pipelines supporting Equifax, Experian, and TransUnion, enabling
+                            reusable partner onboarding with 100% migration validation.
+                        </li>
+                    </ul>
+
+                    <p className="resume-k">Platform Modernization &amp; Technical Leadership</p>
+                    <ul className="resume-list">
+                        <li>
+                            Technical lead for a team of five engineers, partnering with engineering leadership and
+                            product to define technical direction, architecture, and implementation plans.
+                        </li>
+                        <li>
+                            Served as a Loyalty platform SME, collaborating with peer tech leads and Distinguished
+                            Engineers on event schemas, integration contracts, and cross-team architecture.
+                        </li>
+                        <li>
+                            Regularly collaborated with engineering managers, product owners, and peer technical
+                            leads to decompose large architectural initiatives into implementation roadmaps spanning
+                            multiple engineering teams.
                         </li>
                     </ul>
                 </div>
@@ -96,7 +149,7 @@ const ResumeSection = () => {
                         <p className="resume-v">PostgreSQL, Cassandra, MongoDB, DocumentDB, DynamoDB</p>
                     </div>
                     <div className="resume-chipset">
-                        <p className="resume-k">Cloud</p>
+                        <p className="resume-k">Cloud Platforms / Services</p>
                         <p className="resume-v">AWS (Lambda, EC2, EMR, Fargate, SQS, SNS, Kinesis, and more)</p>
                     </div>
                 </div>

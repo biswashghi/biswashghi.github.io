@@ -7,7 +7,7 @@ const Contact = () => {
             <header className="page__header">
                 <h1 className="page__title">Contact</h1>
                 <p className="page__lede">
-                    Want to chat? Drop a note. (This form currently logs to the console; you can wire it to an API later.)
+                    If something here sparked an idea, send me a note. The form below opens your email client with a prefilled message so it is useful right now without backend plumbing.
                 </p>
             </header>
 
@@ -37,7 +37,7 @@ const Contact = () => {
 
                 <div className="card">
                     <h2 className="section-title">Send A Note</h2>
-                <ContactForm />
+                    <ContactForm />
                 </div>
             </div>
         </div>
