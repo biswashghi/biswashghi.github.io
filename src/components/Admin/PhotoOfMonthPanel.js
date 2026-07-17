@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { publishPhotoOfMonthToGitHub } from '../../blog/publisher';
+import { publishPhotoOfMonthToGitHub, WEB_SAFE_IMAGE_ACCEPT } from '../../blog/publisher';
 import AdminStatus from './AdminStatus';
 import { filenameFromFile, idleStatus, monthNow } from './adminUtils';
 
@@ -78,11 +78,11 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
             <label className="field__label" htmlFor="photo-file">
               Photo
             </label>
-            <input
-              id="photo-file"
-              className="field__input"
-              type="file"
-              accept="image/*"
+                <input
+                  id="photo-file"
+                  className="field__input"
+                  type="file"
+                  accept={WEB_SAFE_IMAGE_ACCEPT}
               onChange={(e) => {
                 const nextFile = e.target.files && e.target.files[0] ? e.target.files[0] : null;
                 setPhotoFile(nextFile);

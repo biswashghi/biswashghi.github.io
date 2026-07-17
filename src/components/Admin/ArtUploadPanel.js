@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { publishArtImageToGitHub } from '../../blog/publisher';
+import { publishArtImageToGitHub, WEB_SAFE_IMAGE_ACCEPT } from '../../blog/publisher';
 import AdminStatus from './AdminStatus';
 import { artBuckets, filenameFromFile, idleStatus } from './adminUtils';
 
@@ -78,7 +78,7 @@ const ArtUploadPanel = ({ repoFull, token }) => {
               id="art-file"
               className="field__input"
               type="file"
-              accept="image/*"
+              accept={WEB_SAFE_IMAGE_ACCEPT}
               onChange={(e) => {
                 const nextFile = e.target.files && e.target.files[0] ? e.target.files[0] : null;
                 setArtFile(nextFile);

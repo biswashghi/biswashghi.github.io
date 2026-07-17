@@ -107,11 +107,29 @@ const createBlob = async ({ owner, repo, token, content, encoding }) => {
   });
 };
 
+export const WEB_SAFE_IMAGE_ACCEPT = 'image/jpeg,image/png,image/gif,image/webp,image/avif,image/svg+xml';
+
 export const safeFilename = (name) =>
   String(name || '')
     .trim()
     .replace(/\s+/g, '-')
     .replace(/[^a-zA-Z0-9._-]/g, '');
+
+const isHeicFilename = (name) => /\.(heic|heif)$/i.test(String(name || ''));
+
+const heicError = 'HEIC/HEIF images are not web-safe for this site yet. Export the image as JPG, PNG, WebP, AVIF, GIF, or SVG first.';
+
+const assertNotHeicUpload = (file, filename) => {
+  if (isHeicFilename(file?.name) || isHeicFilename(filename) || /hei[cf]/i.test(String(file?.type || ''))) {
+    throw new Error(heicError);
+  }
+};
+
+const assertWebSafeImageUpload = (file, filename, label) => {
+  if (!file) throw new Error(`Choose ${label || 'an image'} first.`);
+  if (!file.type || !file.type.startsWith('image/')) throw new Error(`${label || 'Upload'} must be an image.`);
+  assertNotHeicUpload(file, filename);
+};
 
 const decodeBase64Utf8 = (value) => {
   const binary = atob(String(value || '').replace(/\s/g, ''));
@@ -226,6 +244,7 @@ export const publishPostToGitHub = async ({
   const allUploads = [...uploads.map((u) => u.file)];
   for (const f of allUploads) {
     if (f.size > 25 * 1024 * 1024) throw new Error(`File too large (${f.name}). Keep uploads under ~25MB.`);
+    assertNotHeicUpload(f, safeFilename(f.name));
   }
 
   // Get base commit + tree.
@@ -280,11 +299,11 @@ export const publishArtImageToGitHub = async ({ token, repoFull, bucketTitle, fi
   if (!owner || !repo) throw new Error('Repo must be in the form owner/repo.');
   if (!bucketTitle) throw new Error('Choose an art bucket.');
   if (!file) throw new Error('Choose an image to upload.');
-  if (!file.type || !file.type.startsWith('image/')) throw new Error('Art upload must be an image.');
   if (file.size > 25 * 1024 * 1024) throw new Error(`File too large (${file.name}). Keep uploads under ~25MB.`);
 
   const uploadName = safeFilename(filename || file.name);
   if (!uploadName) throw new Error('Filename is required.');
+  assertWebSafeImageUpload(file, uploadName, 'Art upload');
   const imagePath = `src/assets/images/drawing/${uploadName}`;
   const artPagePath = 'src/pages/Art.js';
 
@@ -365,12 +384,12 @@ export const publishPhotoOfMonthToGitHub = async ({
   if (!owner || !repo) throw new Error('Repo must be in the form owner/repo.');
   if (!/^\d{4}-\d{2}$/.test(String(month || '').trim())) throw new Error('Month must be YYYY-MM.');
   if (!file) throw new Error('Choose an image to upload.');
-  if (!file.type || !file.type.startsWith('image/')) throw new Error('Photo of the Month upload must be an image.');
   if (file.size > 25 * 1024 * 1024) throw new Error(`File too large (${file.name}). Keep uploads under ~25MB.`);
 
   const safeMonth = String(month).trim();
   const uploadName = safeFilename(filename || file.name);
   if (!uploadName) throw new Error('Filename is required.');
+  assertWebSafeImageUpload(file, uploadName, 'Photo of the Month upload');
   const imagePath = `src/assets/images/photo-of-month/${uploadName}`;
   const dataPath = 'src/data/photosOfMonth.json';
   const publicSrc = imagePath.replace(/^src\/assets\//, '/assets/');

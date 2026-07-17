@@ -6,6 +6,7 @@ import {
   slugify,
   todayLocalIsoDate,
   validateMdxBodySafety,
+  WEB_SAFE_IMAGE_ACCEPT,
   publishPostToGitHub,
 } from '../../blog/publisher';
 import BlogPreview from './BlogPreview';
@@ -208,7 +209,7 @@ const PostComposer = ({ onPublished }) => {
               className="field__input"
               type="file"
               multiple
-              accept="image/*,video/*"
+              accept={`${WEB_SAFE_IMAGE_ACCEPT},video/*`}
               onChange={(e) => setExtraFiles(e.target.files ? Array.from(e.target.files) : [])}
             />
             <p className="muted admin-help">
@@ -259,7 +260,7 @@ const PostComposer = ({ onPublished }) => {
             id="pc-cover"
             className="field__input"
             type="file"
-            accept="image/*"
+            accept={WEB_SAFE_IMAGE_ACCEPT}
             onChange={(e) => setCoverFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
           />
           <p className="muted admin-help">
