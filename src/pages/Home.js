@@ -3,64 +3,91 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
     return (
-        <div className="page">
-            <header className="hero">
-                <p className="hero__eyebrow">Personal site</p>
-                <h1 className="hero__title">A running look at the systems I build, the work I care about, and what I am learning along the way.</h1>
-                <p className="hero__lede">
-                    I'm Biswash, a software engineer focused on reliable backend systems, event-driven architecture, and making complicated things feel calm.
-                </p>
-                <div className="hero__actions">
-                    <Link className="button" to="/projects">See projects</Link>
-                    <a className="button button--ghost" href="/assets/resume.pdf" target="_blank" rel="noopener noreferrer">Download resume</a>
+        <div className="page page--home">
+            <section className="field-hero" aria-label="Intro">
+                <div className="field-hero__copy">
+                    <p className="kicker">Personal operating log</p>
+                    <h1 className="field-hero__title">Systems, trips, questions, and proof of work.</h1>
+                    <p className="field-hero__lede">
+                        I build backend platforms, small tools, and personal publishing workflows. This site is becoming
+                        less of a portfolio page and more of a working field log: what shipped, what I learned, and what
+                        I am still trying to understand.
+                    </p>
+                    <div className="field-hero__actions">
+                        <Link className="button" to="/blog">Read the log</Link>
+                        <Link className="button button--ghost" to="/projects">View projects</Link>
+                        <a className="button button--ghost" href="/assets/resume.pdf" target="_blank" rel="noopener noreferrer">
+                            Resume
+                        </a>
+                    </div>
                 </div>
-            </header>
 
-            <section className="grid">
-                <Link className="tile" to="/resume">
-                    <h2 className="tile__title">Resume</h2>
-                    <p className="tile__text">A broader career snapshot, plus a downloadable PDF for applications.</p>
-                    <span className="tile__meta">View resume</span>
-                </Link>
-                <Link className="tile" to="/projects">
-                    <h2 className="tile__title">Projects</h2>
-                    <p className="tile__text">Selected systems, experiments, and side projects worth showing off.</p>
-                    <span className="tile__meta">Browse projects</span>
-                </Link>
-                <Link className="tile" to="/blog">
-                    <h2 className="tile__title">Blog</h2>
-                    <p className="tile__text">Field notes, travel posts, and the occasional curiosity-driven detour.</p>
-                    <span className="tile__meta">Read posts</span>
-                </Link>
-                <Link className="tile tile--accent" to="/contact">
-                    <h2 className="tile__title">Contact</h2>
-                    <p className="tile__text">Say hi, ask a question, or propose a collab.</p>
-                    <span className="tile__meta">Send a message</span>
-                </Link>
+                <aside className="photo-log" aria-label="Recent notes">
+                    <div className="photo-stack">
+                        <figure className="photo photo--large">
+                            <img src="/assets/images/traverse-city-summer/lake-golden-hour.jpeg" alt="Golden hour over Lake Michigan" />
+                        </figure>
+                        <figure className="photo photo--small">
+                            <img src="/assets/images/cruise-bahamas/umbrella.jpeg" alt="Umbrella lane in Nassau" />
+                        </figure>
+                        <figure className="photo photo--strip">
+                            <img src="/assets/images/traverse-city-summer/vineyard.jpeg" alt="Vineyard near Traverse City" />
+                        </figure>
+                    </div>
+                    <div className="log-card">
+                        <p className="log-card__label">Latest note</p>
+                        <p className="log-card__text">
+                            Traverse City, the ease of Michigan summers, and why comfort can become its own kind of pressure.
+                        </p>
+                    </div>
+                </aside>
             </section>
 
-            <section className="grid grid--spotlight" aria-label="Current focus">
-                <div className="card card--feature">
-                    <p className="eyebrow">Currently</p>
-                    <h2 className="section-title section-title--lg">Building a GitHub-backed writing workflow for this site</h2>
-                    <p className="muted">
-                        The site doubles as a small publishing tool: posts can be drafted in the browser, committed to GitHub,
-                        and deployed automatically through Pages.
-                    </p>
-                    <p className="card__meta">Focus areas: reliability, writing tools, and keeping personal publishing low-friction.</p>
-                </div>
+            <section className="signal-strip" aria-label="Working areas">
+                <span className="signal-strip__label">Working areas</span>
+                <p>backend systems / Hetzner deployments / MDX publishing / drawing archive / family travel notes</p>
+            </section>
 
-                <div className="card">
-                    <p className="eyebrow">Featured project</p>
-                    <h2 className="section-title">Personal site and blog publisher</h2>
-                    <p className="muted">
-                        A React site that works as both a public portfolio and a lightweight control panel for publishing MDX posts.
+            <section className="journal" aria-label="Recent entries">
+                <aside className="journal__aside">
+                    <div>
+                        <p className="kicker">Current thread</p>
+                        <h2>Comfort is becoming the question.</h2>
+                    </div>
+                    <p>
+                        The recent writing has been circling the same thing from different angles: family trips, Michigan
+                        summers, systems work, and the uneasy feeling that stability can become too easy.
                     </p>
-                    <p className="page__actions">
-                        <a className="button button--small" href="https://github.com/biswashghi/biswashghi.github.io" target="_blank" rel="noopener noreferrer">
-                            View source
-                        </a>
-                    </p>
+                </aside>
+                <div className="entries">
+                    <Link className="entry" to="/blog/traverse-city-summer">
+                        <time>Jul 2026</time>
+                        <div>
+                            <h3>Traverse City Summer</h3>
+                            <p>Northern Michigan, wineries, dunes, and the uncomfortable pull toward a harder next chapter.</p>
+                        </div>
+                    </Link>
+                    <Link className="entry" to="/blog/first-cruise-bahamas">
+                        <time>Mar 2026</time>
+                        <div>
+                            <h3>A Different Kind of Family Vacation</h3>
+                            <p>A first cruise, small family rhythms, Nassau walks, and what relaxation looks like for four people.</p>
+                        </div>
+                    </Link>
+                    <Link className="entry" to="/projects">
+                        <time>Ops</time>
+                        <div>
+                            <h3>Hetzner Terraform Infra</h3>
+                            <p>A deployment runbook that turns side projects into real services with Caddy, DNS, and repeatable scripts.</p>
+                        </div>
+                    </Link>
+                    <Link className="entry" to="/art">
+                        <time>Art</time>
+                        <div>
+                            <h3>Architecture Drawings</h3>
+                            <p>A small drawing archive from college architecture work, pulled out into its own top-level space.</p>
+                        </div>
+                    </Link>
                 </div>
             </section>
         </div>

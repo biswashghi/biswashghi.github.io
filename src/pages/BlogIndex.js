@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { posts } from '../blog/posts';
 import { formatIsoDate } from '../blog/date';
 import Modal from '../components/Modal';
 import PostComposer from '../components/Blog/PostComposer';
-import { adminStorage, deletePostFromGitHub } from '../blog/publisher';
+import useAdminCredentials from '../components/Admin/useAdminCredentials';
+import { deletePostFromGitHub } from '../blog/publisher';
 
 const formatDate = (iso) => {
   return formatIsoDate(iso, { year: 'numeric', month: 'short', day: '2-digit' });
@@ -18,20 +19,7 @@ const BlogIndex = () => {
   const [hiddenSlugs, setHiddenSlugs] = useState([]);
   const [status, setStatus] = useState({ state: 'idle', message: '' });
 
-  const [token, setToken] = useState(() => adminStorage.getToken());
-  const [repoFull, setRepoFull] = useState(() => adminStorage.getRepo());
-
-  useEffect(() => {
-    const onStorage = (e) => {
-      if (!e || !e.key) return;
-      if (e.key === adminStorage.TOKEN_STORAGE_KEY) setToken(adminStorage.getToken());
-      if (e.key === adminStorage.REPO_STORAGE_KEY) setRepoFull(adminStorage.getRepo());
-    };
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
-  }, []);
-
-  const hasToken = Boolean(String(token || '').trim());
+  const { token, repoFull, hasToken } = useAdminCredentials();
 
   const visiblePosts = useMemo(
     () => posts.filter((post) => post && !hiddenSlugs.includes(post.slug)),
@@ -77,17 +65,13 @@ const BlogIndex = () => {
               <button className="button" type="button" onClick={() => setComposerOpen(true)}>
                 Create post
               </button>
-            ) : (
-              <Link className="button button--ghost" to="/admin">
-                Set up PAT to publish
-              </Link>
-            )}
+            ) : null}
           </div>
         </div>
         <p className="page__lede">
           {hasToken
             ? 'Publishing writes a commit to main and triggers auto-deploy.'
-            : 'To create posts from the UI, add your GitHub PAT in the Admin page.'}
+            : 'Notes, trips, and longer reflections from the archive.'}
         </p>
       </header>
 

@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Biswash Ghimire | Field Log Concept</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f4efe3;
+      --paper-2: #fffaf0;
+      --ink: #141512;
+      --muted: rgba(20, 21, 18, 0.66);
+      --line: rgba(20, 21, 18, 0.16);
+      --green: #064a3b;
+      --red: #b6422f;
+      --blue: #256f86;
+      --yellow: #e1b955;
+      --shadow: 0 22px 60px rgba(20, 21, 18, 0.14);
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(20, 21, 18, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 21, 18, 0.035) 1px, transparent 1px),
+        radial-gradient(900px 460px at 10% 0%, rgba(225, 185, 85, 0.24), transparent 65%),
+        radial-gradient(760px 420px at 98% 24%, rgba(37, 111, 134, 0.18), transparent 64%),
+        var(--paper);
+      background-size: 34px 34px, 34px 34px, auto, auto, auto;
+      font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+      line-height: 1.45;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(var(--max), calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(244, 239, 227, 0.82);
+    }
+
+    .top__inner {
+      min-height: 74px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+    }
+
+    .brand__mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper-2);
+      transform: rotate(-3deg);
+      box-shadow: 6px 6px 0 var(--yellow);
+    }
+
+    .brand__meta {
+      display: grid;
+      gap: 1px;
+    }
+
+    .brand__name {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .brand__role {
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .nav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      padding: 8px 11px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .nav a:hover,
+    .nav a:first-child {
+      border-color: var(--ink);
+      background: var(--paper-2);
+      box-shadow: 3px 3px 0 rgba(20, 21, 18, 0.18);
+    }
+
+    .hero {
+      min-height: calc(100vh - 74px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.72fr);
+      gap: 34px;
+      align-items: end;
+      padding: 52px 0 42px;
+    }
+
+    .hero__copy {
+      padding-bottom: 32px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      color: var(--green);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.76rem;
+    }
+
+    .kicker::before {
+      content: "";
+      width: 44px;
+      height: 2px;
+      background: var(--green);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(3.2rem, 8vw, 7.5rem);
+      line-height: 0.88;
+      letter-spacing: 0;
+      max-width: 880px;
+    }
+
+    .lede {
+      max-width: 680px;
+      margin: 24px 0 0;
+      color: rgba(20, 21, 18, 0.76);
+      font-size: clamp(1.04rem, 1.8vw, 1.28rem);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 11px 15px;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper-2);
+      font-weight: 700;
+      box-shadow: 5px 5px 0 var(--red);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .button:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 3px 3px 0 var(--red);
+    }
+
+    .button--ghost {
+      background: var(--paper-2);
+      color: var(--ink);
+      box-shadow: 5px 5px 0 rgba(37, 111, 134, 0.45);
+    }
+
+    .photo-log {
+      align-self: stretch;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 14px;
+      min-height: 540px;
+    }
+
+    .photo-stack {
+      position: relative;
+      min-height: 430px;
+    }
+
+    .photo {
+      position: absolute;
+      overflow: hidden;
+      border: 1px solid var(--ink);
+      background: var(--paper-2);
+      box-shadow: var(--shadow);
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      filter: saturate(0.88) contrast(1.02);
+    }
+
+    .photo--large {
+      inset: 10px 0 92px 48px;
+      transform: rotate(2deg);
+    }
+
+    .photo--small {
+      width: 48%;
+      height: 37%;
+      left: 0;
+      bottom: 24px;
+      transform: rotate(-5deg);
+    }
+
+    .photo--strip {
+      width: 46%;
+      height: 27%;
+      right: 8px;
+      bottom: 0;
+      transform: rotate(4deg);
+    }
+
+    .log-card {
+      border: 1px solid var(--ink);
+      background: var(--paper-2);
+      padding: 16px;
+      box-shadow: 6px 6px 0 rgba(20, 21, 18, 0.16);
+    }
+
+    .log-card p {
+      margin: 0;
+    }
+
+    .log-card__label {
+      color: var(--red);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.75rem;
+    }
+
+    .log-card__text {
+      margin-top: 8px;
+      color: rgba(20, 21, 18, 0.72);
+    }
+
+    .ticker {
+      border-block: 1px solid var(--ink);
+      background: var(--green);
+      color: var(--paper-2);
+      overflow: hidden;
+    }
+
+    .ticker__track {
+      display: flex;
+      width: max-content;
+      animation: slide 28s linear infinite;
+    }
+
+    .ticker span {
+      padding: 12px 24px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    @keyframes slide {
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    .section {
+      padding: 54px 0;
+    }
+
+    .section__head {
+      display: grid;
+      grid-template-columns: 0.55fr 1fr;
+      gap: 32px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .section__head h2 {
+      margin: 0;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(2rem, 4.2vw, 4.3rem);
+      line-height: 0.94;
+    }
+
+    .section__head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 620px;
+    }
+
+    .route-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--ink);
+      background: var(--paper-2);
+      box-shadow: 9px 9px 0 rgba(20, 21, 18, 0.12);
+    }
+
+    .route {
+      min-height: 230px;
+      padding: 18px;
+      border-right: 1px solid var(--line);
+      display: grid;
+      align-content: space-between;
+      gap: 26px;
+    }
+
+    .route:last-child {
+      border-right: 0;
+    }
+
+    .route__number {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--ink);
+      background: var(--yellow);
+      font-weight: 900;
+    }
+
+    .route h3 {
+      margin: 0 0 8px;
+      font-size: 1.16rem;
+    }
+
+    .route p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .journal {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .journal__aside {
+      border: 1px solid var(--ink);
+      background: var(--red);
+      color: var(--paper-2);
+      padding: 24px;
+      display: grid;
+      align-content: space-between;
+      min-height: 360px;
+    }
+
+    .journal__aside h2 {
+      margin: 0;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(2rem, 4vw, 4.6rem);
+      line-height: 0.9;
+    }
+
+    .journal__aside p {
+      margin: 26px 0 0;
+      color: rgba(255, 250, 240, 0.76);
+    }
+
+    .entries {
+      display: grid;
+      gap: 12px;
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255, 250, 240, 0.72);
+      padding: 16px;
+    }
+
+    .entry time {
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .entry h3 {
+      margin: 0 0 6px;
+      font-size: 1.12rem;
+    }
+
+    .entry p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      padding: 26px 0 40px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .section__head,
+      .journal {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 34px;
+      }
+
+      .photo-log {
+        min-height: 460px;
+      }
+
+      .route-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .route:nth-child(2) {
+        border-right: 0;
+      }
+
+      .route:nth-child(-n + 2) {
+        border-bottom: 1px solid var(--line);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .shell {
+        width: min(100% - 24px, var(--max));
+      }
+
+      .top__inner {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px 0;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .hero__copy {
+        padding-bottom: 0;
+      }
+
+      .photo-log {
+        min-height: 390px;
+      }
+
+      .photo--large {
+        inset: 0 0 86px 28px;
+      }
+
+      .route-grid,
+      .entry {
+        grid-template-columns: 1fr;
+      }
+
+      .route {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .route:last-child {
+        border-bottom: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="shell top__inner">
+      <a class="brand" href="#">
+        <span class="brand__mark">B</span>
+        <span class="brand__meta">
+          <span class="brand__name">Biswash Ghimire</span>
+          <span class="brand__role">backend systems / writing / field notes</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#">Home</a>
+        <a href="#">Resume</a>
+        <a href="#">Projects</a>
+        <a href="#">Blog</a>
+        <a href="#">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="shell hero">
+      <div class="hero__copy">
+        <p class="kicker">Personal operating log</p>
+        <h1>Systems, trips, questions, and proof of work.</h1>
+        <p class="lede">
+          I build backend platforms, small tools, and personal publishing workflows. This site becomes less of a portfolio page and more of a working field log: what shipped, what I learned, and what I am still trying to understand.
+        </p>
+        <div class="actions">
+          <a class="button" href="#">Read the log</a>
+          <a class="button button--ghost" href="#">View projects</a>
+        </div>
+      </div>
+
+      <aside class="photo-log" aria-label="Recent notes">
+        <div class="photo-stack">
+          <figure class="photo photo--large">
+            <img src="../src/assets/images/traverse-city-summer/lake-golden-hour.jpeg" alt="Golden hour over Lake Michigan" />
+          </figure>
+          <figure class="photo photo--small">
+            <img src="../src/assets/images/cruise-bahamas/umbrella.jpeg" alt="Umbrella lane in Nassau" />
+          </figure>
+          <figure class="photo photo--strip">
+            <img src="../src/assets/images/traverse-city-summer/vineyard.jpeg" alt="Vineyard near Traverse City" />
+          </figure>
+        </div>
+        <div class="log-card">
+          <p class="log-card__label">Latest note</p>
+          <p class="log-card__text">Traverse City, the ease of Michigan summers, and why comfort can become its own kind of pressure.</p>
+        </div>
+      </aside>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span>event-driven systems</span>
+        <span>Hetzner deployments</span>
+        <span>MDX publishing</span>
+        <span>family travel notes</span>
+        <span>backend reliability</span>
+        <span>event-driven systems</span>
+        <span>Hetzner deployments</span>
+        <span>MDX publishing</span>
+        <span>family travel notes</span>
+        <span>backend reliability</span>
+      </div>
+    </div>
+
+    <section class="shell section">
+      <div class="section__head">
+        <h2>Routes through the site.</h2>
+        <p>The homepage can become a map instead of a menu: each section has a purpose, a rhythm, and a reason to exist.</p>
+      </div>
+      <div class="route-grid">
+        <a class="route" href="#">
+          <span class="route__number">01</span>
+          <span>
+            <h3>Resume</h3>
+            <p>Career snapshot, latest PDF, and eventually role-specific views.</p>
+          </span>
+        </a>
+        <a class="route" href="#">
+          <span class="route__number">02</span>
+          <span>
+            <h3>Projects</h3>
+            <p>Apps that show the full loop: code, deploys, operations, maintenance.</p>
+          </span>
+        </a>
+        <a class="route" href="#">
+          <span class="route__number">03</span>
+          <span>
+            <h3>Blog</h3>
+            <p>Travel, reflection, and small essays that make the site feel lived in.</p>
+          </span>
+        </a>
+        <a class="route" href="#">
+          <span class="route__number">04</span>
+          <span>
+            <h3>Contact</h3>
+            <p>Simple links that let someone reach you without extra ceremony.</p>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <section class="shell section journal">
+      <aside class="journal__aside">
+        <div>
+          <p class="kicker">Recent entries</p>
+          <h2>Less gallery, more signal.</h2>
+        </div>
+        <p>Blog cards can feel more editorial and less like generic tiles while still being simple React and CSS.</p>
+      </aside>
+      <div class="entries">
+        <article class="entry">
+          <time>Jul 2026</time>
+          <div>
+            <h3>Traverse City Summer</h3>
+            <p>Northern Michigan, wineries, dunes, and the uncomfortable pull toward a harder next chapter.</p>
+          </div>
+        </article>
+        <article class="entry">
+          <time>Mar 2026</time>
+          <div>
+            <h3>A Different Kind of Family Vacation</h3>
+            <p>A first cruise, small family rhythms, Nassau walks, and what relaxation looks like for four people.</p>
+          </div>
+        </article>
+        <article class="entry">
+          <time>Ops</time>
+          <div>
+            <h3>Hetzner Terraform Infra</h3>
+            <p>A deployment runbook that turns side projects into real services with Caddy, DNS, and repeatable scripts.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell footer-note">
+    Built as an HTML-only concept. No framework required.
+  </footer>
+</body>
+</html>

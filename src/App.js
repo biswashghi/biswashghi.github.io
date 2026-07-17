@@ -8,6 +8,8 @@ import BlogPostPage from './pages/BlogPostPage';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import Admin from './pages/Admin';
+import Art from './pages/Art';
+import PhotoOfMonth from './pages/PhotoOfMonth';
 import NotFound from './pages/NotFound';
 
 const App = () => {
@@ -27,7 +29,7 @@ const App = () => {
             </span>
             <span className="brand__text">
               <span className="brand__name">Biswash Ghimire</span>
-              <span className="brand__role">Reader, Drawer, Tinkerer</span>
+              <span className="brand__role">backend systems / writing / field notes</span>
             </span>
           </NavLink>
 
@@ -44,6 +46,12 @@ const App = () => {
             <NavLink to="/blog" activeClassName="is-active" className="nav__link">
               Blog
             </NavLink>
+            <NavLink to="/art" activeClassName="is-active" className="nav__link">
+              Art
+            </NavLink>
+            <NavLink to="/photo-of-the-month" activeClassName="is-active" className="nav__link">
+              Photo
+            </NavLink>
             <NavLink to="/contact" activeClassName="is-active" className="nav__link nav__link--cta">
               Contact
             </NavLink>
@@ -58,6 +66,8 @@ const App = () => {
           <Route path="/blog" exact component={BlogIndex} />
           <Route path="/blog/:slug" component={BlogPostPage} />
           <Route path="/projects" component={Projects} />
+          <Route path="/art" component={Art} />
+          <Route path="/photo-of-the-month" component={PhotoOfMonth} />
           <Route path="/contact" component={Contact} />
           <Route path="/admin" component={Admin} />
           <Route component={NotFound} />
@@ -68,7 +78,7 @@ const App = () => {
         <div className="footer__inner">
           <p className="footer__text">Built with Codex.</p>
           <div className="footer__links" aria-label="Secondary">
-            <a className="footer__link" href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+            <a className="footer__link" href="/assets/resume.pdf" target="_blank" rel="noopener noreferrer">
               Latest resume
             </a>
             <NavLink to="/admin" className="footer__link">

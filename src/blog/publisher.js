@@ -113,6 +113,53 @@ const safeFilename = (name) =>
     .replace(/\s+/g, '-')
     .replace(/[^a-zA-Z0-9._-]/g, '');
 
+const decodeBase64Utf8 = (value) => {
+  const binary = atob(String(value || '').replace(/\s/g, ''));
+  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+};
+
+const withArtDrawing = (source, bucketTitle, filename) => {
+  const safeBucketTitle = String(bucketTitle || '').trim();
+  const safeFile = safeFilename(filename);
+  if (!safeBucketTitle || !safeFile) throw new Error('Missing art bucket or filename.');
+  if (source.includes(`'${safeFile}'`)) return source;
+
+  const titleMarker = `title: '${safeBucketTitle}'`;
+  const bucketStart = source.indexOf(titleMarker);
+  if (bucketStart === -1) throw new Error(`Could not find art bucket: ${safeBucketTitle}`);
+
+  const drawingsKey = source.indexOf('drawings:', bucketStart);
+  if (drawingsKey === -1) throw new Error(`Could not find drawings list for ${safeBucketTitle}.`);
+
+  const arrayStart = source.indexOf('[', drawingsKey);
+  if (arrayStart === -1) throw new Error(`Could not find drawings array for ${safeBucketTitle}.`);
+
+  let depth = 0;
+  let arrayEnd = -1;
+  for (let i = arrayStart; i < source.length; i += 1) {
+    if (source[i] === '[') depth += 1;
+    if (source[i] === ']') depth -= 1;
+    if (depth === 0) {
+      arrayEnd = i;
+      break;
+    }
+  }
+  if (arrayEnd === -1) throw new Error(`Could not parse drawings array for ${safeBucketTitle}.`);
+
+  const lineStart = source.lastIndexOf('\n', drawingsKey) + 1;
+  const lineIndent = source.slice(lineStart, drawingsKey).match(/^\s*/)[0] || '    ';
+  const itemIndent = `${lineIndent}  `;
+  const current = source
+    .slice(arrayStart + 1, arrayEnd)
+    .match(/'([^']+)'/g);
+  const drawings = (current || []).map((item) => item.slice(1, -1));
+  drawings.push(safeFile);
+
+  const rendered = `[\n${drawings.map((item) => `${itemIndent}'${item}',`).join('\n')}\n${lineIndent}]`;
+  return `${source.slice(0, arrayStart)}${rendered}${source.slice(arrayEnd + 1)}`;
+};
+
 export const buildMdxWithFrontmatter = ({ title, slug, date, excerpt, coverSrc, coverAlt, body }) => {
   const safeTitle = String(title || '').replace(/"/g, '\\"').trim();
   const safeSlug = String(slug || '').trim();
@@ -224,6 +271,187 @@ export const publishPostToGitHub = async ({
   });
 
   return { path: mdxPath, commitSha: newCommit.sha, branch };
+};
+
+export const publishArtImageToGitHub = async ({ token, repoFull, bucketTitle, file, filename }) => {
+  const tokenTrimmed = String(token || '').trim();
+  const repoTrimmed = String(repoFull || '').trim();
+  const [owner, repo] = repoTrimmed.split('/');
+  if (!owner || !repo) throw new Error('Repo must be in the form owner/repo.');
+  if (!bucketTitle) throw new Error('Choose an art bucket.');
+  if (!file) throw new Error('Choose an image to upload.');
+  if (!file.type || !file.type.startsWith('image/')) throw new Error('Art upload must be an image.');
+  if (file.size > 25 * 1024 * 1024) throw new Error(`File too large (${file.name}). Keep uploads under ~25MB.`);
+
+  const uploadName = safeFilename(filename || file.name);
+  if (!uploadName) throw new Error('Filename is required.');
+  const imagePath = `src/assets/images/drawing/${uploadName}`;
+  const artPagePath = 'src/pages/Art.js';
+
+  const repoInfo = await ghFetch(`https://api.github.com/repos/${owner}/${repo}`, tokenTrimmed);
+  const branch = repoInfo.default_branch || 'main';
+
+  const ref = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`, tokenTrimmed);
+  const baseCommitSha = ref.object.sha;
+  const baseCommit = await ghFetch(
+    `https://api.github.com/repos/${owner}/${repo}/git/commits/${baseCommitSha}`,
+    tokenTrimmed
+  );
+  const baseTreeSha = baseCommit.tree.sha;
+
+  const artInfo = await ghFetch(
+    `https://api.github.com/repos/${owner}/${repo}/contents/${artPagePath}?ref=${encodeURIComponent(branch)}`,
+    tokenTrimmed
+  );
+  const artSource = decodeBase64Utf8(artInfo.content);
+  const nextArtSource = withArtDrawing(artSource, bucketTitle, uploadName);
+
+  const imageBlob = await createBlob({
+    owner,
+    repo,
+    token: tokenTrimmed,
+    content: await toBase64(file),
+    encoding: 'base64',
+  });
+  const artBlob = await createBlob({
+    owner,
+    repo,
+    token: tokenTrimmed,
+    content: nextArtSource,
+    encoding: 'utf-8',
+  });
+
+  const newTree = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, tokenTrimmed, {
+    method: 'POST',
+    body: JSON.stringify({
+      base_tree: baseTreeSha,
+      tree: [
+        { path: imagePath, mode: '100644', type: 'blob', sha: imageBlob.sha },
+        { path: artPagePath, mode: '100644', type: 'blob', sha: artBlob.sha },
+      ],
+    }),
+  });
+
+  const newCommit = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, tokenTrimmed, {
+    method: 'POST',
+    body: JSON.stringify({
+      message: `art: add ${uploadName}`,
+      tree: newTree.sha,
+      parents: [baseCommitSha],
+    }),
+  });
+
+  await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`, tokenTrimmed, {
+    method: 'PATCH',
+    body: JSON.stringify({ sha: newCommit.sha }),
+  });
+
+  return { imagePath, artPagePath, commitSha: newCommit.sha, branch };
+};
+
+export const publishPhotoOfMonthToGitHub = async ({
+  token,
+  repoFull,
+  month,
+  file,
+  filename,
+  title,
+  caption,
+  alt,
+}) => {
+  const tokenTrimmed = String(token || '').trim();
+  const repoTrimmed = String(repoFull || '').trim();
+  const [owner, repo] = repoTrimmed.split('/');
+  if (!owner || !repo) throw new Error('Repo must be in the form owner/repo.');
+  if (!/^\d{4}-\d{2}$/.test(String(month || '').trim())) throw new Error('Month must be YYYY-MM.');
+  if (!file) throw new Error('Choose an image to upload.');
+  if (!file.type || !file.type.startsWith('image/')) throw new Error('Photo of the Month upload must be an image.');
+  if (file.size > 25 * 1024 * 1024) throw new Error(`File too large (${file.name}). Keep uploads under ~25MB.`);
+
+  const safeMonth = String(month).trim();
+  const uploadName = safeFilename(filename || file.name);
+  if (!uploadName) throw new Error('Filename is required.');
+  const imagePath = `src/assets/images/photo-of-month/${uploadName}`;
+  const dataPath = 'src/data/photosOfMonth.json';
+  const publicSrc = imagePath.replace(/^src\/assets\//, '/assets/');
+
+  const repoInfo = await ghFetch(`https://api.github.com/repos/${owner}/${repo}`, tokenTrimmed);
+  const branch = repoInfo.default_branch || 'main';
+
+  const ref = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`, tokenTrimmed);
+  const baseCommitSha = ref.object.sha;
+  const baseCommit = await ghFetch(
+    `https://api.github.com/repos/${owner}/${repo}/git/commits/${baseCommitSha}`,
+    tokenTrimmed
+  );
+  const baseTreeSha = baseCommit.tree.sha;
+
+  let existing = [];
+  try {
+    const dataInfo = await ghFetch(
+      `https://api.github.com/repos/${owner}/${repo}/contents/${dataPath}?ref=${encodeURIComponent(branch)}`,
+      tokenTrimmed
+    );
+    existing = JSON.parse(decodeBase64Utf8(dataInfo.content));
+  } catch (e) {
+    if (e.status !== 404) throw e;
+  }
+  if (!Array.isArray(existing)) throw new Error(`${dataPath} must contain a JSON array.`);
+
+  const nextEntry = {
+    month: safeMonth,
+    src: publicSrc,
+    alt: String(alt || title || `Photo of the month for ${safeMonth}`).trim(),
+    title: String(title || '').trim(),
+    caption: String(caption || '').trim(),
+  };
+  const nextPhotos = existing
+    .filter((entry) => entry && entry.month !== safeMonth)
+    .concat(nextEntry)
+    .sort((a, b) => String(b.month).localeCompare(String(a.month)));
+  const nextData = `${JSON.stringify(nextPhotos, null, 2)}\n`;
+
+  const imageBlob = await createBlob({
+    owner,
+    repo,
+    token: tokenTrimmed,
+    content: await toBase64(file),
+    encoding: 'base64',
+  });
+  const dataBlob = await createBlob({
+    owner,
+    repo,
+    token: tokenTrimmed,
+    content: nextData,
+    encoding: 'utf-8',
+  });
+
+  const newTree = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, tokenTrimmed, {
+    method: 'POST',
+    body: JSON.stringify({
+      base_tree: baseTreeSha,
+      tree: [
+        { path: imagePath, mode: '100644', type: 'blob', sha: imageBlob.sha },
+        { path: dataPath, mode: '100644', type: 'blob', sha: dataBlob.sha },
+      ],
+    }),
+  });
+
+  const newCommit = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, tokenTrimmed, {
+    method: 'POST',
+    body: JSON.stringify({
+      message: `photo: ${safeMonth}`,
+      tree: newTree.sha,
+      parents: [baseCommitSha],
+    }),
+  });
+
+  await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`, tokenTrimmed, {
+    method: 'PATCH',
+    body: JSON.stringify({ sha: newCommit.sha }),
+  });
+
+  return { imagePath, dataPath, commitSha: newCommit.sha, branch };
 };
 
 export const deletePostFromGitHub = async ({ token, repoFull, slug }) => {

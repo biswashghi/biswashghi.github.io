@@ -10,7 +10,8 @@ const Projects = () => {
             deploymentStatus: 'Configured domain: fit.bghimire.com',
             tags: ['TypeScript', 'PWA', 'Node API', 'SQLite', 'Hetzner'],
             links: [
-                { label: 'GitHub repo', href: 'https://github.com/biswashghi/fitness' }
+                { label: 'GitHub repo', href: 'https://github.com/biswashghi/fitness' },
+                { label: 'Live site', href: 'https://fit.bghimire.com', ghost: true }
             ]
         },
         {
@@ -20,7 +21,8 @@ const Projects = () => {
             deploymentStatus: 'Configured domain: family.bghimire.com',
             tags: ['JavaScript', 'Express', 'SQLite', 'Docker', 'Hetzner'],
             links: [
-                { label: 'GitHub repo', href: 'https://github.com/biswashghi/family_hub' }
+                { label: 'GitHub repo', href: 'https://github.com/biswashghi/family_hub' },
+                { label: 'Live site', href: 'https://family.bghimire.com', ghost: true }
             ]
         },
         {
@@ -37,11 +39,10 @@ const Projects = () => {
             title: 'Personal Site and Blog Publisher',
             description: 'This site doubles as a portfolio and lightweight MDX publishing tool, with GitHub-backed post creation and automated GitHub Pages deployment.',
             deployment: 'Deployment: GitHub Pages',
-            deploymentStatus: 'Public repo and live site',
+            deploymentStatus: 'Public repo',
             tags: ['React', 'MDX', 'GitHub Pages', 'Portfolio'],
             links: [
-                { label: 'GitHub repo', href: 'https://github.com/biswashghi/biswashghi.github.io' },
-                { label: 'Live site', href: 'https://biswashghi.github.io', ghost: true }
+                { label: 'GitHub repo', href: 'https://github.com/biswashghi/biswashghi.github.io' }
             ]
         }
     ];
