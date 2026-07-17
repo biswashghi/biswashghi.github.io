@@ -700,6 +700,138 @@ code {
   line-height: 1.55;
 }
 
+.blog-editor {
+  padding-bottom: 54px;
+}
+
+.blog-composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  gap: 14px;
+  align-items: start;
+}
+
+.blog-composer__main,
+.blog-composer__side {
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  box-shadow: var(--shadow-soft);
+  padding: 14px;
+}
+
+.blog-composer__main {
+  display: grid;
+  gap: 12px;
+}
+
+.blog-composer__side {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 12px;
+}
+
+.blog-composer__title {
+  min-height: 50px;
+  font-size: clamp(1.2rem, 2.1vw, 1.8rem);
+  font-weight: 900;
+}
+
+.blog-composer__body {
+  min-height: 50vh;
+  resize: vertical;
+}
+
+.blog-composer__body-field {
+  min-width: 0;
+}
+
+.blog-composer__body-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.segmented-control {
+  display: inline-flex;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+}
+
+.segmented-control button {
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 0;
+  border-right: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.segmented-control button:last-child {
+  border-right: 0;
+}
+
+.segmented-control button.is-active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.blog-preview {
+  min-height: 50vh;
+  max-height: 70vh;
+  overflow: auto;
+  border: 1px solid var(--ink);
+  background: rgba(255, 250, 240, 0.7);
+  padding: 16px;
+}
+
+.blog-preview .post__head {
+  margin-bottom: 18px;
+}
+
+.blog-preview .post__title {
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.blog-preview .post__cover {
+  margin-bottom: 18px;
+}
+
+.blog-composer__uploads {
+  display: grid;
+  gap: 10px;
+}
+
+.blog-composer__excerpt {
+  min-height: 120px;
+}
+
+.blog-composer__publish {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.figure-insert-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.figure-insert {
+  max-width: 100%;
+  justify-content: flex-start;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
 .tile {
   grid-column: span 6;
   border-radius: var(--radius);
@@ -1159,6 +1291,15 @@ code {
 
   .blog-card {
     grid-column: span 12;
+  }
+
+  .blog-composer,
+  .blog-composer__uploads {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-composer__side {
+    position: static;
   }
 
   .grid--spotlight {

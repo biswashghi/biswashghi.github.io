@@ -3,6 +3,7 @@ import { NavLink, Route, Switch } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Resume from './pages/Resume';
+import BlogEditor from './pages/BlogEditor';
 import BlogIndex from './pages/BlogIndex';
 import BlogPostPage from './pages/BlogPostPage';
 import Projects from './pages/Projects';
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="/" exact component={Home} />
           <Route path="/resume" component={Resume} />
           <Route path="/blog" exact component={BlogIndex} />
+          <Route path="/blog/new" component={BlogEditor} />
           <Route path="/blog/:slug" component={BlogPostPage} />
           <Route path="/projects" component={Projects} />
           <Route path="/art" component={Art} />

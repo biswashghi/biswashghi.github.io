@@ -107,7 +107,7 @@ const createBlob = async ({ owner, repo, token, content, encoding }) => {
   });
 };
 
-const safeFilename = (name) =>
+export const safeFilename = (name) =>
   String(name || '')
     .trim()
     .replace(/\s+/g, '-')

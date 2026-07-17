@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { posts } from '../blog/posts';
 import { formatIsoDate } from '../blog/date';
 import Modal from '../components/Modal';
-import PostComposer from '../components/Blog/PostComposer';
 import useAdminCredentials from '../components/Admin/useAdminCredentials';
 import { deletePostFromGitHub } from '../blog/publisher';
 
@@ -13,7 +12,6 @@ const formatDate = (iso) => {
 };
 
 const BlogIndex = () => {
-  const [composerOpen, setComposerOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteSlug, setDeleteSlug] = useState('');
   const [hiddenSlugs, setHiddenSlugs] = useState([]);
@@ -62,9 +60,9 @@ const BlogIndex = () => {
           </div>
           <div className="page__actions">
             {hasToken ? (
-              <button className="button" type="button" onClick={() => setComposerOpen(true)}>
+              <Link className="button" to="/blog/new">
                 Create post
-              </button>
+              </Link>
             ) : null}
           </div>
         </div>
@@ -114,10 +112,6 @@ const BlogIndex = () => {
           </div>
         ))}
       </div>
-
-      <Modal open={composerOpen} title="Create Blog Post" onClose={() => setComposerOpen(false)}>
-        <PostComposer onPublished={() => {}} />
-      </Modal>
 
       <Modal open={deleteOpen} title="Delete Blog Post" onClose={() => setDeleteOpen(false)}>
         <p className="muted">
