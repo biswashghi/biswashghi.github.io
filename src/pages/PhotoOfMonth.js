@@ -11,6 +11,8 @@ const formatMonth = (value) => {
 
 const sortedPhotos = [...photosOfMonth].sort((a, b) => String(b.month).localeCompare(String(a.month)));
 
+const photoAlt = (photo) => photo.caption || `Photo of the month for ${formatMonth(photo.month)}`;
+
 const PhotoOfMonth = () => {
   const { repoFull, token, hasToken } = useAdminCredentials();
   const latest = sortedPhotos[0];
@@ -40,10 +42,9 @@ const PhotoOfMonth = () => {
       {latest ? (
         <section className="photo-month-feature" aria-labelledby="photo-month-latest">
           <figure className="photo-month-card photo-month-card--feature">
-            <img src={latest.src} alt={latest.alt || latest.title || formatMonth(latest.month)} />
+            <img src={latest.src} alt={photoAlt(latest)} />
             <figcaption>
               <p className="photo-month-card__month">{formatMonth(latest.month)}</p>
-              {latest.title ? <h2 id="photo-month-latest">{latest.title}</h2> : null}
               {latest.caption ? <p>{latest.caption}</p> : null}
             </figcaption>
           </figure>
@@ -59,10 +60,9 @@ const PhotoOfMonth = () => {
         <section className="photo-month-grid" aria-label="Previous monthly photos">
           {previous.map((photo) => (
             <figure className="photo-month-card" key={photo.month}>
-              <img src={photo.src} alt={photo.alt || photo.title || formatMonth(photo.month)} loading="lazy" decoding="async" />
+              <img src={photo.src} alt={photoAlt(photo)} loading="lazy" decoding="async" />
               <figcaption>
                 <p className="photo-month-card__month">{formatMonth(photo.month)}</p>
-                {photo.title ? <h2>{photo.title}</h2> : null}
                 {photo.caption ? <p>{photo.caption}</p> : null}
               </figcaption>
             </figure>

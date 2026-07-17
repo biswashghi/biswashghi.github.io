@@ -386,9 +386,7 @@ export const publishPhotoOfMonthToGitHub = async ({
   repoFull,
   month,
   file,
-  title,
   caption,
-  alt,
 }) => {
   const tokenTrimmed = String(token || '').trim();
   const repoTrimmed = String(repoFull || '').trim();
@@ -432,8 +430,6 @@ export const publishPhotoOfMonthToGitHub = async ({
   const nextEntry = {
     month: safeMonth,
     src: publicSrc,
-    alt: String(alt || title || `Photo of the month for ${safeMonth}`).trim(),
-    title: String(title || '').trim(),
     caption: String(caption || '').trim(),
   };
   const nextPhotos = existing

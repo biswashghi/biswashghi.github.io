@@ -6,8 +6,6 @@ import { idleStatus, monthNow } from './adminUtils';
 const PhotoOfMonthPanel = ({ repoFull, token }) => {
   const [photoMonth, setPhotoMonth] = useState(monthNow());
   const [photoFile, setPhotoFile] = useState(null);
-  const [photoTitle, setPhotoTitle] = useState('');
-  const [photoAlt, setPhotoAlt] = useState('');
   const [photoCaption, setPhotoCaption] = useState('');
   const [photoStatus, setPhotoStatus] = useState(idleStatus);
 
@@ -35,9 +33,7 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
         repoFull: repoTrimmed,
         month: photoMonth,
         file: photoFile,
-        title: photoTitle,
         caption: photoCaption,
-        alt: photoAlt,
       });
       setPhotoStatus({
         state: 'ok',
@@ -85,32 +81,6 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
               File will be saved as <code>{photoMonth || 'YYYY-MM'}</code> with its image extension.
             </p>
           </div>
-        </div>
-
-        <div className="field">
-          <label className="field__label" htmlFor="photo-title">
-            Title
-          </label>
-          <input
-            id="photo-title"
-            className="field__input"
-            value={photoTitle}
-            onChange={(e) => setPhotoTitle(e.target.value)}
-            placeholder="Optional short title"
-          />
-        </div>
-
-        <div className="field">
-          <label className="field__label" htmlFor="photo-alt">
-            Alt text
-          </label>
-          <input
-            id="photo-alt"
-            className="field__input"
-            value={photoAlt}
-            onChange={(e) => setPhotoAlt(e.target.value)}
-            placeholder="Short visual description"
-          />
         </div>
 
         <div className="field">
