@@ -23,8 +23,9 @@ const PhotoOfMonth = () => {
           <p className="kicker">Photo log</p>
           <h1 className="page__title">Photo of the Month</h1>
           <p className="page__lede">
-            One photo from each month, kept intentionally small: a single image that feels like the month more than a
-            full gallery of everything that happened.
+            I take a lot of photos and rarely go back through them. This is a small reason to revisit the past month and
+            choose one image that made an impact: something that wowed me, mattered enough to track, or encompasses all
+            of what that month meant.
           </p>
         </div>
         <div className="page__actions">
@@ -50,7 +51,7 @@ const PhotoOfMonth = () => {
       ) : (
         <section className="photo-month-empty" aria-label="No photos yet">
           <p className="kicker">No entries yet</p>
-          <h2>Add the first monthly photo when your publishing token is set.</h2>
+          <h2>A place to look back through the camera roll and keep one photo that still feels important.</h2>
         </section>
       )}
 
