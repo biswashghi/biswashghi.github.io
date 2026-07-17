@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { publishPhotoOfMonthToGitHub, WEB_SAFE_IMAGE_ACCEPT } from '../../blog/publisher';
 import AdminStatus from './AdminStatus';
-import { filenameFromFile, idleStatus, monthNow } from './adminUtils';
-
-const photoFilenameFromFile = (file, month) => filenameFromFile(file, 'photo', `${month || monthNow()}-`);
+import { idleStatus, monthNow } from './adminUtils';
 
 const PhotoOfMonthPanel = ({ repoFull, token }) => {
   const [photoMonth, setPhotoMonth] = useState(monthNow());
   const [photoFile, setPhotoFile] = useState(null);
-  const [photoFilename, setPhotoFilename] = useState('');
   const [photoTitle, setPhotoTitle] = useState('');
   const [photoAlt, setPhotoAlt] = useState('');
   const [photoCaption, setPhotoCaption] = useState('');
@@ -38,7 +35,6 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
         repoFull: repoTrimmed,
         month: photoMonth,
         file: photoFile,
-        filename: photoFilename || photoFilenameFromFile(photoFile, photoMonth),
         title: photoTitle,
         caption: photoCaption,
         alt: photoAlt,
@@ -67,10 +63,7 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
               className="field__input"
               type="month"
               value={photoMonth}
-              onChange={(e) => {
-                setPhotoMonth(e.target.value);
-                if (photoFile) setPhotoFilename(photoFilenameFromFile(photoFile, e.target.value));
-              }}
+              onChange={(e) => setPhotoMonth(e.target.value)}
             />
           </div>
 
@@ -78,46 +71,33 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
             <label className="field__label" htmlFor="photo-file">
               Photo
             </label>
-                <input
-                  id="photo-file"
-                  className="field__input"
-                  type="file"
-                  accept={WEB_SAFE_IMAGE_ACCEPT}
+            <input
+              id="photo-file"
+              className="field__input"
+              type="file"
+              accept={WEB_SAFE_IMAGE_ACCEPT}
               onChange={(e) => {
                 const nextFile = e.target.files && e.target.files[0] ? e.target.files[0] : null;
                 setPhotoFile(nextFile);
-                if (nextFile) setPhotoFilename(photoFilenameFromFile(nextFile, photoMonth));
               }}
             />
+            <p className="muted admin-help">
+              File will be saved as <code>{photoMonth || 'YYYY-MM'}</code> with its image extension.
+            </p>
           </div>
         </div>
 
-        <div className="admin-row">
-          <div className="field">
-            <label className="field__label" htmlFor="photo-title">
-              Title
-            </label>
-            <input
-              id="photo-title"
-              className="field__input"
-              value={photoTitle}
-              onChange={(e) => setPhotoTitle(e.target.value)}
-              placeholder="Optional short title"
-            />
-          </div>
-
-          <div className="field">
-            <label className="field__label" htmlFor="photo-filename">
-              Site filename
-            </label>
-            <input
-              id="photo-filename"
-              className="field__input"
-              value={photoFilename}
-              onChange={(e) => setPhotoFilename(photoFilenameFromFile({ name: e.target.value }, photoMonth))}
-              placeholder="2026-07-photo.jpg"
-            />
-          </div>
+        <div className="field">
+          <label className="field__label" htmlFor="photo-title">
+            Title
+          </label>
+          <input
+            id="photo-title"
+            className="field__input"
+            value={photoTitle}
+            onChange={(e) => setPhotoTitle(e.target.value)}
+            placeholder="Optional short title"
+          />
         </div>
 
         <div className="field">

@@ -115,6 +115,19 @@ export const safeFilename = (name) =>
     .replace(/\s+/g, '-')
     .replace(/[^a-zA-Z0-9._-]/g, '');
 
+const extensionForUpload = (file) => {
+  const nameExt = String(file?.name || '').match(/\.([A-Za-z0-9]+)$/)?.[1]?.toLowerCase();
+  if (nameExt === 'jpeg') return 'jpg';
+  if (nameExt) return nameExt;
+  if (file?.type === 'image/jpeg') return 'jpg';
+  if (file?.type === 'image/png') return 'png';
+  if (file?.type === 'image/webp') return 'webp';
+  if (file?.type === 'image/avif') return 'avif';
+  if (file?.type === 'image/gif') return 'gif';
+  if (file?.type === 'image/svg+xml') return 'svg';
+  return 'jpg';
+};
+
 const isHeicFilename = (name) => /\.(heic|heif)$/i.test(String(name || ''));
 
 const heicError = 'HEIC/HEIF images are not web-safe for this site yet. Export the image as JPG, PNG, WebP, AVIF, GIF, or SVG first.';
@@ -373,7 +386,6 @@ export const publishPhotoOfMonthToGitHub = async ({
   repoFull,
   month,
   file,
-  filename,
   title,
   caption,
   alt,
@@ -387,7 +399,7 @@ export const publishPhotoOfMonthToGitHub = async ({
   if (file.size > 25 * 1024 * 1024) throw new Error(`File too large (${file.name}). Keep uploads under ~25MB.`);
 
   const safeMonth = String(month).trim();
-  const uploadName = safeFilename(filename || file.name);
+  const uploadName = `${safeMonth}.${extensionForUpload(file)}`;
   if (!uploadName) throw new Error('Filename is required.');
   assertWebSafeImageUpload(file, uploadName, 'Photo of the Month upload');
   const imagePath = `src/assets/images/photo-of-month/${uploadName}`;
