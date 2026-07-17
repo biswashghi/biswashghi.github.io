@@ -150,21 +150,21 @@ const decodeBase64Utf8 = (value) => {
   return new TextDecoder().decode(bytes);
 };
 
-const withArtDrawing = (source, bucketTitle, filename) => {
+const escapeSingleQuotedJs = (value) => String(value || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+
+const withArtBucket = (source, bucketTitle) => {
   const safeBucketTitle = String(bucketTitle || '').trim();
-  const safeFile = safeFilename(filename);
-  if (!safeBucketTitle || !safeFile) throw new Error('Missing art bucket or filename.');
-  if (source.includes(`'${safeFile}'`)) return source;
+  if (!safeBucketTitle) throw new Error('Missing art bucket.');
 
-  const titleMarker = `title: '${safeBucketTitle}'`;
-  const bucketStart = source.indexOf(titleMarker);
-  if (bucketStart === -1) throw new Error(`Could not find art bucket: ${safeBucketTitle}`);
+  const escapedTitle = escapeSingleQuotedJs(safeBucketTitle);
+  const titleMarker = `title: '${escapedTitle}'`;
+  if (source.includes(titleMarker)) return source;
 
-  const drawingsKey = source.indexOf('drawings:', bucketStart);
-  if (drawingsKey === -1) throw new Error(`Could not find drawings list for ${safeBucketTitle}.`);
+  const bucketsStart = source.indexOf('const buckets = [');
+  if (bucketsStart === -1) throw new Error('Could not find Art buckets.');
 
-  const arrayStart = source.indexOf('[', drawingsKey);
-  if (arrayStart === -1) throw new Error(`Could not find drawings array for ${safeBucketTitle}.`);
+  const arrayStart = source.indexOf('[', bucketsStart);
+  if (arrayStart === -1) throw new Error('Could not find Art bucket array.');
 
   let depth = 0;
   let arrayEnd = -1;
@@ -176,19 +176,59 @@ const withArtDrawing = (source, bucketTitle, filename) => {
       break;
     }
   }
+  if (arrayEnd === -1) throw new Error('Could not parse Art bucket array.');
+
+  const bucketBlock = [
+    '  {',
+    `    title: '${escapedTitle}',`,
+    "    description: 'A growing bucket of uploaded visual work.',",
+    '    drawings: [],',
+    '  },',
+  ].join('\n');
+  const needsLeadingNewline = source[arrayEnd - 1] === '\n' ? '' : '\n';
+  return `${source.slice(0, arrayEnd)}${needsLeadingNewline}${bucketBlock}\n${source.slice(arrayEnd)}`;
+};
+
+const withArtDrawing = (source, bucketTitle, filename) => {
+  const safeBucketTitle = String(bucketTitle || '').trim();
+  const safeFile = safeFilename(filename);
+  if (!safeBucketTitle || !safeFile) throw new Error('Missing art bucket or filename.');
+  if (source.includes(`'${safeFile}'`)) return source;
+
+  const nextSource = withArtBucket(source, safeBucketTitle);
+  const titleMarker = `title: '${escapeSingleQuotedJs(safeBucketTitle)}'`;
+  const bucketStart = nextSource.indexOf(titleMarker);
+  if (bucketStart === -1) throw new Error(`Could not find art bucket: ${safeBucketTitle}`);
+
+  const drawingsKey = nextSource.indexOf('drawings:', bucketStart);
+  if (drawingsKey === -1) throw new Error(`Could not find drawings list for ${safeBucketTitle}.`);
+
+  const arrayStart = nextSource.indexOf('[', drawingsKey);
+  if (arrayStart === -1) throw new Error(`Could not find drawings array for ${safeBucketTitle}.`);
+
+  let depth = 0;
+  let arrayEnd = -1;
+  for (let i = arrayStart; i < nextSource.length; i += 1) {
+    if (nextSource[i] === '[') depth += 1;
+    if (nextSource[i] === ']') depth -= 1;
+    if (depth === 0) {
+      arrayEnd = i;
+      break;
+    }
+  }
   if (arrayEnd === -1) throw new Error(`Could not parse drawings array for ${safeBucketTitle}.`);
 
-  const lineStart = source.lastIndexOf('\n', drawingsKey) + 1;
-  const lineIndent = source.slice(lineStart, drawingsKey).match(/^\s*/)[0] || '    ';
+  const lineStart = nextSource.lastIndexOf('\n', drawingsKey) + 1;
+  const lineIndent = nextSource.slice(lineStart, drawingsKey).match(/^\s*/)[0] || '    ';
   const itemIndent = `${lineIndent}  `;
-  const current = source
+  const current = nextSource
     .slice(arrayStart + 1, arrayEnd)
     .match(/'([^']+)'/g);
   const drawings = (current || []).map((item) => item.slice(1, -1));
   drawings.push(safeFile);
 
   const rendered = `[\n${drawings.map((item) => `${itemIndent}'${item}',`).join('\n')}\n${lineIndent}]`;
-  return `${source.slice(0, arrayStart)}${rendered}${source.slice(arrayEnd + 1)}`;
+  return `${nextSource.slice(0, arrayStart)}${rendered}${nextSource.slice(arrayEnd + 1)}`;
 };
 
 export const buildMdxWithFrontmatter = ({ title, slug, date, excerpt, coverSrc, coverAlt, body }) => {

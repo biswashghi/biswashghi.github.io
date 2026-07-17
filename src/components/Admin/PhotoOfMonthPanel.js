@@ -48,7 +48,7 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
   return (
     <div className="card admin-card--wide">
       <h2 className="section-title">Photo of the Month</h2>
-      <div className="form">
+      <div className="form photo-upload-form">
         <div className="admin-row">
           <div className="field">
             <label className="field__label" htmlFor="photo-month">
@@ -89,18 +89,17 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
           </label>
           <textarea
             id="photo-caption"
-            className="field__input field__input--textarea"
+            className="field__input field__input--textarea photo-upload-form__caption"
             value={photoCaption}
             onChange={(e) => setPhotoCaption(e.target.value)}
             placeholder="Optional note about why this photo represents the month."
           />
           <p className="muted admin-help">
-            Uploads to <code>src/assets/images/photo-of-month/</code>. Uploading the same month again replaces that
-            month's entry.
+            Re-uploading the same month replaces that month&apos;s entry.
           </p>
         </div>
 
-        <div className="admin-actions">
+        <div className="admin-actions photo-upload-form__actions">
           <button className="button" type="button" onClick={uploadPhotoOfMonth} disabled={photoStatus.state === 'working'}>
             {photoStatus.state === 'working' ? 'Uploading…' : 'Upload Monthly Photo'}
           </button>

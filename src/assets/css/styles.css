@@ -675,6 +675,23 @@ code {
   margin: 6px 0 0;
 }
 
+.photo-upload-form {
+  gap: 14px;
+}
+
+.photo-upload-form .admin-row {
+  align-items: start;
+  gap: 16px;
+}
+
+.photo-upload-form__caption {
+  min-height: 118px;
+}
+
+.photo-upload-form__actions {
+  padding-top: 2px;
+}
+
 .admin-ok {
   margin: 8px 0 0;
   padding: 10px 12px;

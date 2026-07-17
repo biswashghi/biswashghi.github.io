@@ -4,9 +4,11 @@ import AdminStatus from './AdminStatus';
 import { artBuckets, filenameFromFile, idleStatus } from './adminUtils';
 
 const artFilenameFromFile = (file) => filenameFromFile(file, 'art-upload');
+const NEW_BUCKET_VALUE = '__new_art_bucket__';
 
 const ArtUploadPanel = ({ repoFull, token }) => {
   const [artBucket, setArtBucket] = useState(artBuckets[0]);
+  const [newBucketTitle, setNewBucketTitle] = useState('');
   const [artFile, setArtFile] = useState(null);
   const [artFilename, setArtFilename] = useState('');
   const [artStatus, setArtStatus] = useState(idleStatus);
@@ -15,6 +17,7 @@ const ArtUploadPanel = ({ repoFull, token }) => {
     setArtStatus(idleStatus);
     const repoTrimmed = repoFull.trim();
     const tokenTrimmed = token.trim();
+    const bucketTitle = artBucket === NEW_BUCKET_VALUE ? newBucketTitle.trim() : artBucket;
     if (!repoTrimmed.includes('/')) {
       setArtStatus({ state: 'error', message: 'Repo must be in the form owner/repo.' });
       return;
@@ -27,13 +30,17 @@ const ArtUploadPanel = ({ repoFull, token }) => {
       setArtStatus({ state: 'error', message: 'Choose an image first.' });
       return;
     }
+    if (!bucketTitle) {
+      setArtStatus({ state: 'error', message: 'Choose a bucket or enter a new bucket name.' });
+      return;
+    }
 
     try {
       setArtStatus({ state: 'working', message: 'Uploading art image to GitHub...' });
       const result = await publishArtImageToGitHub({
         token: tokenTrimmed,
         repoFull: repoTrimmed,
-        bucketTitle: artBucket,
+        bucketTitle,
         file: artFile,
         filename: artFilename || artFilenameFromFile(artFile),
       });
@@ -42,6 +49,7 @@ const ArtUploadPanel = ({ repoFull, token }) => {
         message: `Uploaded ${result.imagePath} and updated Art.js. GitHub Pages will refresh after deploy.`,
       });
       setArtFile(null);
+      if (artBucket === NEW_BUCKET_VALUE) setNewBucketTitle('');
     } catch (e) {
       setArtStatus({ state: 'error', message: e.message || 'Art upload failed.' });
     }
@@ -67,6 +75,7 @@ const ArtUploadPanel = ({ repoFull, token }) => {
                   {bucket}
                 </option>
               ))}
+              <option value={NEW_BUCKET_VALUE}>Add new bucket...</option>
             </select>
           </div>
 
@@ -88,6 +97,21 @@ const ArtUploadPanel = ({ repoFull, token }) => {
           </div>
         </div>
 
+        {artBucket === NEW_BUCKET_VALUE ? (
+          <div className="field">
+            <label className="field__label" htmlFor="art-new-bucket">
+              New bucket name
+            </label>
+            <input
+              id="art-new-bucket"
+              className="field__input"
+              value={newBucketTitle}
+              onChange={(e) => setNewBucketTitle(e.target.value)}
+              placeholder="Photo Studies"
+            />
+          </div>
+        ) : null}
+
         <div className="field">
           <label className="field__label" htmlFor="art-filename">
             Site filename
@@ -100,7 +124,8 @@ const ArtUploadPanel = ({ repoFull, token }) => {
             placeholder="new-drawing.jpg"
           />
           <p className="muted admin-help">
-            Uploads to <code>src/assets/images/drawing/</code> and adds the image to the selected Art bucket.
+            Uploads to <code>src/assets/images/drawing/</code> and adds the image to the selected Art bucket. New
+            buckets are created on publish.
           </p>
         </div>
 
