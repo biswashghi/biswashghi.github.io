@@ -4,15 +4,12 @@ import ProjectCard from '../components/Projects/ProjectCard';
 const Projects = () => {
     const projectList = [
         {
-            title: 'Fitness Tracker',
-            description: 'A mobile-first fitness tracker with a PWA frontend, Node API, and SQLite-backed workout logging, built to run locally and in production with a practical operations story.',
-            deployment: 'Deployment: Hetzner via Terraform + Docker + shared Caddy',
-            deploymentStatus: 'Configured domain: fit.bghimire.com',
-            tags: ['TypeScript', 'PWA', 'Node API', 'SQLite', 'Hetzner'],
-            links: [
-                { label: 'GitHub repo', href: 'https://github.com/biswashghi/fitness' },
-                { label: 'Live site', href: 'https://fit.bghimire.com', ghost: true }
-            ]
+            title: 'Tiny LLM From Scratch',
+            description: 'A small PyTorch language-modeling project that grows from a bigram baseline into a causal Transformer, with character/BPE tokenizers, checkpoint resume, sampling controls, and repeatable evaluation reports.',
+            deployment: 'Project type: educational ML system',
+            deploymentStatus: 'Local repo; being prepared for public release',
+            tags: ['Python', 'PyTorch', 'Transformer', 'BPE', 'Evaluation'],
+            links: []
         },
         {
             title: 'Family Hub',
@@ -26,14 +23,6 @@ const Projects = () => {
             ]
         },
         {
-            title: 'Tiny LLM From Scratch',
-            description: 'A small PyTorch language-modeling project that grows from a bigram baseline into a causal Transformer, with character/BPE tokenizers, checkpoint resume, sampling controls, and repeatable evaluation reports.',
-            deployment: 'Project type: educational ML system',
-            deploymentStatus: 'Local repo; being prepared for public release',
-            tags: ['Python', 'PyTorch', 'Transformer', 'BPE', 'Evaluation'],
-            links: []
-        },
-        {
             title: 'Novel Tracker Extension',
             description: 'A Manifest V3 browser extension for tracking web novel reading progress across chapter sites, with popup capture, local storage, content-script updates, search/filter library views, and lightweight tests.',
             deployment: 'Project type: browser extension',
@@ -42,11 +31,22 @@ const Projects = () => {
             links: []
         },
         {
-            title: 'Hetzner Terraform Infra (hetzner_tf)',
-            description: 'A shared infrastructure repo for provisioning and operating Hetzner-hosted apps, covering Terraform, Bitwarden-backed secret retrieval, shared Caddy setup, DNS wiring, and reusable deployment flows.',
-            deployment: 'Deployment: Infrastructure and operations repo for Hetzner apps',
+            title: 'Fitness Hub',
+            description: 'A mobile-first fitness tracker with a PWA frontend, Node API, and SQLite-backed workout logging, built to run locally and in production with a practical operations story.',
+            deployment: 'Deployment: Hetzner via Terraform + Docker + shared Caddy',
+            deploymentStatus: 'Configured domain: fit.bghimire.com',
+            tags: ['TypeScript', 'PWA', 'Node API', 'SQLite', 'Hetzner'],
+            links: [
+                { label: 'GitHub repo', href: 'https://github.com/biswashghi/fitness' },
+                { label: 'Live site', href: 'https://fit.bghimire.com', ghost: true }
+            ]
+        },
+        {
+            title: 'VPS Deploy',
+            description: 'A reusable VPS deployment system for turning small apps into real services, covering Terraform provisioning, DNS wiring, Caddy routing, Docker-based app hosting, secret retrieval, and repeatable deploy runbooks.',
+            deployment: 'Deployment: Generic Hetzner VPS infrastructure and app operations',
             deploymentStatus: 'Public GitHub repo plus local runbook/workflow',
-            tags: ['Terraform', 'Hetzner Cloud', 'Caddy', 'DNS', 'Bitwarden'],
+            tags: ['Terraform', 'Hetzner Cloud', 'Caddy', 'Docker', 'DNS'],
             links: [
                 { label: 'GitHub repo', href: 'https://github.com/biswashghi/hetzner_tf/tree/main' }
             ]
