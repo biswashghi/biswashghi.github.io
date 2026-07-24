@@ -9,7 +9,9 @@ const Projects = () => {
             deployment: 'Project type: educational ML system',
             deploymentStatus: 'Local repo; being prepared for public release',
             tags: ['Python', 'PyTorch', 'Transformer', 'BPE', 'Evaluation'],
-            links: []
+            links: [
+                { label: 'GitHub repo', href: 'https://github.com/biswashghi/tiny_llm' }
+            ]
         },
         {
             title: 'Family Hub',
@@ -28,7 +30,9 @@ const Projects = () => {
             deployment: 'Project type: browser extension',
             deploymentStatus: 'Local repo; packaged through a custom build script',
             tags: ['JavaScript', 'Chrome Extension', 'Manifest V3', 'Local Storage'],
-            links: []
+            links: [
+                { label: 'GitHub repo', href: 'https://github.com/biswashghi/novel_tracker' }
+            ]
         },
         {
             title: 'Fitness Hub',

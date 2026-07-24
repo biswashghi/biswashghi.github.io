@@ -1,95 +1,115 @@
-# Personal Website
+# Personal Site And Blog Publisher
 
-This project is a personal website that showcases a resume, blog, contact information, and project details. The design is inspired by the characteristics of Claude Code websites, focusing on clean aesthetics and user-friendly navigation.
+This repo powers my personal website: portfolio, resume, writing archive, photo
+notes, and a lightweight MDX publishing workflow backed by GitHub.
 
-## Project Structure
+## Status
 
-```
-personal-website
-├── public
-│   ├── favicon.ico          # Favicon for the website
-│   └── index.html           # Main HTML file
-├── src
-│   ├── assets
-│   │   ├── css
-│   │   │   └── styles.css   # CSS styles for the website
-│   │   └── js
-│   │       └── scripts.js    # JavaScript for interactive features
-│   ├── components
-│   │   ├── Blog
-│   │   │   └── BlogPost.js   # Component for individual blog posts
-│   │   ├── Contact
-│   │   │   └── ContactForm.js # Component for the contact form
-│   │   ├── Projects
-│   │   │   └── ProjectCard.js # Component for project details
-│   │   └── Resume
-│   │       └── ResumeSection.js # Component for resume sections
-│   ├── pages
-│   │   ├── Blog.js           # Page component for the blog section
-│   │   ├── Contact.js        # Page component for the contact section
-│   │   ├── Home.js          # Home page component
-│   │   └── Projects.js       # Page component for the projects section
-│   └── index.js              # Main JavaScript entry point
-├── package.json              # npm configuration file
-├── README.md                 # Project documentation
-└── .gitignore                # Files to be ignored by version control
+Active personal site deployed with GitHub Pages. The app is also a small content
+management experiment: an admin UI can create MDX posts and upload assets by
+committing directly to this repo through the GitHub Contents API.
+
+## What It Does
+
+- Portfolio homepage and project cards
+- Resume and contact pages
+- MDX blog with custom components for figures, callouts, and media
+- Photo-of-the-month and art/archive views
+- Admin UI for publishing posts and uploads
+- Image optimization before local start and production build
+- GitHub Actions deployment to GitHub Pages
+
+## Architecture
+
+```mermaid
+flowchart LR
+    Visitor["Visitor browser"] --> SPA["React single-page app"]
+    SPA --> Pages["Portfolio / Blog / Resume / Projects"]
+    Admin["Admin UI"] --> GitHubAPI["GitHub Contents API"]
+    GitHubAPI --> Repo["MDX posts + uploaded assets"]
+    Repo --> Actions["GitHub Actions build"]
+    Actions --> PagesDeploy["GitHub Pages"]
 ```
 
-## Features
+## Stack
 
-- **Resume Section**: Displays work experience and education.
-- **Blog**: A section for sharing articles and insights.
-- **Contact Form**: Allows visitors to get in touch.
-- **Projects**: Showcases individual projects with descriptions and links.
+- React 17 and React Router
+- MDX for posts
+- Webpack 5 build pipeline
+- Sharp image optimization
+- GitHub Actions and GitHub Pages
+- GitHub Contents API for admin publishing
 
-## Setup Instructions
+## Local Development
 
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   ```
-2. Navigate to the project directory:
-   ```
-   cd personal-website
-   ```
-3. Install dependencies:
-   ```
-   npm install
-   ```
-4. Start the development server:
-   ```
-    npm start
-   ```
+Install dependencies:
 
-## Notes
+```bash
+npm install
+```
 
-- This is a single-page React app (React Router). Deep links like `/blog` work in dev because webpack-dev-server is configured with `historyApiFallback`.
-- Customize your name/tagline/navigation in `src/App.js`.
-- If you deploy under a sub-path (example: GitHub Pages), set `PUBLIC_PATH=/your-sub-path/` when building so assets load from the right base URL.
-- GitHub Pages SPA support: the build script generates `dist/404.html` (a copy of `index.html`) so deep links like `/blog/teaching-web-systems` load correctly on GitHub Pages.
-- Images in `src/assets/images` and `src/assets/uploads` are automatically optimized before `npm start` and `npm run build` to improve page speed.
-- You can run image optimization manually with `node scripts/optimize-images.cjs`.
+Start the dev server:
 
-## Deploy To GitHub Pages
+```bash
+npm start
+```
 
-1. Push this repo to `https://github.com/biswashghi/biswashghi.github.io` on the `main` branch.
-2. In GitHub: `Settings -> Pages -> Source -> GitHub Actions`.
-3. Push to `main`. The workflow in `.github/workflows/pages.yml` builds and deploys the site.
+Build production assets:
 
-## Editing Content (Admin UI)
+```bash
+npm run build
+```
 
-Open `/admin` (example: `https://biswashghi.github.io/admin/`).
+The build script also writes `dist/404.html` so GitHub Pages can serve deep
+links for the single-page app.
 
-This admin UI uses a GitHub fine-grained Personal Access Token (PAT) to commit new posts directly to `main` (which triggers your GitHub Pages deploy). Required permissions: repository `Contents` = Read and write.
+## Editing Content
 
-Posts are saved as `.mdx` files in `src/blog/posts/` with YAML frontmatter. Uploads go to `src/assets/uploads/` and are referenced in posts as `/assets/uploads/...`.
+Blog posts live in:
 
-MDX tips:
+```text
+src/blog/posts/
+```
 
-- Add a figure: `<Figure src="/assets/uploads/my-photo.jpg" alt="..." caption="..." />`
-- Add a callout: `<Callout title="Note" variant="teal">Text here</Callout>`
-- Add a video: `<video controls src="/assets/uploads/my-video.mp4" style={{ width: '100%', borderRadius: 16 }} />`
+Posts are MDX files with YAML frontmatter. Useful components include:
+
+```mdx
+<Figure src="/assets/uploads/my-photo.jpg" alt="Description" caption="Caption" />
+<Callout title="Note" variant="teal">Text here</Callout>
+<video controls src="/assets/uploads/my-video.mp4" />
+```
+
+## Admin Publishing
+
+Open `/admin` on the deployed site. The admin UI uses a fine-grained GitHub PAT
+stored in the browser to commit new posts and uploaded assets to `main`.
+
+Required token permission:
+
+```text
+Repository contents: Read and write
+```
+
+Publishing flow:
+
+1. Draft post or upload asset in the admin UI.
+2. Admin UI commits to the repo through GitHub.
+3. GitHub Actions builds the site.
+4. GitHub Pages serves the updated static bundle.
+
+## Deployment
+
+1. Push to `main`.
+2. GitHub Actions runs `.github/workflows/pages.yml`.
+3. The generated `dist/` output is deployed to GitHub Pages.
+
+## Design Notes
+
+The site is intentionally simple: static hosting for public pages, MDX for
+portable writing, and GitHub as the content backend. The admin UI is not a full
+CMS; it is a focused workflow for editing a personal site without introducing a
+database or separate service.
 
 ## License
 
-This project is licensed under the MIT License.
+MIT
