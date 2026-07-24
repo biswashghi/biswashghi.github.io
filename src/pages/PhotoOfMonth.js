@@ -42,7 +42,7 @@ const PhotoOfMonth = () => {
       {latest ? (
         <section className="photo-month-feature" aria-labelledby="photo-month-latest">
           <figure className="photo-month-card photo-month-card--feature">
-            <img src={latest.src} alt={photoAlt(latest)} />
+            <img src={latest.src} alt={photoAlt(latest)} width="1200" height="1600" decoding="async" />
             <figcaption>
               <p className="photo-month-card__month">{formatMonth(latest.month)}</p>
               {latest.caption ? <p>{latest.caption}</p> : null}
@@ -60,7 +60,7 @@ const PhotoOfMonth = () => {
         <section className="photo-month-grid" aria-label="Previous monthly photos">
           {previous.map((photo) => (
             <figure className="photo-month-card" key={photo.month}>
-              <img src={photo.src} alt={photoAlt(photo)} loading="lazy" decoding="async" />
+              <img src={photo.src} alt={photoAlt(photo)} width="1200" height="1600" loading="lazy" decoding="async" />
               <figcaption>
                 <p className="photo-month-card__month">{formatMonth(photo.month)}</p>
                 {photo.caption ? <p>{photo.caption}</p> : null}

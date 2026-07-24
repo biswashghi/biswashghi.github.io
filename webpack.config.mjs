@@ -15,6 +15,7 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',
+    chunkFilename: '[name].[contenthash].js',
     publicPath,
     clean: true,
   },

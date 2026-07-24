@@ -25,13 +25,33 @@ const Home = () => {
                 <aside className="photo-log" aria-label="Recent notes">
                     <div className="photo-stack">
                         <figure className="photo photo--large">
-                            <img src="/assets/images/traverse-city-summer/lake-golden-hour.jpeg" alt="Golden hour over Lake Michigan" />
+                            <img
+                                src="/assets/images/traverse-city-summer/lake-golden-hour.jpeg"
+                                alt="Golden hour over Lake Michigan"
+                                width="1400"
+                                height="1050"
+                                decoding="async"
+                            />
                         </figure>
                         <figure className="photo photo--small">
-                            <img src="/assets/images/cruise-bahamas/umbrella.jpeg" alt="Umbrella lane in Nassau" />
+                            <img
+                                src="/assets/images/cruise-bahamas/umbrella.jpeg"
+                                alt="Umbrella lane in Nassau"
+                                width="1200"
+                                height="1600"
+                                loading="lazy"
+                                decoding="async"
+                            />
                         </figure>
                         <figure className="photo photo--strip">
-                            <img src="/assets/images/traverse-city-summer/vineyard.jpeg" alt="Vineyard near Traverse City" />
+                            <img
+                                src="/assets/images/traverse-city-summer/vineyard.jpeg"
+                                alt="Vineyard near Traverse City"
+                                width="1200"
+                                height="1600"
+                                loading="lazy"
+                                decoding="async"
+                            />
                         </figure>
                     </div>
                     <div className="log-card">

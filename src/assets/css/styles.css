@@ -248,6 +248,14 @@ code {
   padding: 28px 18px 40px;
 }
 
+.route-loading {
+  min-height: 40vh;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
 @keyframes riseIn {
   from {
     opacity: 0;

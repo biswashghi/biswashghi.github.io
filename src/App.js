@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { NavLink, Route, Switch } from 'react-router-dom';
 
 import Home from './pages/Home';
-import Resume from './pages/Resume';
-import BlogEditor from './pages/BlogEditor';
-import BlogIndex from './pages/BlogIndex';
-import BlogPostPage from './pages/BlogPostPage';
-import Projects from './pages/Projects';
-import Contact from './pages/Contact';
-import Admin from './pages/Admin';
-import Art from './pages/Art';
-import PhotoOfMonth from './pages/PhotoOfMonth';
-import NotFound from './pages/NotFound';
+
+const Resume = React.lazy(() => import('./pages/Resume'));
+const BlogEditor = React.lazy(() => import('./pages/BlogEditor'));
+const BlogIndex = React.lazy(() => import('./pages/BlogIndex'));
+const BlogPostPage = React.lazy(() => import('./pages/BlogPostPage'));
+const Projects = React.lazy(() => import('./pages/Projects'));
+const Contact = React.lazy(() => import('./pages/Contact'));
+const Admin = React.lazy(() => import('./pages/Admin'));
+const Art = React.lazy(() => import('./pages/Art'));
+const PhotoOfMonth = React.lazy(() => import('./pages/PhotoOfMonth'));
+const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 const App = () => {
   return (
@@ -61,19 +62,21 @@ const App = () => {
       </header>
 
       <main id="main" className="main" role="main">
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/resume" component={Resume} />
-          <Route path="/blog" exact component={BlogIndex} />
-          <Route path="/blog/new" component={BlogEditor} />
-          <Route path="/blog/:slug" component={BlogPostPage} />
-          <Route path="/projects" component={Projects} />
-          <Route path="/art" component={Art} />
-          <Route path="/photo-of-the-month" component={PhotoOfMonth} />
-          <Route path="/contact" component={Contact} />
-          <Route path="/admin" component={Admin} />
-          <Route component={NotFound} />
-        </Switch>
+        <Suspense fallback={<div className="route-loading" aria-live="polite">Loading...</div>}>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/resume" component={Resume} />
+            <Route path="/blog" exact component={BlogIndex} />
+            <Route path="/blog/new" component={BlogEditor} />
+            <Route path="/blog/:slug" component={BlogPostPage} />
+            <Route path="/projects" component={Projects} />
+            <Route path="/art" component={Art} />
+            <Route path="/photo-of-the-month" component={PhotoOfMonth} />
+            <Route path="/contact" component={Contact} />
+            <Route path="/admin" component={Admin} />
+            <Route component={NotFound} />
+          </Switch>
+        </Suspense>
       </main>
 
       <footer className="footer">

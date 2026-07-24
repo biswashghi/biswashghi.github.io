@@ -26,6 +26,22 @@ const Projects = () => {
             ]
         },
         {
+            title: 'Tiny LLM From Scratch',
+            description: 'A small PyTorch language-modeling project that grows from a bigram baseline into a causal Transformer, with character/BPE tokenizers, checkpoint resume, sampling controls, and repeatable evaluation reports.',
+            deployment: 'Project type: educational ML system',
+            deploymentStatus: 'Local repo; being prepared for public release',
+            tags: ['Python', 'PyTorch', 'Transformer', 'BPE', 'Evaluation'],
+            links: []
+        },
+        {
+            title: 'Novel Tracker Extension',
+            description: 'A Manifest V3 browser extension for tracking web novel reading progress across chapter sites, with popup capture, local storage, content-script updates, search/filter library views, and lightweight tests.',
+            deployment: 'Project type: browser extension',
+            deploymentStatus: 'Local repo; packaged through a custom build script',
+            tags: ['JavaScript', 'Chrome Extension', 'Manifest V3', 'Local Storage'],
+            links: []
+        },
+        {
             title: 'Hetzner Terraform Infra (hetzner_tf)',
             description: 'A shared infrastructure repo for provisioning and operating Hetzner-hosted apps, covering Terraform, Bitwarden-backed secret retrieval, shared Caddy setup, DNS wiring, and reusable deployment flows.',
             deployment: 'Deployment: Infrastructure and operations repo for Hetzner apps',
