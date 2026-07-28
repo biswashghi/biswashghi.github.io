@@ -7,13 +7,13 @@ const Contact = () => {
             <header className="page__header">
                 <h1 className="page__title">Contact</h1>
                 <p className="page__lede">
-                    If something here sparked an idea, send me a note. The form below opens your email client with a prefilled message so it is useful right now without backend plumbing.
+                    If something here sparked an idea, send me a note. The form opens your email app with a draft ready to send.
                 </p>
             </header>
 
             <div className="grid grid--contact">
                 <div className="card">
-                    <h2 className="section-title">Details</h2>
+                    <h2 className="section-title">Contact details</h2>
                     <div className="contact-list">
                         <a className="contact-item" href="mailto:ghi.biswash@gmail.com">
                             <span className="contact-item__k">Email</span>
@@ -36,7 +36,7 @@ const Contact = () => {
                 </div>
 
                 <div className="card">
-                    <h2 className="section-title">Send A Note</h2>
+                    <h2 className="section-title">Send a note</h2>
                     <ContactForm />
                 </div>
             </div>

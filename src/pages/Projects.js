@@ -5,7 +5,7 @@ const Projects = () => {
     const featuredProjects = [
         {
             title: 'Tiny LLM From Scratch',
-            description: 'A small PyTorch language-modeling project that grows from a bigram baseline into a causal Transformer, with character/BPE tokenizers, checkpoint resume, sampling controls, and repeatable evaluation reports.',
+            description: 'A small language-modeling project in PyTorch, starting with a bigram baseline and building up to a causal Transformer with tokenizers, checkpoints, sampling, and evaluation.',
             deployment: 'Project type: educational ML system',
             deploymentStatus: 'Public GitHub repo',
             tags: ['Python', 'PyTorch', 'Transformer', 'BPE', 'Evaluation'],
@@ -15,7 +15,7 @@ const Projects = () => {
         },
         {
             title: 'PAISA Loyalty Platform',
-            description: 'A loyalty-platform backend and partner console for rewards programs, member management, rule-version publishing, idempotent transaction ingestion, ledger-backed balances, and redemption workflows.',
+            description: 'A rewards-platform backend and partner console: programs, rules, members, transactions, ledgers, and redemption flows.',
             deployment: 'Deployment: Go API + PostgreSQL + React partner console',
             deploymentStatus: 'Public GitHub repo with local and VPS deployment runbooks',
             tags: ['Go', 'PostgreSQL', 'React', 'Rewards', 'Platform'],
@@ -71,12 +71,11 @@ const Projects = () => {
         <div className="page">
             <header className="page__header">
                 <h1 className="page__title">Projects</h1>
-                <p className="page__lede">A smaller, higher-signal view of the work: two larger systems in detail, then compact notes for the apps, tools, and infrastructure that support the rest.</p>
+                <p className="page__lede">A shorter view of the projects I care about most: two larger systems in detail, then quick notes on the rest.</p>
             </header>
 
             <section className="project-section" aria-labelledby="projects-featured">
                 <div className="project-section__head">
-                    <p className="kicker">Featured systems</p>
                     <h2 id="projects-featured">Detailed work</h2>
                 </div>
                 <div className="grid grid--cards project-featured-grid">
@@ -91,7 +90,6 @@ const Projects = () => {
             {projectSections.map((section) => (
                 <section className="project-section" key={section.title} aria-labelledby={`project-section-${section.title.replace(/\s+/g, '-').toLowerCase()}`}>
                     <div className="project-section__head">
-                        <p className="kicker">More signal</p>
                         <h2 id={`project-section-${section.title.replace(/\s+/g, '-').toLowerCase()}`}>{section.title}</h2>
                     </div>
                     <div className="project-compact-list">

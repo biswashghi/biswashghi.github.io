@@ -5,7 +5,7 @@ import useAdminCredentials from '../components/Admin/useAdminCredentials';
 const buckets = [
   {
     title: 'Architecture Class Studies',
-    description: 'Early exercises in perspective, structure, spatial rhythm, and architectural composition.',
+    description: 'Old architecture class drawings, perspective exercises, and studies from when I was sketching constantly.',
     drawings: [
       'drawing1.jpg',
       'drawing2.jpg',
@@ -36,10 +36,7 @@ const Art = () => {
         <div>
           <p className="kicker">Drawing archive</p>
           <h1 className="page__title">Art</h1>
-          <p className="page__lede">
-            Architecture drawings, sketches, and visual studies from a period where drawing was a bigger part of how I
-            thought through form and space.
-          </p>
+          <p className="page__lede">Drawings and sketches from a time when I loved to doodle.</p>
         </div>
         <div className="page__actions">
           {hasToken ? (

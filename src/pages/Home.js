@@ -7,11 +7,11 @@ const Home = () => {
             <section className="field-hero" aria-label="Intro">
                 <div className="field-hero__copy">
                     <p className="kicker">Personal operating log</p>
-                    <h1 className="field-hero__title">Systems, trips, questions, and proof of work.</h1>
+                    <h1 className="field-hero__title">Systems, trips, questions, and things I&apos;m building.</h1>
                     <p className="field-hero__lede">
-                        I build backend platforms, small tools, and personal publishing workflows. This site is becoming
-                        less of a portfolio page and more of a working field log: what shipped, what I learned, and what
-                        I am still trying to understand.
+                        I build backend platforms, small tools, and personal publishing workflows. This site is less a
+                        portfolio now and more a running record of what I&apos;m building, writing, and trying to
+                        understand.
                     </p>
                     <div className="field-hero__actions">
                         <Link className="button" to="/blog">Read the log</Link>
@@ -57,15 +57,10 @@ const Home = () => {
                     <div className="log-card">
                         <p className="log-card__label">Latest note</p>
                         <p className="log-card__text">
-                            Traverse City, the ease of Michigan summers, and why comfort can become its own kind of pressure.
+                            Traverse City and the feeling that Michigan has become a little too comfortable.
                         </p>
                     </div>
                 </aside>
-            </section>
-
-            <section className="signal-strip" aria-label="Working areas">
-                <span className="signal-strip__label">Working areas</span>
-                <p>backend systems / Hetzner deployments / MDX publishing / drawing archive / family travel notes</p>
             </section>
 
             <section className="journal" aria-label="Recent entries">
@@ -75,8 +70,8 @@ const Home = () => {
                         <h2>Comfort is becoming the question.</h2>
                     </div>
                     <p>
-                        The recent writing has been circling the same thing from different angles: family trips, Michigan
-                        summers, systems work, and the uneasy feeling that stability can become too easy.
+                        A lot of the recent writing keeps coming back to the same question: family trips, Michigan
+                        summers, systems work, and the feeling that stability can become too easy.
                     </p>
                 </aside>
                 <div className="entries">
@@ -97,15 +92,15 @@ const Home = () => {
                     <Link className="entry" to="/projects">
                         <time>Ops</time>
                         <div>
-                            <h3>Hetzner Terraform Infra</h3>
-                            <p>A deployment runbook that turns side projects into real services with Caddy, DNS, and repeatable scripts.</p>
+                            <h3>VPS Deploy</h3>
+                            <p>A reusable setup for getting small apps onto a VPS with Caddy, DNS, Docker, and repeatable deploy steps.</p>
                         </div>
                     </Link>
                     <Link className="entry" to="/art">
                         <time>Art</time>
                         <div>
                             <h3>Architecture Drawings</h3>
-                            <p>A small drawing archive from college architecture work, pulled out into its own top-level space.</p>
+                            <p>Drawings and sketches from a time when I loved to doodle.</p>
                         </div>
                     </Link>
                 </div>

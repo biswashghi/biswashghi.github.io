@@ -8,9 +8,6 @@ const Resume = () => {
         <div className="page__row">
           <div>
             <h1 className="page__title">Resume</h1>
-            <p className="page__lede">
-              A broader career view for the site, with the latest PDF linked for applications and recruiter shares.
-            </p>
           </div>
           <div className="page__actions">
             <a className="button" href="/assets/resume.pdf" target="_blank" rel="noopener noreferrer">
