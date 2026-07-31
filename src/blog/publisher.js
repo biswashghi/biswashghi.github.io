@@ -8,13 +8,13 @@ export const adminStorage = {
   TOKEN_STORAGE_KEY,
   REPO_STORAGE_KEY,
   getToken() {
-    return localStorage.getItem(TOKEN_STORAGE_KEY) || '';
+    return sessionStorage.getItem(TOKEN_STORAGE_KEY) || '';
   },
   setToken(token) {
-    localStorage.setItem(TOKEN_STORAGE_KEY, token);
+    sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
   },
   clearToken() {
-    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    sessionStorage.removeItem(TOKEN_STORAGE_KEY);
   },
   getRepo() {
     return localStorage.getItem(REPO_STORAGE_KEY) || DEFAULT_REPO;
@@ -107,6 +107,74 @@ const createBlob = async ({ owner, repo, token, content, encoding }) => {
   });
 };
 
+const parseRepoFull = (repoFull) => {
+  const [owner, repo, ...rest] = String(repoFull || '').trim().split('/');
+  if (!owner || !repo || rest.length) throw new Error('Repo must be in the form owner/repo.');
+  return { owner, repo };
+};
+
+const getRepositoryBase = async ({ owner, repo, token }) => {
+  const repoInfo = await ghFetch(`https://api.github.com/repos/${owner}/${repo}`, token);
+  const branch = repoInfo.default_branch || 'main';
+  const ref = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`, token);
+  const baseCommitSha = ref.object.sha;
+  const baseCommit = await ghFetch(
+    `https://api.github.com/repos/${owner}/${repo}/git/commits/${baseCommitSha}`,
+    token
+  );
+  return { branch, baseCommitSha, baseTreeSha: baseCommit.tree.sha };
+};
+
+const isReferenceConflict = (error) => error && (error.status === 409 || error.status === 422);
+
+export const commitRepositoryChanges = async ({ token, repoFull, message, changes, maxAttempts = 2 }) => {
+  const tokenTrimmed = String(token || '').trim();
+  const { owner, repo } = parseRepoFull(repoFull);
+  if (!tokenTrimmed) throw new Error('Missing GitHub token.');
+  if (!message || !Array.isArray(changes) || !changes.length) throw new Error('A commit message and at least one change are required.');
+  const paths = new Set();
+  for (const change of changes) {
+    if (!change?.path || paths.has(change.path)) throw new Error('Each commit change needs a unique path.');
+    paths.add(change.path);
+  }
+
+  let lastError;
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    try {
+      const { branch, baseCommitSha, baseTreeSha } = await getRepositoryBase({ owner, repo, token: tokenTrimmed });
+      const tree = [];
+      for (const change of changes) {
+        const content = change.file ? await toBase64(change.file) : String(change.content || '');
+        const blob = await createBlob({
+          owner,
+          repo,
+          token: tokenTrimmed,
+          content,
+          encoding: change.file ? 'base64' : 'utf-8',
+        });
+        tree.push({ path: change.path, mode: '100644', type: 'blob', sha: blob.sha });
+      }
+      const newTree = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, tokenTrimmed, {
+        method: 'POST',
+        body: JSON.stringify({ base_tree: baseTreeSha, tree }),
+      });
+      const newCommit = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, tokenTrimmed, {
+        method: 'POST',
+        body: JSON.stringify({ message, tree: newTree.sha, parents: [baseCommitSha] }),
+      });
+      await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`, tokenTrimmed, {
+        method: 'PATCH',
+        body: JSON.stringify({ sha: newCommit.sha }),
+      });
+      return { branch, commitSha: newCommit.sha, changedPaths: [...paths] };
+    } catch (error) {
+      lastError = error;
+      if (!isReferenceConflict(error) || attempt + 1 >= maxAttempts) throw error;
+    }
+  }
+  throw lastError;
+};
+
 export const WEB_SAFE_IMAGE_ACCEPT = 'image/jpeg,image/png,image/gif,image/webp,image/avif,image/svg+xml';
 
 export const safeFilename = (name) =>
@@ -150,85 +218,24 @@ const decodeBase64Utf8 = (value) => {
   return new TextDecoder().decode(bytes);
 };
 
-const escapeSingleQuotedJs = (value) => String(value || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-
-const withArtBucket = (source, bucketTitle) => {
-  const safeBucketTitle = String(bucketTitle || '').trim();
-  if (!safeBucketTitle) throw new Error('Missing art bucket.');
-
-  const escapedTitle = escapeSingleQuotedJs(safeBucketTitle);
-  const titleMarker = `title: '${escapedTitle}'`;
-  if (source.includes(titleMarker)) return source;
-
-  const bucketsStart = source.indexOf('const buckets = [');
-  if (bucketsStart === -1) throw new Error('Could not find Art buckets.');
-
-  const arrayStart = source.indexOf('[', bucketsStart);
-  if (arrayStart === -1) throw new Error('Could not find Art bucket array.');
-
-  let depth = 0;
-  let arrayEnd = -1;
-  for (let i = arrayStart; i < source.length; i += 1) {
-    if (source[i] === '[') depth += 1;
-    if (source[i] === ']') depth -= 1;
-    if (depth === 0) {
-      arrayEnd = i;
-      break;
-    }
-  }
-  if (arrayEnd === -1) throw new Error('Could not parse Art bucket array.');
-
-  const bucketBlock = [
-    '  {',
-    `    title: '${escapedTitle}',`,
-    "    description: 'A growing bucket of uploaded visual work.',",
-    '    drawings: [],',
-    '  },',
-  ].join('\n');
-  const needsLeadingNewline = source[arrayEnd - 1] === '\n' ? '' : '\n';
-  return `${source.slice(0, arrayEnd)}${needsLeadingNewline}${bucketBlock}\n${source.slice(arrayEnd)}`;
+const parseArtArchive = (source) => {
+  const archive = JSON.parse(source);
+  if (!Array.isArray(archive)) throw new Error('src/data/art.json must contain an array.');
+  return archive;
 };
 
-const withArtDrawing = (source, bucketTitle, filename) => {
-  const safeBucketTitle = String(bucketTitle || '').trim();
+const updateArtArchive = (archive, bucketTitle, filename) => {
+  const title = String(bucketTitle || '').trim();
   const safeFile = safeFilename(filename);
-  if (!safeBucketTitle || !safeFile) throw new Error('Missing art bucket or filename.');
-  if (source.includes(`'${safeFile}'`)) return source;
-
-  const nextSource = withArtBucket(source, safeBucketTitle);
-  const titleMarker = `title: '${escapeSingleQuotedJs(safeBucketTitle)}'`;
-  const bucketStart = nextSource.indexOf(titleMarker);
-  if (bucketStart === -1) throw new Error(`Could not find art bucket: ${safeBucketTitle}`);
-
-  const drawingsKey = nextSource.indexOf('drawings:', bucketStart);
-  if (drawingsKey === -1) throw new Error(`Could not find drawings list for ${safeBucketTitle}.`);
-
-  const arrayStart = nextSource.indexOf('[', drawingsKey);
-  if (arrayStart === -1) throw new Error(`Could not find drawings array for ${safeBucketTitle}.`);
-
-  let depth = 0;
-  let arrayEnd = -1;
-  for (let i = arrayStart; i < nextSource.length; i += 1) {
-    if (nextSource[i] === '[') depth += 1;
-    if (nextSource[i] === ']') depth -= 1;
-    if (depth === 0) {
-      arrayEnd = i;
-      break;
-    }
+  if (!title || !safeFile) throw new Error('Missing art bucket or filename.');
+  const existing = archive.find((bucket) => bucket && bucket.title === title);
+  if (existing) {
+    const drawings = Array.isArray(existing.drawings) ? existing.drawings : [];
+    return archive.map((bucket) =>
+      bucket === existing ? { ...bucket, drawings: drawings.includes(safeFile) ? drawings : [...drawings, safeFile] } : bucket
+    );
   }
-  if (arrayEnd === -1) throw new Error(`Could not parse drawings array for ${safeBucketTitle}.`);
-
-  const lineStart = nextSource.lastIndexOf('\n', drawingsKey) + 1;
-  const lineIndent = nextSource.slice(lineStart, drawingsKey).match(/^\s*/)[0] || '    ';
-  const itemIndent = `${lineIndent}  `;
-  const current = nextSource
-    .slice(arrayStart + 1, arrayEnd)
-    .match(/'([^']+)'/g);
-  const drawings = (current || []).map((item) => item.slice(1, -1));
-  drawings.push(safeFile);
-
-  const rendered = `[\n${drawings.map((item) => `${itemIndent}'${item}',`).join('\n')}\n${lineIndent}]`;
-  return `${nextSource.slice(0, arrayStart)}${rendered}${nextSource.slice(arrayEnd + 1)}`;
+  return [...archive, { title, description: 'A growing bucket of uploaded visual work.', drawings: [safeFile] }];
 };
 
 export const buildMdxWithFrontmatter = ({ title, slug, date, excerpt, coverSrc, coverAlt, body }) => {
@@ -268,15 +275,6 @@ export const publishPostToGitHub = async ({
   coverFile,
   extraFiles,
 }) => {
-  const tokenTrimmed = String(token || '').trim();
-  const repoTrimmed = String(repoFull || '').trim();
-  const [owner, repo] = repoTrimmed.split('/');
-  if (!owner || !repo) throw new Error('Repo must be in the form owner/repo.');
-
-  // Detect default branch and confirm repo access up-front.
-  const repoInfo = await ghFetch(`https://api.github.com/repos/${owner}/${repo}`, tokenTrimmed);
-  const branch = repoInfo.default_branch || 'main';
-
   const coverUploadPath = coverFile ? `src/assets/uploads/${safeFilename(coverFile.name)}` : '';
   const coverPublic = coverFile ? coverUploadPath.replace(/^src\/assets\//, '/assets/') : '';
   const mdx = buildMdxWithFrontmatter({
@@ -300,56 +298,18 @@ export const publishPostToGitHub = async ({
     assertNotHeicUpload(f, safeFilename(f.name));
   }
 
-  // Get base commit + tree.
-  const ref = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`, tokenTrimmed);
-  const baseCommitSha = ref.object.sha;
-  const baseCommit = await ghFetch(
-    `https://api.github.com/repos/${owner}/${repo}/git/commits/${baseCommitSha}`,
-    tokenTrimmed
-  );
-  const baseTreeSha = baseCommit.tree.sha;
-
-  // Blobs
-  const treeEntries = [];
-  const mdxBlob = await createBlob({ owner, repo, token: tokenTrimmed, content: mdx, encoding: 'utf-8' });
-  treeEntries.push({ path: mdxPath, mode: '100644', type: 'blob', sha: mdxBlob.sha });
-
-  for (const u of uploads) {
-    const b64 = await toBase64(u.file);
-    const blob = await createBlob({ owner, repo, token: tokenTrimmed, content: b64, encoding: 'base64' });
-    treeEntries.push({ path: u.path, mode: '100644', type: 'blob', sha: blob.sha });
-  }
-
-  // Tree
-  const newTree = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, tokenTrimmed, {
-    method: 'POST',
-    body: JSON.stringify({ base_tree: baseTreeSha, tree: treeEntries }),
+  const result = await commitRepositoryChanges({
+    token,
+    repoFull,
+    message: `blog: ${slug}`,
+    changes: [{ path: mdxPath, content: mdx }, ...uploads.map((upload) => ({ path: upload.path, file: upload.file }))],
   });
-
-  // Commit
-  const newCommit = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, tokenTrimmed, {
-    method: 'POST',
-    body: JSON.stringify({
-      message: `blog: ${slug}`,
-      tree: newTree.sha,
-      parents: [baseCommitSha],
-    }),
-  });
-
-  // Update ref
-  await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`, tokenTrimmed, {
-    method: 'PATCH',
-    body: JSON.stringify({ sha: newCommit.sha }),
-  });
-
-  return { path: mdxPath, commitSha: newCommit.sha, branch };
+  return { path: mdxPath, ...result };
 };
 
 export const publishArtImageToGitHub = async ({ token, repoFull, bucketTitle, file, filename }) => {
+  const { owner, repo } = parseRepoFull(repoFull);
   const tokenTrimmed = String(token || '').trim();
-  const repoTrimmed = String(repoFull || '').trim();
-  const [owner, repo] = repoTrimmed.split('/');
-  if (!owner || !repo) throw new Error('Repo must be in the form owner/repo.');
   if (!bucketTitle) throw new Error('Choose an art bucket.');
   if (!file) throw new Error('Choose an image to upload.');
   if (file.size > 25 * 1024 * 1024) throw new Error(`File too large (${file.name}). Keep uploads under ~25MB.`);
@@ -358,67 +318,26 @@ export const publishArtImageToGitHub = async ({ token, repoFull, bucketTitle, fi
   if (!uploadName) throw new Error('Filename is required.');
   assertWebSafeImageUpload(file, uploadName, 'Art upload');
   const imagePath = `src/assets/images/drawing/${uploadName}`;
-  const artPagePath = 'src/pages/Art.js';
-
+  const dataPath = 'src/data/art.json';
   const repoInfo = await ghFetch(`https://api.github.com/repos/${owner}/${repo}`, tokenTrimmed);
   const branch = repoInfo.default_branch || 'main';
-
-  const ref = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`, tokenTrimmed);
-  const baseCommitSha = ref.object.sha;
-  const baseCommit = await ghFetch(
-    `https://api.github.com/repos/${owner}/${repo}/git/commits/${baseCommitSha}`,
-    tokenTrimmed
-  );
-  const baseTreeSha = baseCommit.tree.sha;
-
   const artInfo = await ghFetch(
-    `https://api.github.com/repos/${owner}/${repo}/contents/${artPagePath}?ref=${encodeURIComponent(branch)}`,
+    `https://api.github.com/repos/${owner}/${repo}/contents/${dataPath}?ref=${encodeURIComponent(branch)}`,
     tokenTrimmed
   );
-  const artSource = decodeBase64Utf8(artInfo.content);
-  const nextArtSource = withArtDrawing(artSource, bucketTitle, uploadName);
-
-  const imageBlob = await createBlob({
-    owner,
-    repo,
-    token: tokenTrimmed,
-    content: await toBase64(file),
-    encoding: 'base64',
+  const nextArchive = updateArtArchive(parseArtArchive(decodeBase64Utf8(artInfo.content)), bucketTitle, uploadName);
+  const result = await commitRepositoryChanges({
+    token,
+    repoFull,
+    message: `art: add ${uploadName}`,
+    // The archive content was read above; retrying stale JSON could overwrite a concurrent edit.
+    maxAttempts: 1,
+    changes: [
+      { path: imagePath, file },
+      { path: dataPath, content: `${JSON.stringify(nextArchive, null, 2)}\n` },
+    ],
   });
-  const artBlob = await createBlob({
-    owner,
-    repo,
-    token: tokenTrimmed,
-    content: nextArtSource,
-    encoding: 'utf-8',
-  });
-
-  const newTree = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, tokenTrimmed, {
-    method: 'POST',
-    body: JSON.stringify({
-      base_tree: baseTreeSha,
-      tree: [
-        { path: imagePath, mode: '100644', type: 'blob', sha: imageBlob.sha },
-        { path: artPagePath, mode: '100644', type: 'blob', sha: artBlob.sha },
-      ],
-    }),
-  });
-
-  const newCommit = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, tokenTrimmed, {
-    method: 'POST',
-    body: JSON.stringify({
-      message: `art: add ${uploadName}`,
-      tree: newTree.sha,
-      parents: [baseCommitSha],
-    }),
-  });
-
-  await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`, tokenTrimmed, {
-    method: 'PATCH',
-    body: JSON.stringify({ sha: newCommit.sha }),
-  });
-
-  return { imagePath, artPagePath, commitSha: newCommit.sha, branch };
+  return { imagePath, dataPath, ...result };
 };
 
 export const publishPhotoOfMonthToGitHub = async ({
@@ -429,9 +348,7 @@ export const publishPhotoOfMonthToGitHub = async ({
   caption,
 }) => {
   const tokenTrimmed = String(token || '').trim();
-  const repoTrimmed = String(repoFull || '').trim();
-  const [owner, repo] = repoTrimmed.split('/');
-  if (!owner || !repo) throw new Error('Repo must be in the form owner/repo.');
+  const { owner, repo } = parseRepoFull(repoFull);
   if (!/^\d{4}-\d{2}$/.test(String(month || '').trim())) throw new Error('Month must be YYYY-MM.');
   if (!file) throw new Error('Choose an image to upload.');
   if (file.size > 25 * 1024 * 1024) throw new Error(`File too large (${file.name}). Keep uploads under ~25MB.`);
@@ -446,14 +363,6 @@ export const publishPhotoOfMonthToGitHub = async ({
 
   const repoInfo = await ghFetch(`https://api.github.com/repos/${owner}/${repo}`, tokenTrimmed);
   const branch = repoInfo.default_branch || 'main';
-
-  const ref = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`, tokenTrimmed);
-  const baseCommitSha = ref.object.sha;
-  const baseCommit = await ghFetch(
-    `https://api.github.com/repos/${owner}/${repo}/git/commits/${baseCommitSha}`,
-    tokenTrimmed
-  );
-  const baseTreeSha = baseCommit.tree.sha;
 
   let existing = [];
   try {
@@ -478,47 +387,18 @@ export const publishPhotoOfMonthToGitHub = async ({
     .sort((a, b) => String(b.month).localeCompare(String(a.month)));
   const nextData = `${JSON.stringify(nextPhotos, null, 2)}\n`;
 
-  const imageBlob = await createBlob({
-    owner,
-    repo,
-    token: tokenTrimmed,
-    content: await toBase64(file),
-    encoding: 'base64',
+  const result = await commitRepositoryChanges({
+    token,
+    repoFull,
+    message: `photo: ${safeMonth}`,
+    // The monthly data was read above; surface conflicts rather than overwriting newer entries.
+    maxAttempts: 1,
+    changes: [
+      { path: imagePath, file },
+      { path: dataPath, content: nextData },
+    ],
   });
-  const dataBlob = await createBlob({
-    owner,
-    repo,
-    token: tokenTrimmed,
-    content: nextData,
-    encoding: 'utf-8',
-  });
-
-  const newTree = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, tokenTrimmed, {
-    method: 'POST',
-    body: JSON.stringify({
-      base_tree: baseTreeSha,
-      tree: [
-        { path: imagePath, mode: '100644', type: 'blob', sha: imageBlob.sha },
-        { path: dataPath, mode: '100644', type: 'blob', sha: dataBlob.sha },
-      ],
-    }),
-  });
-
-  const newCommit = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, tokenTrimmed, {
-    method: 'POST',
-    body: JSON.stringify({
-      message: `photo: ${safeMonth}`,
-      tree: newTree.sha,
-      parents: [baseCommitSha],
-    }),
-  });
-
-  await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`, tokenTrimmed, {
-    method: 'PATCH',
-    body: JSON.stringify({ sha: newCommit.sha }),
-  });
-
-  return { imagePath, dataPath, commitSha: newCommit.sha, branch };
+  return { imagePath, dataPath, ...result };
 };
 
 export const deletePostFromGitHub = async ({ token, repoFull, slug }) => {

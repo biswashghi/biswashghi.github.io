@@ -1,5 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { posts } from '../blog/posts';
+import { formatIsoDate } from '../blog/date';
+
+const recentPosts = posts.slice(0, 2);
 
 const Home = () => {
     return (
@@ -75,20 +79,15 @@ const Home = () => {
                     </p>
                 </aside>
                 <div className="entries">
-                    <Link className="entry" to="/blog/traverse-city-summer">
-                        <time>Jul 2026</time>
-                        <div>
-                            <h3>Traverse City Summer</h3>
-                            <p>Northern Michigan, wineries, dunes, and the uncomfortable pull toward a harder next chapter.</p>
-                        </div>
-                    </Link>
-                    <Link className="entry" to="/blog/first-cruise-bahamas">
-                        <time>Mar 2026</time>
-                        <div>
-                            <h3>A Different Kind of Family Vacation</h3>
-                            <p>A first cruise, small family rhythms, Nassau walks, and what relaxation looks like for four people.</p>
-                        </div>
-                    </Link>
+                    {recentPosts.map((post) => (
+                        <Link className="entry" to={`/blog/${post.slug}`} key={post.slug}>
+                            <time>{formatIsoDate(post.date, { month: 'short', year: 'numeric' })}</time>
+                            <div>
+                                <h3>{post.title}</h3>
+                                <p>{post.excerpt}</p>
+                            </div>
+                        </Link>
+                    ))}
                     <Link className="entry" to="/projects">
                         <time>Ops</time>
                         <div>

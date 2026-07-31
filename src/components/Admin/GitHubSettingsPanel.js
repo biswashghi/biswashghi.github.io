@@ -8,6 +8,7 @@ const GitHubSettingsPanel = ({
   setRepoFull,
   token,
   setToken,
+  clearToken,
   me,
   setMe,
   tokenError,
@@ -18,8 +19,8 @@ const GitHubSettingsPanel = ({
 
   const save = async () => {
     setStatus(idleStatus);
-    adminStorage.setRepo(repoFull.trim());
-    adminStorage.setToken(token);
+    setRepoFull(repoFull.trim());
+    setToken(token);
 
     if (!token) {
       setStatus({ state: 'ok', message: 'Saved repo. Token is empty.' });
@@ -37,8 +38,7 @@ const GitHubSettingsPanel = ({
   };
 
   const clear = () => {
-    adminStorage.clearToken();
-    setToken('');
+    clearToken();
     setMe(null);
     setTokenError('');
     setStatus({ state: 'ok', message: 'Token cleared.' });
@@ -136,8 +136,8 @@ const GitHubSettingsPanel = ({
             spellCheck="false"
           />
           <p className="muted admin-help">
-            Required permissions: repository <code>Contents</code> = Read and write. Stored in this browser via
-            localStorage.
+            Required permissions: repository <code>Contents</code> = Read and write. Kept only for this browser
+            session and cleared when the session ends.
           </p>
           {me ? <p className="admin-ok">Signed in as <strong>{me.login}</strong>.</p> : null}
           {tokenError ? <p className="admin-err">Token error: {tokenError}</p> : null}

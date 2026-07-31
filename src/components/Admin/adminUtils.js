@@ -1,6 +1,7 @@
 import { slugify } from '../../blog/publisher';
+import artBucketsData from '../../data/art.json';
 
-export const artBuckets = ['Architecture Class Studies', 'Sketchbook Fragments'];
+export const artBuckets = artBucketsData.map((bucket) => bucket.title);
 
 export const idleStatus = { state: 'idle', message: '' };
 

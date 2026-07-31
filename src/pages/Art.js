@@ -1,31 +1,7 @@
 import React from 'react';
 import ArtUploadPanel from '../components/Admin/ArtUploadPanel';
 import useAdminCredentials from '../components/Admin/useAdminCredentials';
-
-const buckets = [
-  {
-    title: 'Architecture Class Studies',
-    description: 'Old architecture class drawings, perspective exercises, and studies from when I was sketching constantly.',
-    drawings: [
-      'drawing1.jpg',
-      'drawing2.jpg',
-      'drawing3.jpg',
-      'drawing4.jpg',
-      'drawing5.jpg',
-      'drawing6.jpg',
-      'drawing7.jpg',
-      'drawing8.jpg',
-      'drawing9.jpg',
-      'drawing10.jpg',
-      'architecture-shell-studies.jpg',
-    ],
-  },
-  {
-    title: 'Sketchbook Fragments',
-    description: 'Loose studies and remaining pieces from the archive.',
-    drawings: ['drawing11-clean.jpg', 'sketchbook-img-0741.jpg'],
-  },
-];
+import buckets from '../data/art.json';
 
 const Art = () => {
   const { repoFull, token, hasToken } = useAdminCredentials();

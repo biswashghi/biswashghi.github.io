@@ -1,4 +1,4 @@
-/* Optimize blog/site images in-place before start/build to improve load times. */
+/* Optimize checked-in blog/site images in-place for deployment or before commit. */
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
@@ -10,7 +10,7 @@ const MAX_DIMENSION = 1600;
 const JPG_QUALITY = 76;
 const WEBP_QUALITY = 76;
 const AVIF_QUALITY = 50;
-const HARD_MAX_BYTES = 240 * 1024;
+const HARD_MAX_BYTES = 200 * 1024;
 const MIN_SAVINGS_RATIO = 0.02;
 const MIN_SIZE_BYTES = 80 * 1024;
 
@@ -71,8 +71,8 @@ const optimizeFile = async (absPath) => {
   if ((ext === '.jpg' || ext === '.jpeg' || ext === '.webp') && optimized.length > HARD_MAX_BYTES) {
     const tightened =
       ext === '.webp'
-        ? await makePipeline(source, 1400).webp({ quality: 68 }).toBuffer()
-        : await makePipeline(source, 1400).jpeg({ quality: 68, mozjpeg: true, progressive: true }).toBuffer();
+        ? await makePipeline(source, 1200).webp({ quality: 64 }).toBuffer()
+        : await makePipeline(source, 1200).jpeg({ quality: 64, mozjpeg: true, progressive: true }).toBuffer();
     if (tightened.length < optimized.length) {
       optimized = tightened;
     }

@@ -1,20 +1,14 @@
 import React, { Suspense } from 'react';
-import { NavLink, Route, Switch } from 'react-router-dom';
+import { NavLink, Outlet, createBrowserRouter } from 'react-router-dom';
+import AdminSessionProvider from './components/Admin/AdminSessionProvider';
 
-import Home from './pages/Home';
+const navClassName = ({ isActive }) => `nav__link${isActive ? ' is-active' : ''}`;
+const loadRoute = (loader) => async () => {
+  const { default: Component } = await loader();
+  return { Component };
+};
 
-const Resume = React.lazy(() => import('./pages/Resume'));
-const BlogEditor = React.lazy(() => import('./pages/BlogEditor'));
-const BlogIndex = React.lazy(() => import('./pages/BlogIndex'));
-const BlogPostPage = React.lazy(() => import('./pages/BlogPostPage'));
-const Projects = React.lazy(() => import('./pages/Projects'));
-const Contact = React.lazy(() => import('./pages/Contact'));
-const Admin = React.lazy(() => import('./pages/Admin'));
-const Art = React.lazy(() => import('./pages/Art'));
-const PhotoOfMonth = React.lazy(() => import('./pages/PhotoOfMonth'));
-const NotFound = React.lazy(() => import('./pages/NotFound'));
-
-const App = () => {
+const AppShell = () => {
   return (
     <div className="app">
       <a className="skip-link" href="#main">
@@ -36,25 +30,25 @@ const App = () => {
           </NavLink>
 
           <nav className="nav" aria-label="Primary">
-            <NavLink to="/" exact activeClassName="is-active" className="nav__link">
+            <NavLink to="/" end className={navClassName}>
               Home
             </NavLink>
-            <NavLink to="/resume" activeClassName="is-active" className="nav__link">
+            <NavLink to="/resume" className={navClassName}>
               Resume
             </NavLink>
-            <NavLink to="/projects" activeClassName="is-active" className="nav__link">
+            <NavLink to="/projects" className={navClassName}>
               Projects
             </NavLink>
-            <NavLink to="/blog" activeClassName="is-active" className="nav__link">
+            <NavLink to="/blog" className={navClassName}>
               Blog
             </NavLink>
-            <NavLink to="/art" activeClassName="is-active" className="nav__link">
+            <NavLink to="/art" className={navClassName}>
               Art
             </NavLink>
-            <NavLink to="/photo-of-the-month" activeClassName="is-active" className="nav__link">
+            <NavLink to="/photo-of-the-month" className={navClassName}>
               Photo
             </NavLink>
-            <NavLink to="/contact" activeClassName="is-active" className="nav__link nav__link--cta">
+            <NavLink to="/contact" className={({ isActive }) => `${navClassName({ isActive })} nav__link--cta`}>
               Contact
             </NavLink>
           </nav>
@@ -63,19 +57,7 @@ const App = () => {
 
       <main id="main" className="main" role="main">
         <Suspense fallback={<div className="route-loading" aria-live="polite">Loading...</div>}>
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/resume" component={Resume} />
-            <Route path="/blog" exact component={BlogIndex} />
-            <Route path="/blog/new" component={BlogEditor} />
-            <Route path="/blog/:slug" component={BlogPostPage} />
-            <Route path="/projects" component={Projects} />
-            <Route path="/art" component={Art} />
-            <Route path="/photo-of-the-month" component={PhotoOfMonth} />
-            <Route path="/contact" component={Contact} />
-            <Route path="/admin" component={Admin} />
-            <Route component={NotFound} />
-          </Switch>
+          <Outlet />
         </Suspense>
       </main>
 
@@ -96,4 +78,28 @@ const App = () => {
   );
 };
 
-export default App;
+export const router = createBrowserRouter([
+  {
+    path: '/',
+    Component: () => (
+      <AdminSessionProvider>
+        <AppShell />
+      </AdminSessionProvider>
+    ),
+    children: [
+      { index: true, lazy: loadRoute(() => import('./pages/Home')) },
+      { path: 'resume', lazy: loadRoute(() => import('./pages/Resume')) },
+      { path: 'blog', lazy: loadRoute(() => import('./pages/BlogIndex')) },
+      { path: 'blog/new', lazy: loadRoute(() => import('./pages/BlogEditor')) },
+      { path: 'blog/:slug', lazy: loadRoute(() => import('./pages/BlogPostPage')) },
+      { path: 'projects', lazy: loadRoute(() => import('./pages/Projects')) },
+      { path: 'art', lazy: loadRoute(() => import('./pages/Art')) },
+      { path: 'photo-of-the-month', lazy: loadRoute(() => import('./pages/PhotoOfMonth')) },
+      { path: 'contact', lazy: loadRoute(() => import('./pages/Contact')) },
+      { path: 'admin', lazy: loadRoute(() => import('./pages/Admin')) },
+      { path: '*', lazy: loadRoute(() => import('./pages/NotFound')) },
+    ],
+  },
+]);
+
+export default AppShell;

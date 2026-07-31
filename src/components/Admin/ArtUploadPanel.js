@@ -46,7 +46,7 @@ const ArtUploadPanel = ({ repoFull, token }) => {
       });
       setArtStatus({
         state: 'ok',
-        message: `Uploaded ${result.imagePath} and updated Art.js. GitHub Pages will refresh after deploy.`,
+        message: `Uploaded ${result.imagePath} and updated the art archive. GitHub Pages will refresh after deploy.`,
       });
       setArtFile(null);
       if (artBucket === NEW_BUCKET_VALUE) setNewBucketTitle('');

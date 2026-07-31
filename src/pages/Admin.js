@@ -13,7 +13,7 @@ const adminTabs = [
 ];
 
 const Admin = () => {
-  const { repoFull, setRepoFull, token, setToken } = useAdminCredentials();
+  const { repoFull, setRepoFull, token, setToken, clearToken } = useAdminCredentials();
   const [me, setMe] = useState(null);
   const [tokenError, setTokenError] = useState('');
   const [activeTab, setActiveTab] = useState(adminTabs[0].id);
@@ -86,6 +86,7 @@ const Admin = () => {
               setRepoFull={setRepoFull}
               token={token}
               setToken={setToken}
+              clearToken={clearToken}
               me={me}
               setMe={setMe}
               tokenError={tokenError}

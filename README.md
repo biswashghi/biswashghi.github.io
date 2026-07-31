@@ -16,7 +16,7 @@ committing directly to this repo through the GitHub Contents API.
 - MDX blog with custom components for figures, callouts, and media
 - Photo-of-the-month and art/archive views
 - Admin UI for publishing posts and uploads
-- Image optimization before local start and production build
+- Explicit image optimization command for checked-in media
 - GitHub Actions deployment to GitHub Pages
 
 ## Architecture
@@ -33,7 +33,7 @@ flowchart LR
 
 ## Stack
 
-- React 17 and React Router
+- React 19 and React Router 7
 - MDX for posts
 - Webpack 5 build pipeline
 - Sharp image optimization
@@ -60,6 +60,15 @@ Build production assets:
 npm run build
 ```
 
+To optimize tracked image assets before committing them, run:
+
+```bash
+npm run optimize:images
+```
+
+GitHub Pages runs this same optimization step before each production build, so
+new repository-backed uploads are optimized even when local optimization was skipped.
+
 The build script also writes `dist/404.html` so GitHub Pages can serve deep
 links for the single-page app.
 
@@ -82,7 +91,9 @@ Posts are MDX files with YAML frontmatter. Useful components include:
 ## Admin Publishing
 
 Open `/admin` on the deployed site. The admin UI uses a fine-grained GitHub PAT
-stored in the browser to commit new posts and uploaded assets to `main`.
+held only for the current browser session to commit new posts and uploaded assets to `main`.
+Because this is a static GitHub Pages site, use a token scoped only to this repository and
+clear it when finished.
 
 Required token permission:
 

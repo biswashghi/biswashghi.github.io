@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
-  adminStorage,
   isValidSlug,
   safeFilename,
   slugify,
@@ -10,10 +9,10 @@ import {
   publishPostToGitHub,
 } from '../../blog/publisher';
 import BlogPreview from './BlogPreview';
+import useAdminCredentials from '../Admin/useAdminCredentials';
 
 const PostComposer = ({ onPublished }) => {
-  const [repoFull, setRepoFull] = useState(() => adminStorage.getRepo());
-  const [token, setToken] = useState(() => adminStorage.getToken());
+  const { repoFull, token } = useAdminCredentials();
 
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
@@ -28,17 +27,6 @@ const PostComposer = ({ onPublished }) => {
   const [status, setStatus] = useState({ state: 'idle', message: '' });
   const [mode, setMode] = useState('write');
   const bodyRef = useRef(null);
-
-  useEffect(() => {
-    // If token/repo were updated in /admin in another tab, reflect it here.
-    const onStorage = (e) => {
-      if (!e || !e.key) return;
-      if (e.key === adminStorage.TOKEN_STORAGE_KEY) setToken(adminStorage.getToken());
-      if (e.key === adminStorage.REPO_STORAGE_KEY) setRepoFull(adminStorage.getRepo());
-    };
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
-  }, []);
 
   useEffect(() => {
     if (!title) return;
