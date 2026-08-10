@@ -1068,7 +1068,33 @@ code {
 }
 
 .project-detail-card {
+  display: flex;
   min-height: 100%;
+  scroll-snap-align: start;
+}
+
+.project-featured-rail {
+  display: grid;
+  grid-auto-columns: minmax(340px, 44%);
+  grid-auto-flow: column;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 2px 2px 16px;
+  scroll-padding-inline: 2px;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-inline: contain;
+  scrollbar-color: rgba(12, 47, 58, 0.42) transparent;
+}
+
+.project-featured-rail .project-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.project-featured-rail .project-actions {
+  margin-top: auto;
+  padding-top: 8px;
 }
 
 .project-description {
@@ -1963,12 +1989,10 @@ textarea:focus-visible {
   grid-template-columns: minmax(0, 1fr);
 }
 
-.photo-month-feature {
-  padding-bottom: 34px;
-}
-
 .photo-month-card {
-  margin: 0;
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 16px;
   border: 1px solid var(--ink);
   background: var(--paper);
   box-shadow: var(--shadow-soft);
@@ -1977,9 +2001,8 @@ textarea:focus-visible {
 
 .photo-month-card img {
   width: 100%;
+  height: auto;
   display: block;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
   border-bottom: 1px solid var(--ink);
 }
 
@@ -2008,15 +2031,9 @@ textarea:focus-visible {
   text-transform: uppercase;
 }
 
-.photo-month-card--feature img {
-  aspect-ratio: 16 / 9;
-  max-height: 72vh;
-}
-
 .photo-month-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  columns: 2 24rem;
+  column-gap: 20px;
   padding-bottom: 54px;
 }
 
@@ -2219,6 +2236,10 @@ code {
   .project-compact__actions {
     justify-content: flex-start;
   }
+
+  .project-featured-rail {
+    grid-auto-columns: minmax(310px, 72%);
+  }
 }
 
 @media (max-width: 560px) {
@@ -2238,14 +2259,21 @@ code {
     min-height: 390px;
   }
 
+  .project-featured-rail {
+    grid-auto-columns: minmax(280px, 86%);
+  }
+
   .photo--large {
     inset: 0 0 86px 28px;
   }
 
   .route-grid,
-  .entry,
-  .photo-month-grid {
+  .entry {
     grid-template-columns: 1fr;
+  }
+
+  .photo-month-grid {
+    columns: 1;
   }
 
   .art-bucket__head {

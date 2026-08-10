@@ -7,14 +7,14 @@ const Projects = () => {
         <div className="page">
             <header className="page__header">
                 <h1 className="page__title">Projects</h1>
-                <p className="page__lede">A shorter view of the projects I care about most: two larger systems in detail, then quick notes on the rest.</p>
+                <p className="page__lede">A closer look at the projects I care about most, followed by quick notes on the rest.</p>
             </header>
 
             <section className="project-section" aria-labelledby="projects-featured">
                 <div className="project-section__head">
                     <h2 id="projects-featured">Detailed work</h2>
                 </div>
-                <div className="grid grid--cards project-featured-grid">
+                <div className="project-featured-rail" role="region" aria-label="Detailed projects. Scroll horizontally to see more.">
                     {featuredProjects.map((project) => (
                         <div key={project.title} className="card card--feature project-detail-card">
                             <ProjectCard {...project} />

@@ -13,7 +13,21 @@ export const featuredProjects = [
     deployment: 'Deployment: Go API + PostgreSQL + React partner console',
     deploymentStatus: 'Public GitHub repo with local and VPS deployment runbooks',
     tags: ['Go', 'PostgreSQL', 'React', 'Rewards', 'Platform'],
-    links: [{ label: 'GitHub repo', href: 'https://github.com/biswashghi/paisa' }],
+    links: [
+      { label: 'GitHub repo', href: 'https://github.com/biswashghi/paisa' },
+      { label: 'Live site', href: 'https://paisa.bghimire.com/', ghost: true },
+    ],
+  },
+  {
+    title: 'Novel Tracker Extension',
+    description: 'A Manifest V3 browser extension that tracks reading progress across web-novel chapter pages and helps readers return to the right place.',
+    deployment: 'Deployment: Chrome Web Store extension',
+    deploymentStatus: 'Public GitHub repo and published Chrome Web Store listing',
+    tags: ['JavaScript', 'Chrome Extensions', 'Manifest V3', 'Browser APIs'],
+    links: [
+      { label: 'GitHub repo', href: 'https://github.com/biswashghi/novel_tracker' },
+      { label: 'Chrome Web Store', href: 'https://chromewebstore.google.com/detail/novel-tracker/meciopmpdehijfmbgbagndgknlmbmjoa', ghost: true },
+    ],
   },
 ];
 
@@ -28,7 +42,6 @@ export const projectSections = [
   {
     title: 'Tools and Infrastructure',
     projects: [
-      { title: 'Novel Tracker Extension', summary: 'Manifest V3 browser extension for tracking web novel reading progress across chapter pages.', links: [{ label: 'GitHub repo', href: 'https://github.com/biswashghi/novel_tracker' }] },
       { title: 'VPS Deploy', summary: 'Reusable Hetzner VPS deployment flow covering Terraform, DNS, Caddy, Docker hosting, secrets, and runbooks.', links: [{ label: 'GitHub repo', href: 'https://github.com/biswashghi/hetzner_tf/tree/main' }] },
     ],
   },

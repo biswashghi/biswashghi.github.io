@@ -15,8 +15,6 @@ const photoAlt = (photo) => photo.caption || `Photo of the month for ${formatMon
 
 const PhotoOfMonth = () => {
   const { repoFull, token, hasToken } = useAdminCredentials();
-  const latest = sortedPhotos[0];
-  const previous = sortedPhotos.slice(1);
 
   return (
     <div className="page">
@@ -39,15 +37,17 @@ const PhotoOfMonth = () => {
         </div>
       </header>
 
-      {latest ? (
-        <section className="photo-month-feature" aria-labelledby="photo-month-latest">
-          <figure className="photo-month-card photo-month-card--feature">
-            <img src={latest.src} alt={photoAlt(latest)} width="1200" height="1600" decoding="async" />
-            <figcaption>
-              <p className="photo-month-card__month">{formatMonth(latest.month)}</p>
-              {latest.caption ? <p>{latest.caption}</p> : null}
-            </figcaption>
-          </figure>
+      {sortedPhotos.length ? (
+        <section className="photo-month-grid" aria-label="Photo of the Month archive">
+          {sortedPhotos.map((photo, index) => (
+            <figure className="photo-month-card" key={photo.month}>
+              <img src={photo.src} alt={photoAlt(photo)} loading={index === 0 ? 'eager' : 'lazy'} decoding="async" />
+              <figcaption>
+                <p className="photo-month-card__month">{formatMonth(photo.month)}</p>
+                {photo.caption ? <p className="photo-month-card__caption">{photo.caption}</p> : null}
+              </figcaption>
+            </figure>
+          ))}
         </section>
       ) : (
         <section className="photo-month-empty" aria-label="No photos yet">
@@ -55,20 +55,6 @@ const PhotoOfMonth = () => {
           <h2>A place to look back through the camera roll and keep one photo that still feels important.</h2>
         </section>
       )}
-
-      {previous.length ? (
-        <section className="photo-month-grid" aria-label="Previous monthly photos">
-          {previous.map((photo) => (
-            <figure className="photo-month-card" key={photo.month}>
-              <img src={photo.src} alt={photoAlt(photo)} width="1200" height="1600" loading="lazy" decoding="async" />
-              <figcaption>
-                <p className="photo-month-card__month">{formatMonth(photo.month)}</p>
-                {photo.caption ? <p>{photo.caption}</p> : null}
-              </figcaption>
-            </figure>
-          ))}
-        </section>
-      ) : null}
 
       {hasToken ? (
         <section id="photo-month-upload" className="inline-admin-panel" aria-label="Upload photo of the month">
