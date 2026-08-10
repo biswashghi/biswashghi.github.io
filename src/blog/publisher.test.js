@@ -5,14 +5,14 @@ describe('publisher utilities', () => {
     expect(slugify(' A Test: Post! ')).toBe('a-test-post');
     expect(isValidSlug('a-test-post')).toBe(true);
     expect(isValidSlug('A Test')).toBe(false);
-    expect(safeFilename('Lake photo (final).jpg')).toBe('Lake-photo-final.jpg');
+    expect(safeFilename('Lake photo (final).jpg')).toBe('Lake-photo-final.jpeg');
   });
 
   test('serializes MDX frontmatter with a trailing newline', () => {
     expect(
       buildMdxWithFrontmatter({
         title: 'A "quoted" title', slug: 'quoted-title', date: '2026-07-30', excerpt: 'Summary',
-        coverSrc: '/assets/uploads/cover.jpg', coverAlt: 'Cover', body: 'Hello world.',
+        coverSrc: '/assets/uploads/cover.jpeg', coverAlt: 'Cover', body: 'Hello world.',
       })
     ).toContain('title: "A \\"quoted\\" title"');
   });

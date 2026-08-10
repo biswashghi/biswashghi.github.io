@@ -60,14 +60,19 @@ Build production assets:
 npm run build
 ```
 
-To optimize tracked image assets before committing them, run:
+Original image assets live under `src/assets/originals/`. The site serves generated
+copies from `src/assets/images/` and `src/assets/uploads/`; do not hand-edit or
+compress the originals.
+
+`npm start` and `npm run build` regenerate the served image assets automatically. To run
+only that generation step:
 
 ```bash
 npm run optimize:images
 ```
 
-GitHub Pages runs this same optimization step before each production build, so
-new repository-backed uploads are optimized even when local optimization was skipped.
+GitHub Pages runs the same build flow, so new repository-backed uploads can be committed
+as originals and still deploy as web-sized assets.
 
 The build script also writes `dist/404.html` so GitHub Pages can serve deep
 links for the single-page app.
@@ -83,7 +88,7 @@ src/blog/posts/
 Posts are MDX files with YAML frontmatter. Useful components include:
 
 ```mdx
-<Figure src="/assets/uploads/my-photo.jpg" alt="Description" caption="Caption" />
+<Figure src="/assets/uploads/my-photo.jpeg" alt="Description" caption="Caption" />
 <Callout title="Note" variant="teal">Text here</Callout>
 <video controls src="/assets/uploads/my-video.mp4" />
 ```

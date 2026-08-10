@@ -1,24 +1,34 @@
 [
   {
     "title": "Architecture Class Studies",
-    "description": "Old architecture class drawings, perspective exercises, and studies from when I was sketching constantly.",
+    "description": "Studing objects and buildings in various perspectives. College Intro Architecture Class.",
     "drawings": [
-      "drawing1.jpg",
-      "drawing2.jpg",
-      "drawing3.jpg",
-      "drawing4.jpg",
-      "drawing5.jpg",
-      "drawing6.jpg",
-      "drawing7.jpg",
-      "drawing8.jpg",
-      "drawing9.jpg",
-      "drawing10.jpg",
-      "architecture-shell-studies.jpg"
+      "architecture/01-block-studies.jpeg",
+      "architecture/02-shell-studies.jpeg",
+      "architecture/03-form-studies.jpeg",
+      "architecture/04-glass-studies.jpeg",
+      "architecture/05.jpeg",
+      "architecture/06.jpeg",
+      "architecture/07.jpeg",
+      "architecture/08-pepper-studies.jpeg"
+    ]
+  },
+  {
+    "title": "Hand Study",
+    "description": "Studying the palm and fingers of the hand",
+    "drawings": [
+      "hand-study/01-observation.jpeg",
+      "hand-study/04-thumb-studies.jpeg",
+      "hand-study/05-detail-study.jpeg",
+      "hand-study/06-onceinbluemoon.jpeg"
     ]
   },
   {
     "title": "Sketchbook Fragments",
     "description": "Loose studies and remaining pieces from the archive.",
-    "drawings": ["drawing11-clean.jpg", "sketchbook-img-0741.jpg"]
+    "drawings": [
+      "01-sketchbook.jpeg",
+      "02-sketchbook.jpeg"
+    ]
   }
 ]

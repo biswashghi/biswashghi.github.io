@@ -1,4 +1,8 @@
 const DEFAULT_REPO = 'biswashghi/biswashghi.github.io';
+const ORIGINAL_IMAGE_ROOT = 'src/assets/originals/images';
+const ORIGINAL_UPLOAD_ROOT = 'src/assets/originals/uploads';
+const PUBLIC_IMAGE_ROOT = 'src/assets/images';
+const PUBLIC_UPLOAD_ROOT = 'src/assets/uploads';
 
 const TOKEN_STORAGE_KEY = 'blog_admin_github_pat_v1';
 const REPO_STORAGE_KEY = 'blog_admin_github_repo_v1';
@@ -181,19 +185,20 @@ export const safeFilename = (name) =>
   String(name || '')
     .trim()
     .replace(/\s+/g, '-')
-    .replace(/[^a-zA-Z0-9._-]/g, '');
+    .replace(/[^a-zA-Z0-9._-]/g, '')
+    .replace(/\.jpe?g$/i, '.jpeg');
 
 const extensionForUpload = (file) => {
   const nameExt = String(file?.name || '').match(/\.([A-Za-z0-9]+)$/)?.[1]?.toLowerCase();
-  if (nameExt === 'jpeg') return 'jpg';
+  if (nameExt === 'jpg' || nameExt === 'jpeg') return 'jpeg';
   if (nameExt) return nameExt;
-  if (file?.type === 'image/jpeg') return 'jpg';
+  if (file?.type === 'image/jpeg') return 'jpeg';
   if (file?.type === 'image/png') return 'png';
   if (file?.type === 'image/webp') return 'webp';
   if (file?.type === 'image/avif') return 'avif';
   if (file?.type === 'image/gif') return 'gif';
   if (file?.type === 'image/svg+xml') return 'svg';
-  return 'jpg';
+  return 'jpeg';
 };
 
 const isHeicFilename = (name) => /\.(heic|heif)$/i.test(String(name || ''));
@@ -275,8 +280,9 @@ export const publishPostToGitHub = async ({
   coverFile,
   extraFiles,
 }) => {
-  const coverUploadPath = coverFile ? `src/assets/uploads/${safeFilename(coverFile.name)}` : '';
-  const coverPublic = coverFile ? coverUploadPath.replace(/^src\/assets\//, '/assets/') : '';
+  const coverFilename = coverFile ? safeFilename(coverFile.name) : '';
+  const coverUploadPath = coverFile ? `${ORIGINAL_UPLOAD_ROOT}/${coverFilename}` : '';
+  const coverPublic = coverFile ? `/${PUBLIC_UPLOAD_ROOT.replace(/^src\//, '')}/${coverFilename}` : '';
   const mdx = buildMdxWithFrontmatter({
     title,
     slug,
@@ -290,7 +296,7 @@ export const publishPostToGitHub = async ({
   const mdxPath = `src/blog/posts/${slug}.mdx`;
   const uploads = [];
   if (coverFile) uploads.push({ file: coverFile, path: coverUploadPath });
-  for (const f of extraFiles || []) uploads.push({ file: f, path: `src/assets/uploads/${safeFilename(f.name)}` });
+  for (const f of extraFiles || []) uploads.push({ file: f, path: `${ORIGINAL_UPLOAD_ROOT}/${safeFilename(f.name)}` });
 
   const allUploads = [...uploads.map((u) => u.file)];
   for (const f of allUploads) {
@@ -317,7 +323,8 @@ export const publishArtImageToGitHub = async ({ token, repoFull, bucketTitle, fi
   const uploadName = safeFilename(filename || file.name);
   if (!uploadName) throw new Error('Filename is required.');
   assertWebSafeImageUpload(file, uploadName, 'Art upload');
-  const imagePath = `src/assets/images/drawing/${uploadName}`;
+  const originalImagePath = `${ORIGINAL_IMAGE_ROOT}/drawing/${uploadName}`;
+  const imagePath = `${PUBLIC_IMAGE_ROOT}/drawing/${uploadName}`;
   const dataPath = 'src/data/art.json';
   const repoInfo = await ghFetch(`https://api.github.com/repos/${owner}/${repo}`, tokenTrimmed);
   const branch = repoInfo.default_branch || 'main';
@@ -333,11 +340,11 @@ export const publishArtImageToGitHub = async ({ token, repoFull, bucketTitle, fi
     // The archive content was read above; retrying stale JSON could overwrite a concurrent edit.
     maxAttempts: 1,
     changes: [
-      { path: imagePath, file },
+      { path: originalImagePath, file },
       { path: dataPath, content: `${JSON.stringify(nextArchive, null, 2)}\n` },
     ],
   });
-  return { imagePath, dataPath, ...result };
+  return { imagePath, originalImagePath, dataPath, ...result };
 };
 
 export const publishPhotoOfMonthToGitHub = async ({
@@ -357,7 +364,8 @@ export const publishPhotoOfMonthToGitHub = async ({
   const uploadName = `${safeMonth}.${extensionForUpload(file)}`;
   if (!uploadName) throw new Error('Filename is required.');
   assertWebSafeImageUpload(file, uploadName, 'Photo of the Month upload');
-  const imagePath = `src/assets/images/photo-of-month/${uploadName}`;
+  const originalImagePath = `${ORIGINAL_IMAGE_ROOT}/photo-of-month/${uploadName}`;
+  const imagePath = `${PUBLIC_IMAGE_ROOT}/photo-of-month/${uploadName}`;
   const dataPath = 'src/data/photosOfMonth.json';
   const publicSrc = imagePath.replace(/^src\/assets\//, '/assets/');
 
@@ -394,11 +402,11 @@ export const publishPhotoOfMonthToGitHub = async ({
     // The monthly data was read above; surface conflicts rather than overwriting newer entries.
     maxAttempts: 1,
     changes: [
-      { path: imagePath, file },
+      { path: originalImagePath, file },
       { path: dataPath, content: nextData },
     ],
   });
-  return { imagePath, dataPath, ...result };
+  return { imagePath, originalImagePath, dataPath, ...result };
 };
 
 export const deletePostFromGitHub = async ({ token, repoFull, slug }) => {

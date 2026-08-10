@@ -121,11 +121,11 @@ const ArtUploadPanel = ({ repoFull, token }) => {
             className="field__input"
             value={artFilename}
             onChange={(e) => setArtFilename(artFilenameFromFile({ name: e.target.value }))}
-            placeholder="new-drawing.jpg"
+            placeholder="new-drawing.jpeg"
           />
           <p className="muted admin-help">
-            Uploads to <code>src/assets/images/drawing/</code> and adds the image to the selected Art bucket. New
-            buckets are created on publish.
+            Stores the original under <code>src/assets/originals/images/drawing/</code>; the deploy generates the
+            served copy under <code>/assets/images/drawing/</code>. New buckets are created on publish.
           </p>
         </div>
 

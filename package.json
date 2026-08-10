@@ -4,8 +4,10 @@
   "description": "A personal website project featuring a resume, blog, contact information, and project details.",
   "main": "src/index.js",
   "scripts": {
+    "prestart": "npm run optimize:images",
     "start": "webpack serve --mode development --config webpack.config.mjs",
     "optimize:images": "node scripts/optimize-images.cjs",
+    "prebuild": "npm run optimize:images",
     "build": "webpack --mode production --config webpack.config.mjs",
     "postbuild": "node scripts/postbuild.cjs",
     "test": "jest --runInBand"

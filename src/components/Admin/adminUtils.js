@@ -21,7 +21,7 @@ export const filenameFromFile = (file, fallback, prefix = '') => {
   const lastDot = file.name.lastIndexOf('.');
   const rawName = lastDot === -1 ? file.name : file.name.slice(0, lastDot);
   const rawExt = lastDot === -1 ? '' : file.name.slice(lastDot + 1).toLowerCase();
-  const ext = rawExt || 'jpg';
+  const ext = rawExt === 'jpg' || rawExt === 'jpeg' ? 'jpeg' : rawExt || 'jpeg';
   const safeName = slugify(rawName) || fallback;
   return `${prefix}${safeName}.${ext}`;
 };

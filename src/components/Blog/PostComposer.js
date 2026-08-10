@@ -168,7 +168,7 @@ const PostComposer = ({ onPublished }) => {
                 className="field__input field__input--textarea admin-body blog-composer__body"
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
-                placeholder={`Write Markdown here.\n\nYou can embed components:\n<Figure src=\"/assets/uploads/photo.jpg\" alt=\"...\" caption=\"...\" />\n<Callout title=\"Note\" variant=\"teal\">Text</Callout>\n<video controls src=\"/assets/uploads/video.mp4\" style={{ width: '100%', borderRadius: 16 }} />`}
+                placeholder={`Write Markdown here.\n\nYou can embed components:\n<Figure src=\"/assets/uploads/photo.jpeg\" alt=\"...\" caption=\"...\" />\n<Callout title=\"Note\" variant=\"teal\">Text</Callout>\n<video controls src=\"/assets/uploads/video.mp4\" style={{ width: '100%', borderRadius: 16 }} />`}
               />
               <p className="muted admin-help">
                 Safety checks block <code>import</code>/<code>export</code> in the body to reduce the chance of breaking the build.
