@@ -24,8 +24,7 @@ const PhotoOfMonth = () => {
           <h1 className="page__title">Photo of the Month</h1>
           <p className="page__lede">
             I take a lot of photos and rarely go back through them. This is a small reason to revisit the past month and
-            choose one image that made an impact: something that wowed me, mattered enough to track, or encompasses all
-            of what that month meant.
+            choose one image that visually made an impact on me.
           </p>
         </div>
         <div className="page__actions">

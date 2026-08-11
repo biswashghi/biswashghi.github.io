@@ -69,7 +69,7 @@ const BlogIndex = () => {
         <p className="page__lede">
           {hasToken
             ? 'Publishing writes a commit to main and triggers auto-deploy.'
-            : 'Notes, trips, and longer reflections from the archive.'}
+            : 'Notes and trips from the archive.'}
         </p>
       </header>
 
