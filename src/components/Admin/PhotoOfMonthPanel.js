@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { publishPhotoOfMonthToGitHub, WEB_SAFE_IMAGE_ACCEPT } from '../../blog/publisher';
+import { publishPhotosOfMonthToGitHub, WEB_SAFE_IMAGE_ACCEPT } from '../../blog/publisher';
 import AdminStatus from './AdminStatus';
 import { idleStatus, monthNow } from './adminUtils';
 
 const PhotoOfMonthPanel = ({ repoFull, token }) => {
   const [photoMonth, setPhotoMonth] = useState(monthNow());
-  const [photoFile, setPhotoFile] = useState(null);
+  const [photoFiles, setPhotoFiles] = useState([]);
   const [photoCaption, setPhotoCaption] = useState('');
   const [photoStatus, setPhotoStatus] = useState(idleStatus);
 
@@ -21,25 +21,25 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
       setPhotoStatus({ state: 'error', message: 'Missing token.' });
       return;
     }
-    if (!photoFile) {
-      setPhotoStatus({ state: 'error', message: 'Choose a photo first.' });
+    if (photoFiles.length !== 2) {
+      setPhotoStatus({ state: 'error', message: 'Choose exactly two photos for a month.' });
       return;
     }
 
     try {
-      setPhotoStatus({ state: 'working', message: 'Uploading monthly photo to GitHub...' });
-      const result = await publishPhotoOfMonthToGitHub({
+      setPhotoStatus({ state: 'working', message: 'Uploading monthly photos to GitHub...' });
+      const result = await publishPhotosOfMonthToGitHub({
         token: tokenTrimmed,
         repoFull: repoTrimmed,
         month: photoMonth,
-        file: photoFile,
+        files: photoFiles,
         caption: photoCaption,
       });
       setPhotoStatus({
         state: 'ok',
-        message: `Uploaded ${result.imagePath} and updated photosOfMonth.json. GitHub Pages will refresh after deploy.`,
+        message: `Uploaded ${result.imagePaths.length} photo${result.imagePaths.length === 1 ? '' : 's'} and updated photosOfMonth.json. GitHub Pages will refresh after deploy.`,
       });
-      setPhotoFile(null);
+      setPhotoFiles([]);
     } catch (e) {
       setPhotoStatus({ state: 'error', message: e.message || 'Photo upload failed.' });
     }
@@ -47,7 +47,7 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
 
   return (
     <div className="card admin-card--wide">
-      <h2 className="section-title">Photo of the Month</h2>
+      <h2 className="section-title">Photos of the Month</h2>
       <div className="form photo-upload-form">
         <div className="admin-row">
           <div className="field">
@@ -65,20 +65,20 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
 
           <div className="field">
             <label className="field__label" htmlFor="photo-file">
-              Photo
+              Photos
             </label>
             <input
               id="photo-file"
               className="field__input"
               type="file"
               accept={WEB_SAFE_IMAGE_ACCEPT}
+              multiple
               onChange={(e) => {
-                const nextFile = e.target.files && e.target.files[0] ? e.target.files[0] : null;
-                setPhotoFile(nextFile);
+                setPhotoFiles(Array.from(e.target.files || []));
               }}
             />
             <p className="muted admin-help">
-              File will be saved as <code>{photoMonth || 'YYYY-MM'}</code> with its image extension.
+              Choose exactly two photos. They will be saved under <code>{photoMonth || 'YYYY-MM'}</code>.
             </p>
           </div>
         </div>
@@ -95,13 +95,13 @@ const PhotoOfMonthPanel = ({ repoFull, token }) => {
             placeholder="Optional note about why this photo represents the month."
           />
           <p className="muted admin-help">
-            Re-uploading the same month replaces that month&apos;s entry.
+            Uploading a new set replaces the existing photos for that month.
           </p>
         </div>
 
         <div className="admin-actions photo-upload-form__actions">
           <button className="button" type="button" onClick={uploadPhotoOfMonth} disabled={photoStatus.state === 'working'}>
-            {photoStatus.state === 'working' ? 'Uploading…' : 'Upload Monthly Photo'}
+            {photoStatus.state === 'working' ? 'Uploading…' : 'Upload Two Photos'}
           </button>
           <AdminStatus status={photoStatus} />
         </div>

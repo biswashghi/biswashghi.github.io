@@ -1,7 +1,22 @@
 [
   {
+    "month": "2026-06",
+    "src": "/assets/images/photo-of-month/IMG_0308.jpg",
+    "caption": "Watching over the quiet bay."
+  },
+  {
+    "month": "2026-06",
+    "src": "/assets/images/traverse-city-summer/lake-golden-hour.jpeg",
+    "caption": "Enjoying independence together."
+  },
+  {
     "month": "2026-05",
     "src": "/assets/images/photo-of-month/2026-05.jpeg",
     "caption": "Needle through the trees."
+  },
+  {
+    "month": "2026-05",
+    "src": "/assets/images/photo-of-month/IMG_9437.jpg",
+    "caption": "New neon, old waterfront."
   }
 ]

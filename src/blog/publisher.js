@@ -347,27 +347,31 @@ export const publishArtImageToGitHub = async ({ token, repoFull, bucketTitle, fi
   return { imagePath, originalImagePath, dataPath, ...result };
 };
 
-export const publishPhotoOfMonthToGitHub = async ({
+export const publishPhotosOfMonthToGitHub = async ({
   token,
   repoFull,
   month,
-  file,
+  files,
   caption,
 }) => {
   const tokenTrimmed = String(token || '').trim();
   const { owner, repo } = parseRepoFull(repoFull);
   if (!/^\d{4}-\d{2}$/.test(String(month || '').trim())) throw new Error('Month must be YYYY-MM.');
-  if (!file) throw new Error('Choose an image to upload.');
-  if (file.size > 25 * 1024 * 1024) throw new Error(`File too large (${file.name}). Keep uploads under ~25MB.`);
+  const photoFiles = Array.from(files || []).filter(Boolean);
+  if (photoFiles.length !== 2) throw new Error('Choose exactly two photos for a month.');
+  photoFiles.forEach((file) => {
+    if (file.size > 25 * 1024 * 1024) throw new Error(`File too large (${file.name}). Keep uploads under ~25MB.`);
+  });
 
   const safeMonth = String(month).trim();
-  const uploadName = `${safeMonth}.${extensionForUpload(file)}`;
-  if (!uploadName) throw new Error('Filename is required.');
-  assertWebSafeImageUpload(file, uploadName, 'Photo of the Month upload');
-  const originalImagePath = `${ORIGINAL_IMAGE_ROOT}/photo-of-month/${uploadName}`;
-  const imagePath = `${PUBLIC_IMAGE_ROOT}/photo-of-month/${uploadName}`;
+  const uploads = photoFiles.map((file, index) => {
+    const uploadName = `${safeMonth}-${String(index + 1).padStart(2, '0')}.${extensionForUpload(file)}`;
+    assertWebSafeImageUpload(file, uploadName, 'Photo of the Month upload');
+    const originalImagePath = `${ORIGINAL_IMAGE_ROOT}/photo-of-month/${uploadName}`;
+    const imagePath = `${PUBLIC_IMAGE_ROOT}/photo-of-month/${uploadName}`;
+    return { file, imagePath, originalImagePath, publicSrc: imagePath.replace(/^src\/assets\//, '/assets/') };
+  });
   const dataPath = 'src/data/photosOfMonth.json';
-  const publicSrc = imagePath.replace(/^src\/assets\//, '/assets/');
 
   const repoInfo = await ghFetch(`https://api.github.com/repos/${owner}/${repo}`, tokenTrimmed);
   const branch = repoInfo.default_branch || 'main';
@@ -384,14 +388,14 @@ export const publishPhotoOfMonthToGitHub = async ({
   }
   if (!Array.isArray(existing)) throw new Error(`${dataPath} must contain a JSON array.`);
 
-  const nextEntry = {
+  const nextEntries = uploads.map(({ publicSrc }) => ({
     month: safeMonth,
     src: publicSrc,
     caption: String(caption || '').trim(),
-  };
+  }));
   const nextPhotos = existing
     .filter((entry) => entry && entry.month !== safeMonth)
-    .concat(nextEntry)
+    .concat(nextEntries)
     .sort((a, b) => String(b.month).localeCompare(String(a.month)));
   const nextData = `${JSON.stringify(nextPhotos, null, 2)}\n`;
 
@@ -402,11 +406,16 @@ export const publishPhotoOfMonthToGitHub = async ({
     // The monthly data was read above; surface conflicts rather than overwriting newer entries.
     maxAttempts: 1,
     changes: [
-      { path: originalImagePath, file },
+      ...uploads.map(({ originalImagePath, file }) => ({ path: originalImagePath, file })),
       { path: dataPath, content: nextData },
     ],
   });
-  return { imagePath, originalImagePath, dataPath, ...result };
+  return {
+    imagePaths: uploads.map(({ imagePath }) => imagePath),
+    originalImagePaths: uploads.map(({ originalImagePath }) => originalImagePath),
+    dataPath,
+    ...result,
+  };
 };
 
 export const deletePostFromGitHub = async ({ token, repoFull, slug }) => {
