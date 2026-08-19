@@ -5,6 +5,7 @@
   }
 
   .nav {
+    position: relative;
     width: calc(100% + 36px);
     margin-inline: -18px;
     padding-inline: 18px 24px;
@@ -16,6 +17,17 @@
 
   .nav::-webkit-scrollbar {
     display: none;
+  }
+
+  .nav--overflowing::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 56px;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(251, 247, 240, 0), rgba(251, 247, 240, 0.92) 55%, rgba(251, 247, 240, 1));
   }
 
   .nav__link {
@@ -64,10 +76,6 @@
   .project-compact__actions {
     justify-content: flex-start;
   }
-
-  .project-featured-rail {
-    grid-auto-columns: minmax(310px, 72%);
-  }
 }
 
 @media (max-width: 560px) {
@@ -80,14 +88,6 @@
     width: calc(100% + 28px);
     margin-inline: -14px;
     padding-inline: 14px 20px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    justify-content: flex-start;
-  }
-
-  .nav::-webkit-scrollbar {
-    display: none;
   }
 
   .nav__link {
@@ -103,17 +103,6 @@
 
   .photo-log {
     min-height: 390px;
-  }
-
-  .project-featured-rail {
-    display: grid;
-    grid-auto-columns: auto;
-    grid-auto-flow: row;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    overflow: visible;
-    padding-bottom: 0;
-    scroll-snap-type: none;
   }
 
   .photo--large {

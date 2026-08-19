@@ -1,26 +1,26 @@
 import React from 'react';
 import ProjectCard from '../components/Projects/ProjectCard';
 import { featuredProjects, projectSections } from '../data/projects';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const Projects = () => {
+    useDocumentTitle('Projects');
     return (
         <div className="page">
             <header className="page__header">
                 <h1 className="page__title">Projects</h1>
-                <p className="page__lede">A closer look at the projects I care about most, followed by quick notes on the rest.</p>
+                <p className="page__lede">A closer look at the project I care about most, followed by notes on everything else.</p>
             </header>
 
             <section className="project-section" aria-labelledby="projects-featured">
                 <div className="project-section__head">
-                    <h2 id="projects-featured">Detailed work</h2>
+                    <h2 id="projects-featured">Featured Projects</h2>
                 </div>
-                <div className="project-featured-rail" role="region" aria-label="Detailed projects. Scroll horizontally to see more.">
-                    {featuredProjects.map((project) => (
-                        <div key={project.title} className="card card--feature project-detail-card">
-                            <ProjectCard {...project} />
-                        </div>
-                    ))}
-                </div>
+                {featuredProjects.map((project) => (
+                    <div key={project.title} className="card card--feature project-flagship">
+                        <ProjectCard {...project} />
+                    </div>
+                ))}
             </section>
 
             {projectSections.map((section) => (

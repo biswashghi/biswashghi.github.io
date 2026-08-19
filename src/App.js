@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react';
-import { NavLink, Outlet, createBrowserRouter } from 'react-router-dom';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
+import { Navigate, NavLink, Outlet, createBrowserRouter } from 'react-router-dom';
 import AdminSessionProvider from './components/Admin/AdminSessionProvider';
 
 const navClassName = ({ isActive }) => `nav__link${isActive ? ' is-active' : ''}`;
@@ -9,6 +9,27 @@ const loadRoute = (loader) => async () => {
 };
 
 const AppShell = () => {
+  const navRef = useRef(null);
+  const [navOverflowing, setNavOverflowing] = useState(false);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return undefined;
+
+    const updateOverflow = () => {
+      const hasMore = nav.scrollWidth - nav.clientWidth - nav.scrollLeft > 4;
+      setNavOverflowing(hasMore);
+    };
+
+    updateOverflow();
+    nav.addEventListener('scroll', updateOverflow, { passive: true });
+    window.addEventListener('resize', updateOverflow);
+    return () => {
+      nav.removeEventListener('scroll', updateOverflow);
+      window.removeEventListener('resize', updateOverflow);
+    };
+  }, []);
+
   return (
     <div className="app">
       <a className="skip-link" href="#main">
@@ -19,7 +40,7 @@ const AppShell = () => {
 
       <header className="topbar">
         <div className="topbar__inner">
-          <NavLink to="/" exact className="brand" aria-label="Go to home">
+          <NavLink to="/" end className="brand" aria-label="Go to home">
             <span className="brand__mark" aria-hidden="true">
               B
             </span>
@@ -29,7 +50,11 @@ const AppShell = () => {
             </span>
           </NavLink>
 
-          <nav className="nav" aria-label="Primary">
+          <nav
+            className={`nav${navOverflowing ? ' nav--overflowing' : ''}`}
+            aria-label="Primary"
+            ref={navRef}
+          >
             <NavLink to="/" end className={navClassName}>
               Home
             </NavLink>
@@ -45,7 +70,7 @@ const AppShell = () => {
             <NavLink to="/art" className={navClassName}>
               Art
             </NavLink>
-            <NavLink to="/photo-of-the-month" className={navClassName}>
+            <NavLink to="/photos" className={navClassName}>
               Photo
             </NavLink>
             <NavLink to="/contact" className={({ isActive }) => `${navClassName({ isActive })} nav__link--cta`}>
@@ -94,7 +119,8 @@ export const router = createBrowserRouter([
       { path: 'blog/:slug', lazy: loadRoute(() => import('./pages/BlogPostPage')) },
       { path: 'projects', lazy: loadRoute(() => import('./pages/Projects')) },
       { path: 'art', lazy: loadRoute(() => import('./pages/Art')) },
-      { path: 'photo-of-the-month', lazy: loadRoute(() => import('./pages/PhotoOfMonth')) },
+      { path: 'photos', lazy: loadRoute(() => import('./pages/PhotoOfMonth')) },
+      { path: 'photo-of-the-month', element: <Navigate to="/photos" replace /> },
       { path: 'contact', lazy: loadRoute(() => import('./pages/Contact')) },
       { path: 'admin', lazy: loadRoute(() => import('./pages/Admin')) },
       { path: '*', lazy: loadRoute(() => import('./pages/NotFound')) },

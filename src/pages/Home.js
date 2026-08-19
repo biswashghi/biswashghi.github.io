@@ -2,10 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { posts } from '../blog/posts';
 import { formatIsoDate } from '../blog/date';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const recentPosts = posts.slice(0, 2);
 
 const Home = () => {
+    useDocumentTitle();
     return (
         <div className="page page--home">
             <section className="field-hero" aria-label="Intro">

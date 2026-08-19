@@ -2,9 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PostComposer from '../components/Blog/PostComposer';
 import useAdminCredentials from '../components/Admin/useAdminCredentials';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const BlogEditor = () => {
   const { hasToken } = useAdminCredentials();
+  useDocumentTitle('New Blog Post');
 
   return (
     <div className="page">

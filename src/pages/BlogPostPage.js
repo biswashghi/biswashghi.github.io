@@ -5,6 +5,7 @@ import { MDXProvider } from '@mdx-js/react';
 import { mdxComponents } from '../components/Blog/mdxComponents';
 import { getPostBySlug } from '../blog/posts';
 import { formatIsoDate } from '../blog/date';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const formatDate = (iso) => {
   return formatIsoDate(iso, { year: 'numeric', month: 'long', day: '2-digit' });
@@ -13,6 +14,7 @@ const formatDate = (iso) => {
 const BlogPostPage = () => {
   const { slug } = useParams();
   const post = getPostBySlug(slug);
+  useDocumentTitle(post ? post.title : 'Post Not Found');
 
   if (!post) {
     return (

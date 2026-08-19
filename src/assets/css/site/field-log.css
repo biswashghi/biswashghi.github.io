@@ -601,6 +601,7 @@ textarea:focus-visible {
 
 .photo-month-card {
   width: 100%;
+  margin: 0;
   border: 1px solid var(--ink);
   background: var(--paper);
   box-shadow: var(--shadow-soft);

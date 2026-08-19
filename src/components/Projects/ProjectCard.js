@@ -3,6 +3,7 @@ import React from 'react';
 const ProjectCard = ({
     title,
     description,
+    highlights = [],
     deployment,
     deploymentStatus,
     tags = [],
@@ -12,6 +13,13 @@ const ProjectCard = ({
         <div className="project-card">
             <h3 className="project-title">{title}</h3>
             <p className="project-description">{description}</p>
+            {highlights.length ? (
+                <ul className="project-highlights">
+                    {highlights.map((item) => (
+                        <li key={item}>{item}</li>
+                    ))}
+                </ul>
+            ) : null}
             {deployment ? <p className="project-deployment">{deployment}</p> : null}
             {deploymentStatus ? <p className="project-status">{deploymentStatus}</p> : null}
             {tags.length ? (

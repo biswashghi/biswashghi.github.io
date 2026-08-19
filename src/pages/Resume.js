@@ -1,7 +1,9 @@
 import React from 'react';
 import ResumeSection from '../components/Resume/ResumeSection';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const Resume = () => {
+  useDocumentTitle('Resume');
   return (
     <div className="page">
       <header className="page__header">

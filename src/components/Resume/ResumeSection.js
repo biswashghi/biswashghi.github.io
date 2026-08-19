@@ -134,6 +134,34 @@ const ResumeSection = () => {
             </section>
 
             <section className="resume-block">
+                <h3 className="resume-h">Projects</h3>
+                <div className="resume-item">
+                    <div className="resume-item__top">
+                        <h4 className="resume-item__title">Novel Tracker &mdash; Cross-Platform Browser Extension</h4>
+                        <p className="resume-item__meta">Personal project</p>
+                    </div>
+                    <ul className="resume-list">
+                        <li>
+                            Built a local-first Manifest V3 extension shipping to Chrome, Edge, Firefox (desktop and
+                            Android), and a native Safari Web Extension for macOS/iOS/iPadOS, auto-tracking reading
+                            progress across web-novel sites via 9 site-specific parsers with a generic-metadata
+                            fallback.
+                        </li>
+                        <li>
+                            Designed an optional cloud-sync layer (Node.js API, Google sign-in) using Hybrid Logical
+                            Clocks and remove-wins merge rules to deterministically resolve offline edit conflicts
+                            across devices.
+                        </li>
+                        <li>
+                            Unified storage, parsing, and sync logic into shared modules reused across all four
+                            browser targets; automated release packaging and end-to-end testing (Playwright) via
+                            GitHub Actions.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section className="resume-block">
                 <h3 className="resume-h">Skills</h3>
                 <div className="resume-split">
                     <div className="resume-chipset">

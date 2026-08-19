@@ -1,7 +1,9 @@
 import React from 'react';
 import ContactForm from '../components/Contact/ContactForm';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const Contact = () => {
+    useDocumentTitle('Contact');
     return (
         <div className="page">
             <header className="page__header">

@@ -6,6 +6,7 @@ import { formatIsoDate } from '../blog/date';
 import Modal from '../components/Modal';
 import useAdminCredentials from '../components/Admin/useAdminCredentials';
 import { deletePostFromGitHub } from '../blog/publisher';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const formatDate = (iso) => {
   return formatIsoDate(iso, { year: 'numeric', month: 'short', day: '2-digit' });
@@ -18,6 +19,7 @@ const BlogIndex = () => {
   const [status, setStatus] = useState({ state: 'idle', message: '' });
 
   const { token, repoFull, hasToken } = useAdminCredentials();
+  useDocumentTitle('Blog');
 
   const visiblePosts = useMemo(
     () => posts.filter((post) => post && !hiddenSlugs.includes(post.slug)),

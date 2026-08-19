@@ -5,6 +5,7 @@ import GitHubSettingsPanel from '../components/Admin/GitHubSettingsPanel';
 import PhotoOfMonthPanel from '../components/Admin/PhotoOfMonthPanel';
 import SafetyPanel from '../components/Admin/SafetyPanel';
 import useAdminCredentials from '../components/Admin/useAdminCredentials';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const adminTabs = [
   { id: 'settings', label: 'Settings' },
@@ -17,6 +18,7 @@ const Admin = () => {
   const [me, setMe] = useState(null);
   const [tokenError, setTokenError] = useState('');
   const [activeTab, setActiveTab] = useState(adminTabs[0].id);
+  useDocumentTitle('Admin');
 
   const activeLabel = useMemo(
     () => adminTabs.find((tab) => tab.id === activeTab)?.label || 'Settings',

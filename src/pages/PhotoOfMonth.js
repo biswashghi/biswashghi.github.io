@@ -1,6 +1,7 @@
 import React from 'react';
 import PhotoOfMonthPanel from '../components/Admin/PhotoOfMonthPanel';
 import useAdminCredentials from '../components/Admin/useAdminCredentials';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import photosOfMonth from '../data/photosOfMonth.json';
 
 const formatMonth = (value) => {
@@ -23,6 +24,7 @@ const photoAlt = (photo) => photo.caption || `Photo from ${formatMonth(photo.mon
 
 const PhotoOfMonth = () => {
   const { repoFull, token, hasToken } = useAdminCredentials();
+  useDocumentTitle('Photos of the Month');
 
   return (
     <div className="page">

@@ -1,10 +1,12 @@
 import React from 'react';
 import ArtUploadPanel from '../components/Admin/ArtUploadPanel';
 import useAdminCredentials from '../components/Admin/useAdminCredentials';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import buckets from '../data/art.json';
 
 const Art = () => {
   const { repoFull, token, hasToken } = useAdminCredentials();
+  useDocumentTitle('Art');
 
   return (
     <div className="page">
