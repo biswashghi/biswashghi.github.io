@@ -1,5 +1,6 @@
 export const featuredProjects = [
   {
+    id: 'novel-tracker',
     title: 'Novel Tracker Extension',
     description: 'A local-first, cross-platform extension for tracking web-novel reading progress across chapter sites.',
     highlights: [
@@ -15,6 +16,19 @@ export const featuredProjects = [
       { label: 'GitHub repo', href: 'https://github.com/biswashghi/novel_tracker' },
       { label: 'Chrome Web Store', href: 'https://chromewebstore.google.com/detail/novel-tracker/meciopmpdehijfmbgbagndgknlmbmjoa', ghost: true },
     ],
+    // Opt-in: only projects with a `resume` field are pulled into the resume
+    // (see src/data/resume/index.js). Bullets here are phrased for a resume
+    // audience and can differ from the `highlights` shown on /projects.
+    resume: {
+      order: 1,
+      title: 'Novel Tracker — Cross-Platform Browser Extension',
+      meta: 'Personal project',
+      bullets: [
+        'Built a local-first Manifest V3 extension shipping to Chrome, Edge, Firefox (desktop and Android), and a native Safari Web Extension for macOS/iOS/iPadOS, auto-tracking reading progress across web-novel sites via 9 site-specific parsers with a generic-metadata fallback.',
+        'Designed an optional cloud-sync layer (Node.js API, Google sign-in) using Hybrid Logical Clocks and remove-wins merge rules to deterministically resolve offline edit conflicts across devices.',
+        'Unified storage, parsing, and sync logic into shared modules reused across all four browser targets; automated release packaging and end-to-end testing (Playwright) via GitHub Actions.',
+      ],
+    },
   },
 ];
 
@@ -23,6 +37,7 @@ export const projectSections = [
     title: 'Personal Projects',
     projects: [
       {
+        id: 'paisa',
         title: 'PAISA Loyalty Platform',
         summary: 'A rewards-platform backend and partner console: programs, rules, members, transactions, ledgers, and redemption flows, built with a Go API, PostgreSQL, and a React partner console.',
         links: [
@@ -31,6 +46,7 @@ export const projectSections = [
         ],
       },
       {
+        id: 'family-hub',
         title: 'Family Hub',
         summary: 'Household bills, payments, documents, auth, uploads, and a single-container Hetzner deployment.',
         links: [
@@ -39,16 +55,19 @@ export const projectSections = [
         ],
       },
       {
+        id: 'personal-site',
         title: 'Personal Site and Blog Publisher',
         summary: 'This React/MDX site, with GitHub-backed post publishing, asset uploads, and GitHub Pages deployment.',
         links: [{ label: 'GitHub repo', href: 'https://github.com/biswashghi/biswashghi.github.io' }],
       },
       {
+        id: 'tiny-llm',
         title: 'Tiny LLM From Scratch',
         summary: 'A small language-modeling project in PyTorch: a bigram baseline built up into a causal Transformer, with a custom BPE tokenizer, checkpointing, sampling, and an evaluation pipeline.',
         links: [{ label: 'GitHub repo', href: 'https://github.com/biswashghi/tiny_llm' }],
       },
       {
+        id: 'vps-deploy',
         title: 'VPS Deploy',
         summary: 'Reusable Hetzner VPS deployment flow covering Terraform, DNS, Caddy, Docker hosting, secrets, and runbooks.',
         links: [{ label: 'GitHub repo', href: 'https://github.com/biswashghi/hetzner_tf/tree/main' }],
