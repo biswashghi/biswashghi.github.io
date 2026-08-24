@@ -9,7 +9,7 @@ export const posts = ctx
     const meta = (mod && mod.meta) || {};
     return { ...meta, Component };
   })
-  .filter((post) => post && post.slug && post.title && post.date)
+  .filter((post) => post && post.slug && post.title && post.date && post.draft !== true)
   .sort((a, b) => {
     const da = new Date(a.date).getTime();
     const db = new Date(b.date).getTime();

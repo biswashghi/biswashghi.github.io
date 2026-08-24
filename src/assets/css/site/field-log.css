@@ -547,6 +547,26 @@ textarea:focus-visible {
   grid-template-columns: minmax(0, 1fr);
 }
 
+.instagram-profile {
+  display: grid;
+  justify-items: stretch;
+  width: 100%;
+  padding-bottom: 54px;
+}
+
+.instagram-profile .instagram-media {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+.instagram-profile > iframe {
+  width: 100% !important;
+  max-width: none !important;
+}
+
 .photo-month-archive {
   display: grid;
   gap: 46px;
