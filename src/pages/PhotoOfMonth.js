@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 
-const INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/photos_by_biswash/';
+const INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/photos.by.biswash/';
 const INSTAGRAM_EMBED_SCRIPT = 'https://www.instagram.com/embed.js';
 
 const PhotoOfMonth = () => {
@@ -46,7 +46,7 @@ const PhotoOfMonth = () => {
           data-instgrm-version="14"
         >
           <a href={INSTAGRAM_PROFILE_URL} target="_blank" rel="noreferrer">
-            View @photos_by_biswash on Instagram
+            View @photos.by.biswash on Instagram
           </a>
         </blockquote>
       </section>
