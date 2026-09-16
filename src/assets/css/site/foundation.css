@@ -15,6 +15,9 @@
   --radius: 18px;
   --radius-sm: 12px;
   --max: 1040px;
+
+  --type-page-title: clamp(2.6rem, calc(2.15rem + 1.8vw), 4rem);
+  --type-hero-title: clamp(3.2rem, calc(2.5rem + 2vw), 4.5rem);
 }
 *,
 *::before,

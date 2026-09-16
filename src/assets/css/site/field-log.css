@@ -120,7 +120,7 @@ textarea:focus-visible {
 }
 
 .page__title {
-  font-size: clamp(2.6rem, 6vw, 5.2rem);
+  font-size: var(--type-page-title);
   line-height: 0.9;
   letter-spacing: 0;
 }
@@ -134,12 +134,12 @@ textarea:focus-visible {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.72fr);
   gap: 34px;
-  align-items: end;
+  align-items: start;
   padding: 52px 0 42px;
 }
 
 .field-hero__copy {
-  padding-bottom: 32px;
+  padding-bottom: 0;
 }
 
 .kicker {
@@ -164,7 +164,7 @@ textarea:focus-visible {
 .field-hero__title {
   margin: 0;
   font-family: "Fraunces", Georgia, serif;
-  font-size: clamp(3.2rem, 8vw, 7.5rem);
+  font-size: var(--type-hero-title);
   line-height: 0.88;
   letter-spacing: 0;
   max-width: 900px;

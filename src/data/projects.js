@@ -9,12 +9,14 @@ export const featuredProjects = [
       'Optional sync via a Node.js API with HLC / remove-wins conflict resolution',
       'Shared core modules; automated CI release and Playwright e2e tests',
     ],
-    deployment: 'Deployment: Chrome Web Store extension, Node.js sync API in Docker',
-    deploymentStatus: 'Public GitHub repo, published Chrome Web Store listing (early release)',
+    deployment: 'Deployment: Chrome, Firefox, and Mac App Store extensions; Node.js sync API in Docker',
+    deploymentStatus: 'Public GitHub repo with published Chrome, Firefox, and macOS listings',
     tags: ['JavaScript', 'Swift', 'Manifest V3', 'Chrome Extensions', 'Safari Web Extension', 'Offline Sync', 'Node.js', 'Docker', 'Playwright'],
     links: [
       { label: 'GitHub repo', href: 'https://github.com/biswashghi/novel_tracker' },
       { label: 'Chrome Web Store', href: 'https://chromewebstore.google.com/detail/novel-tracker/meciopmpdehijfmbgbagndgknlmbmjoa', ghost: true },
+      { label: 'Firefox Add-ons', href: 'https://addons.mozilla.org/en-US/firefox/addon/novel-tracker-extension/', ghost: true },
+      { label: 'Mac App Store', href: 'https://apps.apple.com/us/app/novel-tracker/id6801945948?mt=12', ghost: true },
     ],
     // Opt-in: only projects with a `resume` field are pulled into the resume
     // (see src/data/resume/index.js). Bullets here are phrased for a resume
