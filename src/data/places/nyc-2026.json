@@ -1,5 +1,17 @@
 [
   {
+    "id": "taverna-kyclades",
+    "name": "Taverna Kyclades",
+    "type": "food",
+    "dates": [
+      "Aug 16",
+      "Sep 9"
+    ],
+    "note": "Swordfish, first time. Same as any other fish. Free shots from a 70 year old man.",
+    "lat": 40.7753,
+    "lng": -73.9092
+  },
+  {
     "id": "bryant-park",
     "name": "Bryant Park",
     "type": "event",
@@ -11,6 +23,51 @@
     "note": "Movie night (City of God), the circus, then juggling and co-op poker.",
     "lat": 40.75375,
     "lng": -73.98354
+  },
+  {
+    "id": "the-hall",
+    "name": "The Hall",
+    "type": "food",
+    "dates": [
+      "Aug 18"
+    ],
+    "note": "Send-off for a team member, with three from the team.",
+    "lat": 40.74033,
+    "lng": -73.99219
+  },
+  {
+    "id": "van-leeuwen",
+    "name": "Van Leeuwen",
+    "type": "food",
+    "dates": [
+      "Aug 19"
+    ],
+    "note": "Became a frequent stop.",
+    "lat": 40.77537,
+    "lng": -73.90938,
+    "approx": true
+  },
+  {
+    "id": "the-botte",
+    "name": "Botte",
+    "type": "food",
+    "dates": [
+      "Aug 19"
+    ],
+    "note": "Worst dinner of the trip.",
+    "lat": 40.77487,
+    "lng": -73.90869
+  },
+  {
+    "id": "angel",
+    "name": "Angel",
+    "type": "food",
+    "dates": [
+      "Aug 21"
+    ],
+    "note": "Last minute reservation with the coworkers. Good food, good conversation.",
+    "lat": 40.749,
+    "lng": -73.89032
   },
   {
     "id": "queens-night-market",
@@ -33,6 +90,17 @@
     "note": "Board games — Werewolf, Coup, Codenames. Codenames was my favorite.",
     "lat": 40.75834,
     "lng": -73.96992
+  },
+  {
+    "id": "cbtm",
+    "name": "Chef cbtm Bistro",
+    "type": "food",
+    "dates": [
+      "Aug 24"
+    ],
+    "note": "Best momo of the trip.",
+    "lat": 40.74717,
+    "lng": -73.89137
   },
   {
     "id": "arthur-ashe",
@@ -58,6 +126,52 @@
     "approx": true
   },
   {
+    "id": "darjeeling-kitchen",
+    "name": "Darjeeling Kitchen & Café",
+    "type": "food",
+    "dates": [
+      "Aug 26",
+      "Sep 1"
+    ],
+    "note": "The thali was great. The pani puri and momo, maybe the second worst food of the trip.",
+    "lat": 40.75616,
+    "lng": -73.92942
+  },
+  {
+    "id": "retro-pizza",
+    "name": "Retro Pizza",
+    "type": "food",
+    "dates": [
+      "Aug 27",
+      "Sep 14"
+    ],
+    "note": "First slice of the trip — white, and chicken bacon ranch.",
+    "lat": 40.77581,
+    "lng": -73.91001
+  },
+  {
+    "id": "ibn-hamido",
+    "name": "Ibn Hamido Seafood",
+    "type": "food",
+    "dates": [
+      "Aug 27"
+    ],
+    "note": "Shrimp in garlic butter, spice rub on the snapper — both amazing.",
+    "lat": 40.77562,
+    "lng": -73.90953
+  },
+  {
+    "id": "the-modern",
+    "name": "The Modern",
+    "type": "food",
+    "dates": [
+      "Aug 28"
+    ],
+    "note": "Michelin. Unique, but a great experience.",
+    "lat": 40.76108,
+    "lng": -73.97709
+  },
+  {
     "id": "hungarian-house",
     "name": "Hungarian House",
     "type": "event",
@@ -67,6 +181,17 @@
     "note": "The dance. Learned some Hungarian steps.",
     "lat": 40.77611,
     "lng": -73.95496
+  },
+  {
+    "id": "muna",
+    "name": "Muna",
+    "type": "food",
+    "dates": [
+      "Aug 29"
+    ],
+    "note": "Dinner.",
+    "lat": 40.75357,
+    "lng": -73.97349
   },
   {
     "id": "pier-26",
@@ -91,6 +216,28 @@
     "lat": 40.70552,
     "lng": -74.00157,
     "approx": true
+  },
+  {
+    "id": "nom-wah",
+    "name": "Nom Wah Tea Parlor",
+    "type": "food",
+    "dates": [
+      "Aug 30"
+    ],
+    "note": "Cheap-ish and great.",
+    "lat": 40.71446,
+    "lng": -73.9982
+  },
+  {
+    "id": "petes-tavern",
+    "name": "Pete's Tavern",
+    "type": "food",
+    "dates": [
+      "Aug 31"
+    ],
+    "note": "Happy hour.",
+    "lat": 40.73651,
+    "lng": -73.98671
   },
   {
     "id": "bella-abzug-park",
@@ -138,6 +285,17 @@
     "lng": -73.9782
   },
   {
+    "id": "radio-kwara",
+    "name": "Radio Kwara",
+    "type": "food",
+    "dates": [
+      "Sep 4"
+    ],
+    "note": "Dinner between Governors Island and Coney Island.",
+    "lat": 40.68747,
+    "lng": -73.96019
+  },
+  {
     "id": "the-cloisters",
     "name": "The Cloisters",
     "type": "event",
@@ -158,120 +316,6 @@
     "note": "Thomas Bartlett: Ginsberg at 100, with Taylor Mac. One of the more enjoyable nights of the month.",
     "lat": 40.742,
     "lng": -74.01061
-  },
-  {
-    "id": "harriman",
-    "name": "Harriman State Park",
-    "type": "event",
-    "dates": [
-      "Sep 7"
-    ],
-    "note": "The hike, the entire day, with the Meetup group.",
-    "lat": 41.23038,
-    "lng": -74.12479,
-    "outlying": true
-  },
-  {
-    "id": "the-stand",
-    "name": "The Stand",
-    "type": "event",
-    "dates": [
-      "Sep 8"
-    ],
-    "note": "Comedy — Trevor Wallace, Shane Gillis, Gianmarco Soresi, Jiaoying Summers, Mark Normand. Stomach hurt from laughing.",
-    "lat": 40.73534,
-    "lng": -73.98846
-  },
-  {
-    "id": "the-met",
-    "name": "The Met",
-    "type": "event",
-    "dates": [
-      "Sep 12"
-    ],
-    "note": "A lot of time walking there.",
-    "lat": 40.77944,
-    "lng": -73.96338
-  },
-  {
-    "id": "taverna-kyclades",
-    "name": "Taverna Kyclades",
-    "type": "food",
-    "dates": [
-      "Aug 16",
-      "Sep 9"
-    ],
-    "note": "Swordfish, first time. Same as any other fish. Free shots from a 70 year old man.",
-    "lat": 40.7753,
-    "lng": -73.9092
-  },
-  {
-    "id": "van-leeuwen",
-    "name": "Van Leeuwen",
-    "type": "food",
-    "dates": [
-      "Aug 19"
-    ],
-    "note": "Became a frequent stop.",
-    "lat": 40.77537,
-    "lng": -73.90938,
-    "approx": true
-  },
-  {
-    "id": "retro-pizza",
-    "name": "Retro Pizza",
-    "type": "food",
-    "dates": [
-      "Aug 27",
-      "Sep 14"
-    ],
-    "note": "First slice of the trip — white, and chicken bacon ranch.",
-    "lat": 40.77581,
-    "lng": -73.91001
-  },
-  {
-    "id": "the-modern",
-    "name": "The Modern",
-    "type": "food",
-    "dates": [
-      "Aug 28"
-    ],
-    "note": "Michelin. Unique, but a great experience.",
-    "lat": 40.76108,
-    "lng": -73.97709
-  },
-  {
-    "id": "muna",
-    "name": "Muna",
-    "type": "food",
-    "dates": [
-      "Aug 29"
-    ],
-    "note": "Dinner.",
-    "lat": 40.75357,
-    "lng": -73.97349
-  },
-  {
-    "id": "nom-wah",
-    "name": "Nom Wah Tea Parlor",
-    "type": "food",
-    "dates": [
-      "Aug 30"
-    ],
-    "note": "Cheap-ish and great.",
-    "lat": 40.71446,
-    "lng": -73.9982
-  },
-  {
-    "id": "petes-tavern",
-    "name": "Pete's Tavern",
-    "type": "food",
-    "dates": [
-      "Aug 31"
-    ],
-    "note": "Happy hour.",
-    "lat": 40.73651,
-    "lng": -73.98671
   },
   {
     "id": "yiwanmen",
@@ -296,6 +340,52 @@
     "lng": -73.91711
   },
   {
+    "id": "williamsburg-bar",
+    "name": "A bar in Williamsburg",
+    "type": "event",
+    "dates": [
+      "Sep 6"
+    ],
+    "note": "The Wisconsin/Notre Dame game. Talked with a couple — a Notre Dame hater and an LSU diehard.",
+    "lat": 40.7174,
+    "lng": -73.957,
+    "approx": true
+  },
+  {
+    "id": "harriman",
+    "name": "Harriman State Park",
+    "type": "event",
+    "dates": [
+      "Sep 7"
+    ],
+    "note": "The hike, the entire day, with the Meetup group.",
+    "lat": 41.23038,
+    "lng": -74.12479,
+    "outlying": true
+  },
+  {
+    "id": "nepali-momo-cafe",
+    "name": "Nepali Momo Cafe",
+    "type": "food",
+    "dates": [
+      "Sep 7"
+    ],
+    "note": "My own dinner after the Harriman hike.",
+    "lat": 40.74744,
+    "lng": -73.88967
+  },
+  {
+    "id": "the-stand",
+    "name": "The Stand",
+    "type": "event",
+    "dates": [
+      "Sep 8"
+    ],
+    "note": "Comedy — Trevor Wallace, Shane Gillis, Gianmarco Soresi, Jiaoying Summers, Mark Normand. Stomach hurt from laughing.",
+    "lat": 40.73534,
+    "lng": -73.98846
+  },
+  {
     "id": "turntable-chicken-jazz",
     "name": "Turntable Chicken Jazz",
     "type": "food",
@@ -317,6 +407,61 @@
     "lat": 40.74831,
     "lng": -73.99044,
     "approx": true
+  },
+  {
+    "id": "adore",
+    "name": "Adore",
+    "type": "food",
+    "dates": [
+      "Sep 11"
+    ],
+    "note": "Wine bar, with the original group of colleagues.",
+    "lat": 40.72682,
+    "lng": -73.98758
+  },
+  {
+    "id": "mala-project",
+    "name": "The Mala Project",
+    "type": "food",
+    "dates": [
+      "Sep 11"
+    ],
+    "note": "Dinner with the original group of colleagues, then the US Open finals.",
+    "lat": 40.7271,
+    "lng": -73.98536
+  },
+  {
+    "id": "the-met",
+    "name": "The Met",
+    "type": "event",
+    "dates": [
+      "Sep 12"
+    ],
+    "note": "A lot of time walking there.",
+    "lat": 40.77944,
+    "lng": -73.96338
+  },
+  {
+    "id": "central-park-tavern",
+    "name": "Central Park Tavern",
+    "type": "event",
+    "dates": [
+      "Sep 12"
+    ],
+    "note": "The Michigan game. A funny group of past Ross MBA grads behind me.",
+    "lat": 40.76745,
+    "lng": -73.98405
+  },
+  {
+    "id": "sushi-by-m",
+    "name": "Sushi by M",
+    "type": "food",
+    "dates": [
+      "Sep 12"
+    ],
+    "note": "Omakase.",
+    "lat": 40.77514,
+    "lng": -73.95397
   },
   {
     "id": "bhanchha-ghar",
