@@ -1,6 +1,7 @@
 import React from 'react';
 import Callout from './Callout';
 import Figure from './Figure';
+import PlacesMap from './PlacesMap';
 
 const isExternalHref = (href) => typeof href === 'string' && /^https?:\/\//i.test(href);
 
@@ -23,4 +24,5 @@ export const mdxComponents = {
   img: Img,
   Callout,
   Figure,
+  PlacesMap,
 };

@@ -1,0 +1,343 @@
+[
+  {
+    "id": "bryant-park",
+    "name": "Bryant Park",
+    "type": "event",
+    "dates": [
+      "Aug 17",
+      "Aug 29",
+      "Sep 8"
+    ],
+    "note": "Movie night (City of God), the circus, then juggling and co-op poker.",
+    "lat": 40.75375,
+    "lng": -73.98354
+  },
+  {
+    "id": "queens-night-market",
+    "name": "Queens Night Market",
+    "type": "event",
+    "dates": [
+      "Aug 22"
+    ],
+    "note": "First taste of momo. Awkward meetup with the group.",
+    "lat": 40.74738,
+    "lng": -73.85161
+  },
+  {
+    "id": "the-hugh",
+    "name": "The Hugh",
+    "type": "event",
+    "dates": [
+      "Aug 23"
+    ],
+    "note": "Board games — Werewolf, Coup, Codenames. Codenames was my favorite.",
+    "lat": 40.75834,
+    "lng": -73.96992
+  },
+  {
+    "id": "arthur-ashe",
+    "name": "Arthur Ashe Stadium",
+    "type": "event",
+    "dates": [
+      "Aug 25"
+    ],
+    "note": "Federer showmatch, up in the promenade. Honey Deuce.",
+    "lat": 40.7499,
+    "lng": -73.84704
+  },
+  {
+    "id": "rivercrest",
+    "name": "Rivercrest",
+    "type": "event",
+    "dates": [
+      "Aug 26"
+    ],
+    "note": "Trivia. Didn't do great.",
+    "lat": 40.7752,
+    "lng": -73.9088,
+    "approx": true
+  },
+  {
+    "id": "hungarian-house",
+    "name": "Hungarian House",
+    "type": "event",
+    "dates": [
+      "Aug 29"
+    ],
+    "note": "The dance. Learned some Hungarian steps.",
+    "lat": 40.77611,
+    "lng": -73.95496
+  },
+  {
+    "id": "pier-26",
+    "name": "Pier 26 — kayak on the Hudson",
+    "type": "event",
+    "dates": [
+      "Aug 30"
+    ],
+    "note": "20 free minutes.",
+    "lat": 40.7207,
+    "lng": -74.0126,
+    "approx": true
+  },
+  {
+    "id": "seaport",
+    "name": "Seaport, Pier 17",
+    "type": "event",
+    "dates": [
+      "Aug 30"
+    ],
+    "note": "30 minutes of tennis after a couple hours' wait, then the US Open activation.",
+    "lat": 40.70552,
+    "lng": -74.00157,
+    "approx": true
+  },
+  {
+    "id": "bella-abzug-park",
+    "name": "Bella Abzug Park",
+    "type": "event",
+    "dates": [
+      "Sep 3"
+    ],
+    "note": "An hour and a half of a DJ playing old classics. Impromptu dance battles.",
+    "lat": 40.75494,
+    "lng": -74.0012
+  },
+  {
+    "id": "frim-fram",
+    "name": "Frim Fram",
+    "type": "event",
+    "dates": [
+      "Sep 3"
+    ],
+    "note": "Swing lessons.",
+    "lat": 40.7496,
+    "lng": -73.995,
+    "approx": true
+  },
+  {
+    "id": "governors-island",
+    "name": "Governors Island",
+    "type": "event",
+    "dates": [
+      "Sep 4"
+    ],
+    "note": "A treat. Quiet walk around the island.",
+    "lat": 40.68865,
+    "lng": -74.01828
+  },
+  {
+    "id": "coney-island",
+    "name": "Coney Island",
+    "type": "event",
+    "dates": [
+      "Sep 4"
+    ],
+    "note": "Walked the pier, rode the Colossus, got tired and left before the fireworks.",
+    "lat": 40.5743,
+    "lng": -73.9782
+  },
+  {
+    "id": "the-cloisters",
+    "name": "The Cloisters",
+    "type": "event",
+    "dates": [
+      "Sep 5"
+    ],
+    "note": "By bike up the Greenway, 50 minutes. The presentation and the architecture made the day.",
+    "lat": 40.86487,
+    "lng": -73.93192
+  },
+  {
+    "id": "little-island",
+    "name": "Little Island",
+    "type": "event",
+    "dates": [
+      "Sep 5"
+    ],
+    "note": "Thomas Bartlett: Ginsberg at 100, with Taylor Mac. One of the more enjoyable nights of the month.",
+    "lat": 40.742,
+    "lng": -74.01061
+  },
+  {
+    "id": "harriman",
+    "name": "Harriman State Park",
+    "type": "event",
+    "dates": [
+      "Sep 7"
+    ],
+    "note": "The hike, the entire day, with the Meetup group.",
+    "lat": 41.23038,
+    "lng": -74.12479,
+    "outlying": true
+  },
+  {
+    "id": "the-stand",
+    "name": "The Stand",
+    "type": "event",
+    "dates": [
+      "Sep 8"
+    ],
+    "note": "Comedy — Trevor Wallace, Shane Gillis, Gianmarco Soresi, Jiaoying Summers, Mark Normand. Stomach hurt from laughing.",
+    "lat": 40.73534,
+    "lng": -73.98846
+  },
+  {
+    "id": "the-met",
+    "name": "The Met",
+    "type": "event",
+    "dates": [
+      "Sep 12"
+    ],
+    "note": "A lot of time walking there.",
+    "lat": 40.77944,
+    "lng": -73.96338
+  },
+  {
+    "id": "taverna-kyclades",
+    "name": "Taverna Kyclades",
+    "type": "food",
+    "dates": [
+      "Aug 16",
+      "Sep 9"
+    ],
+    "note": "Swordfish, first time. Same as any other fish. Free shots from a 70 year old man.",
+    "lat": 40.7753,
+    "lng": -73.9092
+  },
+  {
+    "id": "van-leeuwen",
+    "name": "Van Leeuwen",
+    "type": "food",
+    "dates": [
+      "Aug 19"
+    ],
+    "note": "Became a frequent stop.",
+    "lat": 40.77537,
+    "lng": -73.90938,
+    "approx": true
+  },
+  {
+    "id": "retro-pizza",
+    "name": "Retro Pizza",
+    "type": "food",
+    "dates": [
+      "Aug 27",
+      "Sep 14"
+    ],
+    "note": "First slice of the trip — white, and chicken bacon ranch.",
+    "lat": 40.77581,
+    "lng": -73.91001
+  },
+  {
+    "id": "the-modern",
+    "name": "The Modern",
+    "type": "food",
+    "dates": [
+      "Aug 28"
+    ],
+    "note": "Michelin. Unique, but a great experience.",
+    "lat": 40.76108,
+    "lng": -73.97709
+  },
+  {
+    "id": "muna",
+    "name": "Muna",
+    "type": "food",
+    "dates": [
+      "Aug 29"
+    ],
+    "note": "Dinner.",
+    "lat": 40.75357,
+    "lng": -73.97349
+  },
+  {
+    "id": "nom-wah",
+    "name": "Nom Wah Tea Parlor",
+    "type": "food",
+    "dates": [
+      "Aug 30"
+    ],
+    "note": "Cheap-ish and great.",
+    "lat": 40.71446,
+    "lng": -73.9982
+  },
+  {
+    "id": "petes-tavern",
+    "name": "Pete's Tavern",
+    "type": "food",
+    "dates": [
+      "Aug 31"
+    ],
+    "note": "Happy hour.",
+    "lat": 40.73651,
+    "lng": -73.98671
+  },
+  {
+    "id": "yiwanmen",
+    "name": "Yiwanmen",
+    "type": "food",
+    "dates": [
+      "Sep 5"
+    ],
+    "note": "Chongqing red oil noodles with ground pork. So good.",
+    "lat": 40.71932,
+    "lng": -73.99626
+  },
+  {
+    "id": "olmo",
+    "name": "Olmo",
+    "type": "food",
+    "dates": [
+      "Sep 6"
+    ],
+    "note": "Dinner, then the train to Williamsburg.",
+    "lat": 40.68321,
+    "lng": -73.91711
+  },
+  {
+    "id": "turntable-chicken-jazz",
+    "name": "Turntable Chicken Jazz",
+    "type": "food",
+    "dates": [
+      "Sep 8"
+    ],
+    "note": "Korean fried chicken.",
+    "lat": 40.74822,
+    "lng": -73.98641
+  },
+  {
+    "id": "ichiran",
+    "name": "Ichiran",
+    "type": "food",
+    "dates": [
+      "Sep 10"
+    ],
+    "note": "Not the best ramen I've had. Had better.",
+    "lat": 40.74831,
+    "lng": -73.99044,
+    "approx": true
+  },
+  {
+    "id": "bhanchha-ghar",
+    "name": "Nepali Bhanchha Ghar",
+    "type": "food",
+    "dates": [
+      "Sep 13"
+    ],
+    "note": "Dinner.",
+    "lat": 40.74703,
+    "lng": -73.89082
+  },
+  {
+    "id": "flaming-grill",
+    "name": "Flaming Grill",
+    "type": "food",
+    "dates": [
+      "Sep 14"
+    ],
+    "note": "Lunch.",
+    "lat": 40.77475,
+    "lng": -73.90852
+  }
+]
