@@ -26,9 +26,9 @@ export const featuredProjects = [
       title: 'Novel Tracker — Cross-Platform Browser Extension',
       meta: 'Personal project',
       bullets: [
-        'Built a local-first Manifest V3 extension shipping to Chrome, Edge, Firefox (desktop and Android), and a native Safari Web Extension for macOS/iOS/iPadOS, auto-tracking reading progress across web-novel sites via 9 site-specific parsers with a generic-metadata fallback.',
-        'Designed an optional cloud-sync layer (Node.js API, Google sign-in) using Hybrid Logical Clocks and remove-wins merge rules to deterministically resolve offline edit conflicts across devices.',
-        'Unified storage, parsing, and sync logic into shared modules reused across all four browser targets; automated release packaging and end-to-end testing (Playwright) via GitHub Actions.',
+        { priority: 1, text: 'Shipped a local-first reading tracker to the Chrome Web Store, Firefox Add-ons, and the Mac App Store, with one shared core across Chrome, Edge, Firefox, and a native Safari extension.' },
+        { priority: 2, text: 'Built cross-device sync on a Node.js API using Hybrid Logical Clocks and remove-wins merges, so offline edits resolve deterministically without a central lock.' },
+        { priority: 3, text: 'Wrote 9 site-specific parsers with a generic fallback, and automated release packaging and Playwright end-to-end tests in GitHub Actions.' },
       ],
     },
   },

@@ -20,9 +20,9 @@ const wawoff2 = require('wawoff2');
 const assembleResume = require('../src/data/resume').default;
 
 const OUTPUT_PATH = path.join(__dirname, '..', 'public', 'resume.pdf');
-const MARGIN = 50;
-const LABEL_WIDTH = 115;
-const COL_GAP = 18;
+const MARGIN = 44;
+const LABEL_WIDTH = 92;
+const COL_GAP = 14;
 
 const COLOR = {
   text: '#17181a',
@@ -99,7 +99,14 @@ const itemHeader = (doc, title, meta) => {
   doc.moveDown(0.15);
 };
 
-const bulletLine = (doc, text) => {
+// A bullet is either a plain string (priority 2) or { text, priority }.
+// Priority 1 = always keep; higher numbers are dropped first when the
+// resume overflows one page. See fitToOnePage.
+const bulletText = (bullet) => (typeof bullet === 'string' ? bullet : bullet.text);
+const bulletPriority = (bullet) => (typeof bullet === 'string' ? 2 : bullet.priority ?? 2);
+
+const bulletLine = (doc, bullet) => {
+  const text = bulletText(bullet);
   const left = doc.page.margins.left;
   const indent = 11;
   const width = contentWidth(doc);
@@ -136,23 +143,22 @@ const contactBlock = (doc, profile) => {
     doc.font('Lato').fillColor(color).text(text, { continued, link, underline });
   };
 
-  segment(profile.phone.label, { continued: true });
-  segment('   |   ', { continued: true, color: COLOR.muted });
-  segment(profile.email.label, { continued: false, color: COLOR.link, link: profile.email.href, underline: true });
+  const parts = [
+    { label: profile.phone.label },
+    { label: profile.email.label, href: profile.email.href },
+    { label: profile.linkedin.label, href: profile.linkedin.href },
+    profile.website ? { label: profile.website.label, href: profile.website.href } : null,
+  ].filter(Boolean);
 
-  resetX(doc);
-  doc.moveDown(0.15);
-
-  segment(profile.linkedin.label, {
-    continued: !!profile.website,
-    color: COLOR.link,
-    link: profile.linkedin.href,
-    underline: true,
+  parts.forEach((part, index) => {
+    const last = index === parts.length - 1;
+    if (part.href) {
+      segment(part.label, { continued: !last, color: COLOR.link, link: part.href, underline: true });
+    } else {
+      segment(part.label, { continued: !last });
+    }
+    if (!last) segment('  |  ', { continued: true, color: COLOR.muted });
   });
-  if (profile.website) {
-    segment('   |   ', { continued: true, color: COLOR.muted });
-    segment(profile.website.label, { continued: false, color: COLOR.link, link: profile.website.href, underline: true });
-  }
 
   doc.fillColor(COLOR.text);
 };
@@ -193,7 +199,10 @@ const renderSimpleItems = (doc, entries) => {
 // If a row starts with barely any room left on the page, writing its label
 // at that near-bottom y can itself overflow and silently spawn an orphan
 // page just for the label. Starting the row fresh avoids that entirely.
-const MIN_ROW_START_ROOM = 90;
+// The threshold is per row: a one-line Certifications row needs far less
+// runway than Experience, and a fixed 90pt was pushing short rows onto a
+// nearly-empty second page.
+const MIN_ROW_START_ROOM = 40;
 
 const ensureRoom = (doc, minHeight = MIN_ROW_START_ROOM) => {
   const maxY = doc.page.height - doc.page.margins.bottom;
@@ -210,8 +219,8 @@ const ensureRoom = (doc, minHeight = MIN_ROW_START_ROOM) => {
 // label column. The label itself is placed on whichever page the row started
 // on — it isn't repeated if content continues onto later pages, matching how
 // the original template handles overflow.
-const renderTableRow = (doc, label, renderContent, { labelFontSize = 10.5 } = {}) => {
-  ensureRoom(doc);
+const renderTableRow = (doc, label, renderContent, { labelFontSize = 10.5, minRoom } = {}) => {
+  ensureRoom(doc, minRoom);
 
   const pageLeft = doc.page.margins.left;
   const rightLeft = pageLeft + LABEL_WIDTH + COL_GAP;
@@ -242,9 +251,9 @@ const renderTableRow = (doc, label, renderContent, { labelFontSize = 10.5 } = {}
   // Only compare label/content bottoms when they landed on the same page —
   // doc.y is page-relative, so comparing across pages is meaningless.
   doc.y = startPageIndex === endPageIndex ? Math.max(contentBottomY, labelBottomY) : contentBottomY;
-  doc.moveDown(0.3);
+  doc.moveDown(0.2);
   drawRule(doc);
-  doc.moveDown(0.35);
+  doc.moveDown(0.25);
 };
 
 const addPageNumbers = (doc) => {
@@ -270,35 +279,84 @@ const addPageNumbers = (doc) => {
   }
 };
 
-const generate = async () => {
-  const resume = assembleResume();
-  const fonts = await loadFonts();
+// Every bullet list in the resume, in document order, so the fit loop can
+// find and remove the lowest-priority bullet from wherever it lives.
+const bulletLists = (resume) => {
+  const lists = [];
+  resume.experience.forEach((entry) => {
+    if (entry.groups) entry.groups.forEach((group) => lists.push(group.bullets));
+    else if (entry.bullets) lists.push(entry.bullets);
+  });
+  resume.projects.forEach((project) => lists.push(project.bullets));
+  resume.education.forEach((entry) => {
+    if (entry.bullets) lists.push(entry.bullets);
+  });
+  return lists;
+};
 
+// Removes the single most droppable bullet: highest priority number, and
+// among ties the one furthest down the page. Returns the removed bullet, or
+// null when only priority-1 bullets remain.
+const dropLowestPriority = (resume) => {
+  let target = null;
+  bulletLists(resume).forEach((list) => {
+    list.forEach((bullet, index) => {
+      const priority = bulletPriority(bullet);
+      if (priority <= 1) return;
+      if (!target || priority >= target.priority) target = { list, index, priority };
+    });
+  });
+  if (!target) return null;
+  return target.list.splice(target.index, 1)[0];
+};
+
+const buildDoc = (resume, fonts) => {
   const doc = new PDFDocument({
     size: 'LETTER',
     margins: { top: MARGIN, bottom: MARGIN, left: MARGIN, right: MARGIN },
     bufferPages: true,
     info: { Title: `${resume.profile.name} - Resume`, Author: resume.profile.name },
   });
-
   Object.entries(fonts).forEach(([name, buffer]) => doc.registerFont(name, buffer));
-
-  fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
-  const stream = fs.createWriteStream(OUTPUT_PATH);
-  doc.pipe(stream);
 
   renderTableRow(doc, resume.profile.name, () => contactBlock(doc, resume.profile), { labelFontSize: 15 });
   renderTableRow(doc, 'Summary', () => paragraph(doc, resume.summary));
-  renderTableRow(doc, 'Experience', () => renderExperience(doc, resume.experience));
-
+  renderTableRow(doc, 'Experience', () => renderExperience(doc, resume.experience), { minRoom: 90 });
   if (resume.projects.length) {
     renderTableRow(doc, 'Projects', () => renderSimpleItems(doc, resume.projects));
   }
-
   renderTableRow(doc, 'Skills', () => skillsBlock(doc, resume.skills));
   renderTableRow(doc, 'Education', () => renderSimpleItems(doc, resume.education));
   renderTableRow(doc, 'Certifications', () => renderSimpleItems(doc, resume.certifications));
+  return doc;
+};
 
+// Renders in memory and counts pages; drops the lowest-priority bullet and
+// re-renders until everything fits on one page or nothing droppable is left.
+const fitToOnePage = (resume, fonts) => {
+  const dropped = [];
+  for (;;) {
+    const probe = buildDoc(resume, fonts);
+    const pages = probe.bufferedPageRange().count;
+    probe.end();
+    if (pages <= 1) return dropped;
+    const removed = dropLowestPriority(resume);
+    if (!removed) return dropped;
+    dropped.push(bulletText(removed));
+  }
+};
+
+const generate = async () => {
+  const resume = assembleResume();
+  const fonts = await loadFonts();
+
+  const dropped = fitToOnePage(resume, fonts);
+  dropped.forEach((text) => console.log(`generate-resume-pdf: dropped to fit one page: "${text}"`));
+
+  fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
+  const stream = fs.createWriteStream(OUTPUT_PATH);
+  const doc = buildDoc(resume, fonts);
+  doc.pipe(stream);
   addPageNumbers(doc);
   doc.end();
 

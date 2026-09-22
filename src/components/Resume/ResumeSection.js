@@ -46,7 +46,7 @@ const ResumeSection = () => {
                                     <p className="resume-k">{group.label}</p>
                                     <ul className="resume-list">
                                         {group.bullets.map((bullet, bulletIndex) => (
-                                            <li key={bulletIndex}>{bullet}</li>
+                                            <li key={bulletIndex}>{bullet.text}</li>
                                         ))}
                                     </ul>
                                 </React.Fragment>
@@ -54,7 +54,7 @@ const ResumeSection = () => {
                             : (
                                 <ul className="resume-list">
                                     {entry.bullets.map((bullet, bulletIndex) => (
-                                        <li key={bulletIndex}>{bullet}</li>
+                                        <li key={bulletIndex}>{bullet.text}</li>
                                     ))}
                                 </ul>
                             )}
@@ -73,7 +73,7 @@ const ResumeSection = () => {
                             </div>
                             <ul className="resume-list">
                                 {project.bullets.map((bullet, bulletIndex) => (
-                                    <li key={bulletIndex}>{bullet}</li>
+                                    <li key={bulletIndex}>{bullet.text}</li>
                                 ))}
                             </ul>
                         </div>
@@ -104,7 +104,7 @@ const ResumeSection = () => {
                         {entry.bullets ? (
                             <ul className="resume-list">
                                 {entry.bullets.map((bullet, bulletIndex) => (
-                                    <li key={bulletIndex}>{bullet}</li>
+                                    <li key={bulletIndex}>{bullet.text}</li>
                                 ))}
                             </ul>
                         ) : null}
