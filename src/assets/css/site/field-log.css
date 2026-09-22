@@ -250,7 +250,13 @@ textarea:focus-visible {
 }
 
 .log-card {
+  display: block;
   padding: 16px;
+  transition: background 160ms ease;
+}
+
+a.log-card:hover {
+  background: var(--paper-strong);
 }
 
 .log-card p {
