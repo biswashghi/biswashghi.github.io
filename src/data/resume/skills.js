@@ -3,6 +3,7 @@ const skills = [
   { label: 'Backend', value: 'Spring, event-driven and streaming systems, REST APIs, Docker' },
   { label: 'Data', value: 'PostgreSQL, DynamoDB, Cassandra, MongoDB, DocumentDB' },
   { label: 'AWS', value: 'Lambda, Fargate, EC2, Kinesis, SQS, SNS, EMR' },
+  { label: 'AI-assisted engineering', value: 'Claude Code, Codex, agentic workflows' },
 ];
 
 export default skills;

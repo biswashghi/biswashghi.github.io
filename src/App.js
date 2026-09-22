@@ -88,7 +88,7 @@ const AppShell = () => {
 
       <footer className="footer">
         <div className="footer__inner">
-          <p className="footer__text">Built with Codex.</p>
+          <p className="footer__text">Built with Claude Code and Codex.</p>
           <div className="footer__links" aria-label="Secondary">
             <a className="footer__link" href="/assets/resume.pdf" target="_blank" rel="noopener noreferrer">
               Latest resume
